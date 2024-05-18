@@ -1,0 +1,28 @@
+<div id="formadd">
+<form>
+    <p>
+       <label for="titulo">Titulo</label>
+		<input type="hidden"   ng-model="post.id">
+        <input type="text" id="titulo" placeholder="titulo"  required size="30" ng-model="post.title">
+    </p>
+	<p>
+        <label for="user">autor</label>
+        <input type="text" id="user" placeholder="autor"  required size="30"  ng-model="post.user">
+     </p>
+     <p>
+	    <label for="tag" >tag</label>
+        <input id="tag" type="text" placeholder="tag"  required size="30"  ng-model="post.tag">
+      </p>
+	  <p>
+	    <label for="image">imagen</label>
+        <label><input id="image" type="file" size="30"  ng-model="post.image"></label>
+      </p>
+	  <p>
+        <label>contenido</label>
+        <textarea  placeholder="contenido" class="textareatext" placeholder="contenido" cols="45" rows="4" ng-model="post.content" required></textarea>
+      </p>
+    <button type="submit"  class="btn btn-info">{{ButtonGuardar}}</button>
+    <input type="button" onclick='location.href="#/posts"' value="{{ButtonVolver}}"></input>
+  </fieldset>
+</form>
+</div>

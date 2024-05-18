@@ -1,0 +1,92 @@
+#ofertas {
+    background: none repeat scroll 0 0 white;
+    float: left;
+    margin-top: 25px;
+    height: 250px;
+    padding: 17px 2px 20px 2px;
+    width: 240px;
+	overflow:scroll;
+	position: relative;
+}
+
+#ofertas .ficha {
+    box-shadow: 1px 1px 3px 1px #BB9696;
+    float: left;
+    margin: 5px 5px;
+    padding: 2px;
+    width: 105px;
+	height: 70px;
+	overflow:hidden;
+	position: relative;
+}
+
+.ficha p{
+ font-size:7pt;
+}
+.sombra2 {
+    box-shadow: 0 8px 15px 0 #BB9696;
+    float: left;
+}
+
+.barSombra2 {
+    background: url("btn-programa.png") no-repeat scroll 0 -130px rgba(0, 0, 0, 0);
+    float: left;
+    height: 12px;
+    margin: 12px 0 8px;
+    width: 100%;
+}
+
+#mkt {
+    float: right;
+    margin: 13px 0 0;
+    width: 285px;
+	background:#ffffff;
+	padding: 5px  0px 27px;
+	min-height:590px;
+	box-shadow:0 8px 15px 0 #bb9696;
+}
+
+#mkt .box5 {
+    background: none repeat scroll 0 0 #F5F2F2;
+    border: 1px solid #ab3131;
+    float: left;
+    margin: 2px 0 1px -26px;
+	padding:1px 1px 1px 3px;
+    width: 220px;
+	border-radius:3px;
+	box-shadow: 0 8px 15px 0 #BB9696;
+}
+.add_cotizacion{
+position:absolute;
+margin-left:243px;
+border:solid 1px #ccc;
+width:470px;
+box-shadow: 0 8px 15px 0 #BB9696;
+background:#FCF9F9;
+height:620px;
+margin-top:41px;
+/*overflow:scroll;*/
+}
+.add_cotizacion span{
+ text-align:center;
+ color:#980D4D;
+ margin-left:5px;
+}
+.box5 span{
+font-size:7pt;
+}
+.cotizaciongeneral{
+ /*border: solid 1px #ff0000;*/
+ width:460px;
+ margin-left:5px;
+ /* min-height:275px;*/
+}
+.num_requerimiento{
+float:right; background:#EFEBEB; padding:2px 7px 2px 7px; border-radius:5px;
+}
+.num_requerimiento:hover{
+ background:#CCC;
+}
+#requerimiento_detalle h4{
+ margin-left:15px;
+}

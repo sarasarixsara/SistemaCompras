@@ -1,0 +1,18 @@
+/* Clase1 para ajustar el campo precio en listado de contratos */
+
+.precio:before {
+    content: '$ ';
+    font-size: 1 em;
+	font-weight: bold;
+}
+
+#select_otrosi .chosen-container {
+	
+	 width:100% !important;
+}
+
+#form_otrosi .form-control{
+	margin: 5px 0 !important;	
+}
+
+/* chosen-container-single */

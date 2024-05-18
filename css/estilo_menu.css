@@ -1,0 +1,5 @@
+#menu{text-align:center;}
+#footer{text-align:left;}
+.links{list-style:none;width:900px;overflow:hidden;}
+.links li{float:left;}
+.nobg{background:transparent;}

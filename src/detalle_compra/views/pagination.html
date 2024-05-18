@@ -1,0 +1,10 @@
+	<!--<any ng-repeat="pagina in paginacion">
+	<a  ng-click="goTo(''+pagina.url)" data-url="{{pagina.url}}" class="page-numbers {{pagina.clase}} ">{{pagina.label}}</a>
+	<span class="page-numbers current" >{{pagina.id}}</span>
+	</any>-->
+	<ul class="paginacionpdf">
+		<li ng-repeat="pagina in paginacion">
+			<a ng-if="pagina.selec == 0" ng-click="goTo(''+pagina.url)" data-url="{{pagina.url}}" class="page-numbers {{pagina.clase}} ">{{pagina.label}}</a>
+			<span ng-if="pagina.selec == 1" class="page-numbers current" >{{pagina.label}}</span>
+		</li>
+	</ul>

@@ -1,0 +1,22 @@
+<div class="descripcion" ng-click="goTo('post/'+obj.id, obj.id)">
+	<figure class="imagen" >
+		<img ng-src="{{obj.image}}">
+	</figure>
+	<div class="detalles">
+		<h2 class="titulo">{{obj.title}}</h2>
+		<p class="autor">por <a href="#/">{{obj.user}}</a></p>
+		<a class="tag" href="#/">{{obj.tag}}</a>
+		<p class="fecha">hace <strong>20</strong> min</p>
+	</div>
+</div>
+<div class="acciones">
+	<div class="votos">
+		<a class="up" href="#/" ng-click="Votar('up',obj,$index); $event.preventDefault();"></a>
+		<span class="total">{{obj.votes}}</span>
+		<a class="down" href="#/" ng-click="Votar('down',obj,$index); $event.preventDefault();" ></a>
+	</div>
+	<div class="datos">
+		<a class="comentarios" href="#/"> 10 </a>
+		<a class="estrellita" href="#/"></a>
+	</div>
+</div>

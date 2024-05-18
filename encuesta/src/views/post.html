@@ -1,0 +1,28 @@
+<article class="post" style="display: block;"><div class="descripcion extended">
+            <figure class="imagen">
+                <img ng-src="{{post.image}}">
+            </figure>
+            <div class="detalles">
+                <h2 class="titulo">{{post.title}}</h2>
+                <p class="autor">
+                    por <a href="#/">{{post.user}}</a>
+                </p>
+                <p>{{post.content}}</p>
+                <a class="tag" href="#/">corpora</a>
+                <p class="fecha">hace <strong>20</strong> min</p>
+            </div>
+        </div>
+        <div class="acciones">
+            <div class="votos">
+                <a class="up" href="#/" ng-click="Votar('up',post,$index); $event.preventDefault();"></a>
+                <span class="total">{{post.votes}}</span>
+                <a class="down" href="#/" ng-click="Votar('down',post,$index); $event.preventDefault();"></a>
+            </div>
+            <div class="datos">
+                <a class="comentarios" href="#/">
+                    10
+                </a>
+                <a class="estrellita" href="#/"></a>
+            </div>
+        </div>
+</article>

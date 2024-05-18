@@ -1,0 +1,22 @@
+<article class="" style="text-align:center">
+  <div class="contenedorgeneral">
+	<h1 class="inicio_title">Bienvenido a la <b>encuesta</b> </h1>
+	 <div id="poll">
+		<nav class="answers-index">
+		 <i ng-repeat="pregunta in preguntas.pregs" class="{{ ( pregunta.choice === null ? 'unanswered' : 'answered' ) + ' ' + ( $index === index ? 'active' : '' ) }}" ng-click="animateTo($index)">  </i>
+		</nav>
+     </div>
+	<div class="left">
+			<h2><div class="question-content">{{pregunta.PREGUNTA_DES}} </div></h2>
+
+	<div style="height:50px;">
+	</div>
+	<div class="choices"  ng-if="pregunta.TIPO_PREGUNTA == 1">
+	    <button style="margin-left:10px;" class="buttonazul2 choice {{pregunta.RESPUESTA == opcion.OPCION ? 'active' : ''}}"  ng-repeat="opcion in pregunta.OPCIONES" ng-click="doEncuest(opcion.OPCION)">{{opcion.OPCION_DES}}</button>&nbsp;&nbsp;	
+    </div>
+	<div class="choices"  ng-if="pregunta.TIPO_PREGUNTA == 2">
+	    <button style="margin-left:10px;" class="buttonazul2 choice {{pregunta.RESPUESTA == opcion.OPCION ? 'active' : ''}}"  ng-repeat="opcion in pregunta.OPCIONES" ng-click="doEncuest(opcion.OPCION)">{{opcion.OPCION_DES}}</button>&nbsp;&nbsp;	
+    </div>
+	</div>
+  </div>
+</article> 

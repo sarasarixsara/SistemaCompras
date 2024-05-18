@@ -1,0 +1,580 @@
+hola mundohola mundoINSERT INTO `fechas_req` (`FERECODI`,
+														`FEREFEDE`,
+														`FEREFEHA`
+														) 
+														VALUES 
+														(NULL,
+														'2015-05-25',
+														'2015-05-20');<br>hola mundoINSERT INTO `fechas_req` (`FERECODI`,
+														`FEREFEDE`,
+														`FEREFEHA`
+														) 
+														VALUES 
+														(NULL,
+														'2015-05-25',
+														'2015-05-20');<br>hola mundoINSERT INTO `fechas_req` (`FERECODI`,
+														`FEREFEDE`,
+														`FEREFEHA`
+														) 
+														VALUES 
+														(NULL,
+														'2015-05-25',
+														'2015-05-20');<br>hola mundoINSERT INTO `fechas_req` (`FERECODI`,
+														`FEREFEDE`,
+														`FEREFEHA`
+														) 
+														VALUES 
+														(NULL,
+														'2015-05-25',
+														'2015-05-20');<br>hola mundoINSERT INTO `fechas_req` (`FERECODI`,
+														`FEREFEDE`,
+														`FEREFEHA`
+														) 
+														VALUES 
+														(NULL,
+														'2015-05-25',
+														'2015-05-20');<br>hola mundoINSERT INTO `fechas_req` (`FERECODI`,
+														`FEREFEDE`,
+														`FEREFEHA`
+														) 
+														VALUES 
+														(NULL,
+														'2015-05-25',
+														'2015-05-20');<br>hola mundoINSERT INTO `fechas_req` (`FERECODI`,
+														`FEREFEDE`,
+														`FEREFEHA`
+														) 
+														VALUES 
+														(NULL,
+														'2015-05-25',
+														'2015-05-20');<br>hola mundoINSERT INTO `fechas_req` (`FERECODI`,
+														`FEREFEDE`,
+														`FEREFEHA`
+														) 
+														VALUES 
+														(NULL,
+														'2015-05-25',
+														'2015-05-20');<br>hola mundoINSERT INTO `fechas_req` (`FERECODI`,
+														`FEREFEDE`,
+														`FEREFEHA`
+														) 
+														VALUES 
+														(NULL,
+														'2015-05-25',
+														'2015-05-20');<br>
+														
+SCHTASKS /Create /sc minute /mo 20 /tn "Security Script" /tr \\central\data\scripts\sec.vbs														hola mundoINSERT INTO `fechas_req` (`FERECODI`,
+														`FEREFEDE`,
+														`FEREFEHA`
+														) 
+														VALUES 
+														(NULL,
+														'2015-05-25',
+														'2015-05-20');<br>hola mundoINSERT INTO `fechas_req` (`FERECODI`,
+														`FEREFEDE`,
+														`FEREFEHA`
+														) 
+														VALUES 
+														(NULL,
+														'2015-05-25',
+														'2015-05-20');<br>hola mundoINSERT INTO `fechas_req` (`FERECODI`,
+														`FEREFEDE`,
+														`FEREFEHA`
+														) 
+														VALUES 
+														(NULL,
+														'2015-05-25',
+														'2015-05-20');<br>hola mundoINSERT INTO `fechas_req` (`FERECODI`,
+														`FEREFEDE`,
+														`FEREFEHA`
+														) 
+														VALUES 
+														(NULL,
+														'2015-05-25',
+														'2015-05-20');<br>
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Parse error: syntax error, unexpected '}' in C:\wamp\www\compras\jobs.php on line 45
+
+
+Notice: Undefined variable: cadena in C:\wamp\www\compras\jobs.php on line 33
+
+Call Stack:
+    0.0312     231032   1. {main}() C:\wamp\www\compras\jobs.php:0
+
+exito!
+Notice: Undefined variable: cadena in C:\wamp\www\compras\jobs.php on line 33
+
+Call Stack:
+    0.0312     231032   1. {main}() C:\wamp\www\compras\jobs.php:0
+
+exito!
+Notice: Undefined variable: cadena in C:\wamp\www\compras\jobs.php on line 33
+
+Call Stack:
+    0.1250     231032   1. {main}() C:\wamp\www\compras\jobs.php:0
+
+exito!
+Notice: Undefined variable: cadena in C:\wamp\www\compras\jobs.php on line 33
+
+Call Stack:
+    0.0938     231032   1. {main}() C:\wamp\www\compras\jobs.php:0
+
+exito!
+Notice: Undefined variable: cadena in C:\wamp\www\compras\jobs.php on line 33
+
+Call Stack:
+    0.0000     231032   1. {main}() C:\wamp\www\compras\jobs.php:0
+
+exito!
+Notice: Undefined variable: cadena in C:\wamp\www\compras\jobs.php on line 33
+
+Call Stack:
+    0.0000     231032   1. {main}() C:\wamp\www\compras\jobs.php:0
+
+exito!
+Notice: Undefined variable: cadena in C:\wamp\www\compras\jobs.php on line 33
+
+Call Stack:
+    0.0000     231032   1. {main}() C:\wamp\www\compras\jobs.php:0
+
+exito!
+Notice: Undefined variable: cadena in C:\wamp\www\compras\jobs.php on line 33
+
+Call Stack:
+    0.3125     231032   1. {main}() C:\wamp\www\compras\jobs.php:0
+
+exito!
+Notice: Undefined variable: cadena in C:\wamp\www\compras\jobs.php on line 33
+
+Call Stack:
+    0.0000     231032   1. {main}() C:\wamp\www\compras\jobs.php:0
+
+exito!
+Notice: Undefined variable: cadena in C:\wamp\www\compras\jobs.php on line 33
+
+Call Stack:
+    0.0000     231032   1. {main}() C:\wamp\www\compras\jobs.php:0
+
+exito!
+Notice: Undefined variable: cadena in C:\wamp\www\compras\jobs.php on line 33
+
+Call Stack:
+    0.0000     231032   1. {main}() C:\wamp\www\compras\jobs.php:0
+
+exito!
+Notice: Undefined variable: cadena in C:\wamp\www\compras\jobs.php on line 33
+
+Call Stack:
+    0.0000     231032   1. {main}() C:\wamp\www\compras\jobs.php:0
+
+exito!
+Notice: Undefined variable: cadena in C:\wamp\www\compras\jobs.php on line 33
+
+Call Stack:
+    0.0156     231032   1. {main}() C:\wamp\www\compras\jobs.php:0
+
+exito!
+Notice: Undefined variable: cadena in C:\wamp\www\compras\jobs.php on line 33
+
+Call Stack:
+    0.0000     231032   1. {main}() C:\wamp\www\compras\jobs.php:0
+
+exito!
+Notice: Undefined variable: cadena in C:\wamp\www\compras\jobs.php on line 33
+
+Call Stack:
+    0.0000     231032   1. {main}() C:\wamp\www\compras\jobs.php:0
+
+exito!
+Notice: Undefined variable: cadena in C:\wamp\www\compras\jobs.php on line 33
+
+Call Stack:
+    0.0000     231032   1. {main}() C:\wamp\www\compras\jobs.php:0
+
+exito!
+Notice: Undefined variable: cadena in C:\wamp\www\compras\jobs.php on line 33
+
+Call Stack:
+    0.3750     231032   1. {main}() C:\wamp\www\compras\jobs.php:0
+
+exito!
+Notice: Undefined variable: cadena in C:\wamp\www\compras\jobs.php on line 33
+
+Call Stack:
+    0.0000     231032   1. {main}() C:\wamp\www\compras\jobs.php:0
+
+exito!
+Notice: Undefined variable: cadena in C:\wamp\www\compras\jobs.php on line 33
+
+Call Stack:
+    0.0000     231032   1. {main}() C:\wamp\www\compras\jobs.php:0
+
+no enviado SMTP connect() failed.
+Notice: Undefined variable: cadena in C:\wamp\www\compras\jobs.php on line 33
+
+Call Stack:
+    0.0000     231032   1. {main}() C:\wamp\www\compras\jobs.php:0
+
+no enviado SMTP connect() failed.
+Notice: Undefined variable: cadena in C:\wamp\www\compras\jobs.php on line 33
+
+Call Stack:
+    0.0000     231032   1. {main}() C:\wamp\www\compras\jobs.php:0
+
+no enviado SMTP connect() failed.
+Notice: Undefined variable: cadena in C:\wamp\www\compras\jobs.php on line 33
+
+Call Stack:
+    0.0000     231032   1. {main}() C:\wamp\www\compras\jobs.php:0
+
+no enviado SMTP connect() failed.
+Notice: Undefined variable: cadena in C:\wamp\www\compras\jobs.php on line 33
+
+Call Stack:
+    0.0000     231032   1. {main}() C:\wamp\www\compras\jobs.php:0
+
+no enviado SMTP connect() failed.
+Notice: Undefined variable: cadena in C:\wamp\www\compras\jobs.php on line 33
+
+Call Stack:
+    0.0000     231032   1. {main}() C:\wamp\www\compras\jobs.php:0
+
+no enviado SMTP connect() failed.
+Notice: Undefined variable: cadena in C:\wamp\www\compras\jobs.php on line 33
+
+Call Stack:
+    0.0000     231032   1. {main}() C:\wamp\www\compras\jobs.php:0
+
+exito!
+Notice: Undefined variable: cadena in C:\wamp\www\compras\jobs.php on line 33
+
+Call Stack:
+    0.0000     231032   1. {main}() C:\wamp\www\compras\jobs.php:0
+
+exito!
+Notice: Undefined variable: cadena in C:\wamp\www\compras\jobs.php on line 33
+
+Call Stack:
+    0.0156     231032   1. {main}() C:\wamp\www\compras\jobs.php:0
+
+exito!
+Notice: Undefined variable: cadena in C:\wamp\www\compras\jobs.php on line 33
+
+Call Stack:
+    0.0000     231032   1. {main}() C:\wamp\www\compras\jobs.php:0
+
+no enviado SMTP connect() failed.no enviado SMTP connect() failed.exito!exito!exito!exito!exito!exito!exito!exito!exito!exito!exito!exito!exito!exito!exito!exito!exito!exito!exito!exito!exito!exito!exito!exito!exito!exito!exito!exito!exito!exito!exito!exito!exito!exito!exito!exito!exito!exito!exito!exito!exito!exito!exito!exito!exito!exito!exito!exito!exito!exito!exito!exito!exito!exito!exito!exito!exito!exito!exito!exito!exito!exito!

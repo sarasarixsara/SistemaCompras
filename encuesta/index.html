@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es" ng-app="app">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" 
+        content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <title>Encuesta</title>	
+	<link rel="stylesheet" href="css/normalize.css" />
+    <link rel="stylesheet" href="css/beneficiarios.css" />	
+	<script src="jquery/jquery-1.9.1.js"></script>
+	<script src="../js/underscore-min.js"></script>
+	<script src="1.3.8/angular.min.js"></script>
+	<script src="src/modules/angular-route.min.js"></script>
+    <script src="src/modules/angular-resource.min.js"></script>	
+    <script src="src/modules/angular-animate.min.js"></script>	
+    <script src="src/app.js"></script>
+	<script src="src/controllers/EncuestaController.js"></script>
+	<script src="src/controllers/BeneficiariosListPageController.js"></script>
+	<script src="src/controllers/WelcomeController.js"></script>
+	<script src="src/controllers/IniciarController.js"></script>
+	<script src="src/controllers/ResultadoController.js"></script>
+	<script src="src/controllers/SalidaController.js"></script>
+	<script src="src/services/utils.js"></script>
+	<script src="src/services/datas.js"></script>
+	
+<script language="javascript">
+function callback_error(XMLHttpRequest, textStatus, errorThrown)
+{
+    /*
+    alert("Respuesta del servidor "+XMLHttpRequest.responseText);
+    alert("Error "+textStatus);
+    alert(errorThrown);
+	*/
+}
+function mostrarFiltros(id)
+	{
+		if( document.getElementById ) { // NS6+
+				target = document.getElementById(id);
+		} else if( document.all ) { // IE4+
+				target = document.all[id];
+		}
+
+		if( target ) {
+				if(target.style.display == "none")
+					target.style.display = "block";
+				else
+					target.style.display = "none";
+			    }
+	}
+</script>	
+</head>
+<body>
+    <!--<header>
+		Encuesta
+    </header>-->
+<div class="top-decorator"></div>	
+    <section class="posts" ng-controller="EncuestaController">
+        <div ng-view></div>
+    </section>	
+<div style="height:100px;">
+</div>
+<input type="hidden" id="IdEncuesta" value="">
+	      <footer>
+        <h3>
+            <strong>Powered by Angularjs</strong>
+            <span class="mejor">
+                Gold Black s.a.s
+            </span>
+        </h3>
+    </footer>
+</body>
+
+</html>
