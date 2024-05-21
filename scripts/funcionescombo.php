@@ -7,8 +7,8 @@ function conectaBaseDatos(){
 		$servidor 	= "localhost";		
 		$puerto 	= "3306";
 		$basedatos 	= "bdcompras";		
-		$usuario 	= "compras";		
-		$contrasena     = "S4nv0n1f4c10";
+		$usuario 	= "root";		
+		$contrasena     = "";
 		
 	
 		$conexion = new PDO("mysql:host=$servidor;port=$puerto;dbname=$basedatos",

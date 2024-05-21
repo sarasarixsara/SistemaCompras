@@ -1,8 +1,8 @@
 <?php
 require_once('conexion/db.php');
-	if (!isset($_SESSION)) {
-  session_start();
-}
+// 	if (!isset($_SESSION)) {
+//   session_start();
+// }
 if(!isset($_SESSION['MM_AccesoCorrectoApp']) || $_SESSION['MM_AccesoCorrectoApp'] != 'ACTIVO'){
   header("location: index.php");
 }
