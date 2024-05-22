@@ -25,14 +25,6 @@ $query_RsListadoDeta_Requ = "SELECT
 	$row_RsListadoDeta_Requ = mysqli_fetch_array($RsListadoDeta_Requ);
     $totalRows_RsListadoDeta_Requ = mysqli_num_rows($RsListadoDeta_Requ);	
 }
-    
-	/*$query_RsListaProveedores="SELECT P.PROVCODI CODIGO,
-                                      P.PROVNOMB NOMBRE,
-									  P.PROVTELE TELEFONO
-							    FROM PROVEEDORES P";
-	$RsListaProveedores = mysqli_query($conexion,$query_RsListaProveedores) or die(mysqli_error($conexion));
-	$row_RsListaProveedores = mysqli_fetch_array($RsListaProveedores);
-    $totalRows_RsListaProveedores = mysqli_num_rows($RsListaProveedores);*/
 
 	$query_RsPorCotizar="SELECT count(*) POR_COTIZAR FROM `requerimientos` WHERE REQUESTA=5 ";
 	$RsPorCotizar = mysqli_query($conexion,$query_RsPorCotizar) or die(mysqli_error($conexion));
@@ -394,13 +386,7 @@ include('menu.php');
 												
 
 		
-		</div>		<!--	<table style="clear:both; width:1000px; display:block;"  > -->
-	<?php /*		 <tr>
-			  <td colspan="6" class="SLAB2F">Bienvenido: <?php echo($_SESSION['MM_Usernombre']);?> al portal de compras<span style="color:#ffffff; background:#5CB85C; border-radius:10px; padding:3px 7px; cursor:pointer; margin-left:25px;">  <?php
- if($_SESSION['MM_RolID']==2){
-  ?><a title="aprobados">23</a> <?php } ?> </span></td>
-			 </tr>	
-*/?>			 
+		</div>			 
 			 <tr>
 			  <td>&nbsp;<br></td>
 			 </tr>

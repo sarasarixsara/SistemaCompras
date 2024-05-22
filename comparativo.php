@@ -181,18 +181,7 @@ if($codorden!=''){
 		   <td class="labeltext">Fecha Envio</td>
 		   <td><?php echo($row_RsListaRequerimientos['PERSONA_REGISTRA_DES']);?></td>
 		</tr>
-	 <?php
-	 /*
-	  $k=0;
-	  //do{
-	    $k++;
-	     if($k%2==0){
-		  //$estilo="SB";
-		 }else{
-		  //$estilo="SB2";
-		 }
-		 */
-	  ?>
+	
 	  <tr CLASS="<?php //echo($estilo);?>">
 	    <td>
 		</td>
@@ -200,7 +189,6 @@ if($codorden!=''){
 	  </tr>
 	  <?php
 	  
-	   //}while($row_RsListaRequerimientos = mysqli_fetch_array($RsListaRequerimientos));
 	}
 	?>
 

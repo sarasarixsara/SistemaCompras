@@ -17,8 +17,8 @@ $a=$_FILES['archivo1'];
 //echo($tipo_cargue);
 
 //mysql_select_db($database_repso, $conexion);
-@mysql_query("SET collation_connection = utf8_general_ci;");
-mysql_query ("SET NAMES 'utf8'");
+@mysqli_query("SET collation_connection = utf8_general_ci;");
+mysqli_query ("SET NAMES 'utf8'");
 
 /*
 $query_RsParametroRuta = "SELECT PARAVALOR FROM PARAMETROS WHERE PARANOMB = 'RUTAARCHIVOADMONCARG'";
@@ -114,7 +114,7 @@ if (is_uploaded_file($_FILES['archivo1']['tmp_name']))
 																						 )
 								 ";
 								 echo($query_RsInsertHhprimerhoja.'<br>');
-								 $RsInsertHhprimerhoja = mysql_query($query_RsInsertHhprimerhoja, $conexion) or die(mysql_error());
+								 $RsInsertHhprimerhoja = mysqli_query($query_RsInsertHhprimerhoja, $conexion) or die(mysqli_error());
 								 
                                $i++;
 							   }	
