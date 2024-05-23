@@ -291,8 +291,9 @@ COLOR:#FFFFFF;
 background: #C42615;
 }
 .SLAB2F{
-COLOR:#E13030;
+COLOR:#780002;
 font-weight:bold;
+font-size: 19px;
 }
 
 .Titulo1{
@@ -393,7 +394,7 @@ cursor:pointer;
 }
 
 .SLABCAJA{
- COLOR:#780002
+ COLOR:#780002;
  font-weight:700;
 }
 

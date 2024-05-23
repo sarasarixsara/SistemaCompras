@@ -77,15 +77,6 @@ $RsArea = mysqli_query($conexion, $query_RsArea) or die(mysqli_connect_error());
 $row_RsArea = mysqli_fetch_array($RsArea);
 $totalRows_RsArea = mysqli_num_rows($RsArea);
 
-// //CONSULTA DE DETALLES
-// if ($desc_detalle != '') {
-// 	$query_RsListaDetallesRequerimientos = "SELECT DEREDESC DESCRIPCION_DETALLE, 
-// 												 REQUCORE REQUERIMIENTO_CODI
-// 										  FROM   DETALLE_REQU,
-// 												 REQUERIMIENTOS 
-// 										  WHERE  DEREREQU=REQUCODI 
-// 											AND `DEREDESC` LIKE '%$desc_detalle%'";
-// }
 if ($desc_detalle != '') {
 	$query_RsListaDetallesRequerimientos = "SELECT DEREDESC AS DESCRIPCION_DETALLE, 
                                                    REQUCORE AS REQUERIMIENTO_CODI
@@ -95,28 +86,6 @@ if ($desc_detalle != '') {
                                             AND    R.REQUIDUS = '$userID'";
 }
 
-//CONSULTA DE REQUERIMIENTOS	
-// $query_RsListaRequerimientos = "SELECT R.REQUCODI CODIGO,
-// 	                                     R.REQUCORE CODIGO_REQUERIMIENTO,
-// 										 R.REQUIDUS USUARIO,
-// 										 R.REQUAREA AREA,
-// 										 date_format(R.REQUFEEN,'%d/%m/%Y') FECHA,
-// 										  date_format(R.REQUFEFI,'%d/%m/%Y') FECHA_FINALIZADO,
-// 										 R.REQUESTA ESTADO,
-// 										 E.ESTANOMB ESTADO_DES,
-// 										 E.ESTACOLO COLOR,
-// 										 (SELECT SUBSTRING(REQUCORE,3,4)) A,
-// 										 (SELECT SUBSTRING(REQUCORE,8,4)*2)B,
-// 										 (SELECT A.AREANOMB 
-// 										    FROM AREA A
-// 										   WHERE A.AREAID =  R.REQUAREA LIMIT 1) AREA_DES,
-// 										 R.REQUENCU ENCUESTA,						 
-
-// 										 (SELECT ENPEESTA FROM encuesta_pers where ENPEREQU = R.REQUCODI limit 1) RESPUESTA_ENC
-// 								  FROM REQUERIMIENTOS R
-
-// 								       LEFT JOIN ESTADOS E ON R.REQUESTA = E.ESTACODI
-// 							    where 1";
 $query_RsListaRequerimientos = "SELECT R.REQUCODI CODIGO,
 									R.REQUCORE CODIGO_REQUERIMIENTO,
 									R.REQUIDUS USUARIO,
@@ -139,14 +108,13 @@ $query_RsListaRequerimientos = "SELECT R.REQUCODI CODIGO,
 									LEFT JOIN DETALLE_REQU D ON R.REQUCODI = D.DEREREQU
 
 								WHERE 1";
-								
-// -- Añadir GROUP BY si es necesario para evitar duplicados
-
-
 
 
 if ($todos != 1) {
 	//CONDICIONES DE FILTRO DE USUARIO GENERAL
+	if ($desc_detalle != '') {
+		$query_RsListaRequerimientos = $query_RsListaRequerimientos . " AND D.DEREDESC LIKE '%" . $desc_detalle . "%' ";
+	}
 	if ($rolID == 4) {
 		//en caso de la entrada muestra todos los requerimientos que pertenecen al usuario donde  codigo y estado estan vacios
 		$query_RsListaRequerimientos = $query_RsListaRequerimientos . " and R.REQUIDUS = '" . $userID . "'";
@@ -159,88 +127,8 @@ if ($todos != 1) {
 		if ($estado_filtro != '') {
 			$query_RsListaRequerimientos = $query_RsListaRequerimientos . " AND R.REQUESTA = '" . $estado_filtro . "' ";
 		}
+
 	}
-
-
-	//CONDICIONES DE FILTRO DE AUXILIAR ADMINISTRATIVO O DE DIRECTOR ADMINISTRATIVO  O DE GERENTE
-	// if($rolID==2 || $rolID==3 || $rolID==5){		
-
-	//     // en caso de que todos sean vacios
-	// 	if($rolID==2)
-	// 	 {	if ($codigo_filtro =='' && $estado_filtro=='' && $area_filtro=='')
-	// 		{
-	// 		$query_RsListaRequerimientos = $query_RsListaRequerimientos." AND R.REQUESTA = 2 ";
-	// 		}			
-	//      }
-	// 	 $nuevoorderDA = 0;
-	// 	if($rolID==3)
-	// 	 {	if ($codigo_filtro =='' && $estado_filtro=='' && $area_filtro=='')
-	// 		{
-	// 		 $query_RsListaRequerimientos = $query_RsListaRequerimientos." AND R.REQUESTA IN (11) ";
-	// 		 $nuevoorderDA = 1;
-	// 		}			
-	//     }
-	// 	$nuevoorderRE = 0;
-
-	// 	if($rolID==5)
-	// 	 {	
-	// 	 	if ($codigo_filtro =='' && $estado_filtro=='' && $area_filtro=='' && $fdetallesfirmar =='')
-	// 		{
-	// 		 //$query_RsListaRequerimientos = $query_RsListaRequerimientos." and R.REQUIDUS = '".$userID."'";
-	// 		 $nuevoorderRE = 1;
-	// 		}	
-	// 		if($fdetallesfirmar == '1'){
-	// 			$query_RsListaRequerimientos = $query_RsListaRequerimientos." and R.REQUCODI IN (
-	// 			 SELECT DISTINCT D2.DEREREQU FROM DETALLE_REQU D2 WHERE DEREAPRO in (17,25)
-	// 			)";
-	// 		}
-	//     }
-	// 	if($nuevoorderRE=='1'){
-	// 			$query_RsListaRequerimientos = $query_RsListaRequerimientos." and R.REQUCODI IN (
-	// 			 SELECT DISTINCT D2.DEREREQU FROM DETALLE_REQU D2 WHERE DEREAPRO in (17,25)
-	// 			)";			
-	// 	}
-
-
-	//    //en caso de que codigo este lleno y los demas esten vacios		
-	//  	if($codigo_filtro!='' && $estado_filtro=='' && $area_filtro==''){			 
-	// 	$query_RsListaRequerimientos = $query_RsListaRequerimientos."  AND REQUCORE = '$codigo_filtro' ";
-	// 	}
-
-	//     // en caso de que estado este lleno y los demas esten vacios		
-	// 	if($estado_filtro !='' && $codigo_filtro == ''  && $area_filtro==''){
-	// 	  if($estado_filtro ==  1){
-	// 			if($rolID==5)
-	// 				{
-	// 				$query_RsListaRequerimientos = $query_RsListaRequerimientos."AND R.REQUIDUS= '".$userID."' AND R.REQUESTA = '".$estado_filtro."' "; 
-	//                 }else{
-	// 					$query_RsListaRequerimientos = $query_RsListaRequerimientos."AND R.REQUIDUS= '".$dir_administra."' AND R.REQUESTA = '".$estado_filtro."' "; 						
-	// 				}
-
-	// 	  }else{
-	// 		$query_RsListaRequerimientos = $query_RsListaRequerimientos." AND R.REQUESTA = '".$estado_filtro."' "; 
-	// 		  }	
-	// 	}
-
-	// 	// en caso de que area este lleno y los demas esten vacios		
-	// 	if($estado_filtro =='' && $codigo_filtro == ''  && $area_filtro != ''){
-	// 	//echo($area_filtro);
-	// 	  $query_RsListaRequerimientos = $query_RsListaRequerimientos."  AND REQUAREA = '".$area_filtro."' ";
-	// 	  $query_RsListaRequerimientos = $query_RsListaRequerimientos."  AND REQUCORE <> '' ";
-	// 	}		
-
-	// 	//en caso de que todos esten llenos
-	// 	if($estado_filtro !='' && $codigo_filtro != ''   && $area_filtro != '' ){
-
-	// 	  if($estado_filtro ==  1){
-	// 		$query_RsListaRequerimientos = $query_RsListaRequerimientos."AND R.REQUIDUS= '".$dir_administra."' AND R.REQUESTA = '".$estado_filtro."' "; 
-	//       }else{			 
-	// 		  $query_RsListaRequerimientos = $query_RsListaRequerimientos." AND R.REQUESTA = '".$estado_filtro."' "; 
-	// 		  $query_RsListaRequerimientos = $query_RsListaRequerimientos."  AND REQUCORE = '".$codigo_filtro."' ";
-	// 		  $query_RsListaRequerimientos = $query_RsListaRequerimientos."  AND REQUAREA = '".$area_filtro."' ";
-	// 		  }	
-	// 	}
-	// Inicializa la consulta básica
 
 	// Condiciones específicas según el rol del usuario
 	if (in_array($rolID, [2, 3, 5])) {
@@ -294,76 +182,6 @@ if ($todos != 1) {
 		}
 	}
 
-	//en caso de que codigo y area  esten llenos y estado vacio
-	// if ($estado_filtro == '' && $codigo_filtro != '' && $area_filtro != '') {
-
-	// 	if ($estado_filtro == 1) {
-	// 		$query_RsListaRequerimientos = $query_RsListaRequerimientos . "AND R.REQUIDUS= '" . $dir_administra . "' AND R.REQUESTA = '" . $estado_filtro . "' ";
-	// 	} else {
-	// 		$query_RsListaRequerimientos = $query_RsListaRequerimientos . "  AND REQUCORE = '" . $codigo_filtro . "' ";
-	// 		$query_RsListaRequerimientos = $query_RsListaRequerimientos . "  AND REQUAREA = '" . $area_filtro . "' ";
-	// 	}
-	// }
-
-	// //en caso de que estado y area  esten llenos y codigo vacio
-	// if ($estado_filtro != '' && $codigo_filtro == '' && $area_filtro != '') {
-
-	// 	if ($estado_filtro == 1) {
-	// 		$query_RsListaRequerimientos = $query_RsListaRequerimientos . "AND R.REQUIDUS= '" . $dir_administra . "' AND R.REQUESTA = '" . $estado_filtro . "' ";
-	// 	} else {
-	// 		$query_RsListaRequerimientos = $query_RsListaRequerimientos . " AND R.REQUESTA = '" . $estado_filtro . "' ";
-	// 		$query_RsListaRequerimientos = $query_RsListaRequerimientos . "  AND REQUAREA = '" . $area_filtro . "' ";
-	// 	}
-	// }
-
-	// //en caso de que estado y codigo  esten llenos y area vacio
-	// if ($estado_filtro != '' && $codigo_filtro != '' && $area_filtro == '') {
-
-	// 	if ($estado_filtro == 1) {
-	// 		$query_RsListaRequerimientos = $query_RsListaRequerimientos . "AND R.REQUIDUS= '" . $dir_administra . "' AND R.REQUESTA = '" . $estado_filtro . "' ";
-	// 	} else {
-	// 		$query_RsListaRequerimientos = $query_RsListaRequerimientos . " AND R.REQUESTA = '" . $estado_filtro . "' ";
-	// 		$query_RsListaRequerimientos = $query_RsListaRequerimientos . "  AND REQUCORE = '" . $codigo_filtro . "' ";
-	// 	}
-	// }
-
-
-
-
-	// if ($rolID == 6) {
-	// 	//en caso de la entrada muestra todos los requerimientos que pertenecen al usuario donde  codigo y estado estan vacios
-	// 	$query_RsListaRequerimientos = $query_RsListaRequerimientos . " and R.REQUAREA = '" . $_SESSION['MM_Area'] . "'";
-
-
-	// 	if ($codigo_filtro != '') {
-	// 		$query_RsListaRequerimientos = $query_RsListaRequerimientos . " AND R.REQUCORE = '" . $codigo_filtro . "' ";
-	// 	}
-
-	// 	if ($estado_filtro != '') {
-	// 		$query_RsListaRequerimientos = $query_RsListaRequerimientos . " AND R.REQUESTA = '" . $estado_filtro . "' ";
-	// 	}
-	// }
-
-	// //ordena lista de usuario general
-	// if ($rolID == 4) {
-	// 	$query_RsListaRequerimientos = $query_RsListaRequerimientos . " order by R.REQUFESO DESC";
-	// }
-
-	// //ordena lista de rol auxiliar administrativo o director administrativo o gerente 
-	// if ($rolID == 2 || $rolID == 3) {
-	// 	if ($nuevoorderDA == '1') {
-	// 		$query_RsListaRequerimientos = $query_RsListaRequerimientos . " ORDER BY A , B ASC";
-	// 	} else {
-	// 		$query_RsListaRequerimientos = $query_RsListaRequerimientos . " ORDER BY A , B ASC";
-	// 	}
-	// }
-	// if ($rolID == 5) {
-	// 	if ($nuevoorderRE == '0') {
-	// 		$query_RsListaRequerimientos = $query_RsListaRequerimientos . " ORDER BY A , B ASC";
-	// 	} else {
-	// 		$query_RsListaRequerimientos = $query_RsListaRequerimientos . " ORDER BY R.REQUESTA asc";
-	// 	}
-	// }
 	if ($estado_filtro == 1) {
 		$query_RsListaRequerimientos .= " AND R.REQUIDUS = '$dir_administra' AND R.REQUESTA = '$estado_filtro'";
 	} else {
@@ -461,7 +279,8 @@ if ($pageNum_RsListaRequerimientos == $totalPages_RsListaRequerimientos) {
 <style type="text/css">
 	.contenttable {
 		width: 100%;
-		padding: 35px;
+		padding-right: 35px;
+		padding-left: 35px;
 		overflow: hidden;
 		min-height: 150px;
 		border-radius: 12px;
@@ -469,21 +288,24 @@ if ($pageNum_RsListaRequerimientos == $totalPages_RsListaRequerimientos) {
 		flex-direction: column;
 		justify-content: center;
 	}
+	.tdcontent
+	{
+		text-align: center;
+
+	}
 </style>
 
 <div id="pagina">
 	<form name="form1" id="form1" method="post" action="">
 		<div class="contenttable">
-			<div id="divfiltros" style=" border:solid 1px #ccc; width:99%; margin-bottom:10px; ">
+			<div id="divfiltros" style=" border:solid 1px #ccc; width:100%; margin-bottom:10px; ">
 				<table width="100%">
 					<tr>
 						<td class="SLAB trtitle" colspan="7" align="center">Filtros de Busqueda</td>
 					</tr>
-					<tr>
-						<td align="center">
-							<input type="submit" name="butonfiltro" id="butonfiltro" class="button2" value="Buscar"
-								onclick="Busqueda();">
-						</td>
+					<tr
+						style="width:100%;display: flex;flex-direction: row;justify-content: flex-start;gap: 5px;align-items: center;flex-wrap: wrap; margin:10px;font-size: 15px;">
+
 						<td class="">Estado</td>
 						<td>
 							<select name="estado_filtro" id="estado_filtro">
@@ -534,14 +356,15 @@ if ($pageNum_RsListaRequerimientos == $totalPages_RsListaRequerimientos) {
 						<td class="">Codigo Requerimiento</td>
 						<td>
 							<input type="text" name="codigo_filtro" id="codigo_filtro"
-								value="<?php echo ($codigo_filtro); ?>">
+								value="<?php echo ($codigo_filtro); ?>" size="10">
 							<input type="button" name="fcodrequ" id="fcodrequ" value="x"
 								onclick="limpiarfiltros('codigo_filtro');">
 						</td>
-					</tr>
-					<?php if ($rolID == 5) { ?>
-						<tr>
-							<td></td>
+						<td>Detalle</td>
+						<td><input type="text" name="desc_detalle" id="desc_detalle" size="10" </td>
+
+							<?php if ($rolID == 5) { ?>
+
 							<td>Detalles por firma rector</td>
 							<td>
 								<select name="fdetallesfirmar" id="fdetallesfirmar">
@@ -553,31 +376,25 @@ if ($pageNum_RsListaRequerimientos == $totalPages_RsListaRequerimientos) {
 										firmar</option>
 								</select>
 							</td>
-						</tr>
 
-					<?php } ?>
-
-					<?php if ($rolID == 2 || $rolID == 3 || $rolID == 5) { ?>
-						<tr>
+						<?php } ?>
+					</tr>
+					<tr style="center width:50%;display: flex;flex-direction: row;justify-content: center;gap: 5px;align-items: center;flex-wrap: wrap; margin:10px;font-size: 15px;">
+						<?php if ($rolID == 2 || $rolID == 3 || $rolID == 5) { ?>
 							<td>
 								<input type="submit" name="listar_todos" id="listar_todos" class="button2" value="Todos"
 									onclick="Buscar_todo();">
 							</td>
 						<?php } ?>
-						<?php if ($rolID == 2 || $rolID == 3 || $rolID == 5 || $rolID == 4) { ?>
-							<td>Detalle</td>
-							<td><input type="text" name="desc_detalle" id="desc_detalle" size="33"
-									value="<?php //echo($desc_detalle); ?>"></td>
-						</tr>
-					<?php } ?>
+						<td align="center">
+							<input type="submit" name="butonfiltro" id="butonfiltro" class="button2" value="Buscar"
+								onclick="Busqueda();">
+						</td>
+					</tr>
 				</table>
 			</div>
 			<table border="0">
 				<tr>
-					<!-- <td colspan="5">
-						<input type="button" class="button2" name="consultar" id="consultar" value="consultar"
-							onclick="mostrarfiltros();">
-					</td> -->
 					<td colspan="2">
 						<input type="button" class="button2" name="consultar" id="consultar" value="Crear Requerimiento"
 							onclick="CrearRequerimiento('1');">
@@ -590,180 +407,107 @@ if ($pageNum_RsListaRequerimientos == $totalPages_RsListaRequerimientos) {
 					</td>
 
 				</tr>
-				<!-- //aca cambie -->
-				<?php if ($rolID == 2 || $rolID == 4) { ?>
-					<tr class="SLAB trtitle" align="center">
-						<?php
-						if ($totalRows_RsListaDetallesRequerimientos > 0) { ?>
-							<td>Descripcion</td>
-							<td>Requerimiento</td>
+				<td colspan='8'>
+					</tr>
+					<tr>
+						<td colspan="12" style="text-align:end;">
+							<?php if ($totalRows_RsListaRequerimientos > 0) {
+								?>
+								Mostrando <b><?php echo ($startRow_RsListaRequerimientos + 1); ?></b> a
+								<b><?php echo ($paginaHasta); ?></b> de <b><?php echo ($totalRows_RsListaRequerimientos);
+								   ?></b> Registros
+								<?php
+							} else {
+								?>
+								Mostrando <b>0</b> a <b>0</b> de <b>0</b> Registros
+								<?php
+							}
+							?>
+						</td>
+					</tr>
+
+					<?php
+					if ($totalRows_RsListaRequerimientos > 0) {
+						?>
+						<tr class="SLAB trtitle" align="center">
+							<td width="30"></td>
+							<td width="100" style="text-align:center">Codigo Requerimiento</td>
+							<?php if ($rolID != 4) { ?>
+								<td width="100">Area</td>
+							<?php } ?>
+							<td>Estado</td>
+							<td>Fecha</td>
+							<td>Encuesta</td>
+							<td>Detalles</td>
+							<td width="300">Descripcion</td>
+							<td width="200">Alertas</td>
+
 						</tr>
 						<?php
-						$y = 0;
+						$k = 0;
 						do {
-							$y++;
-							if ($y % 2 == 0) {
+							$k++;
+							if ($k % 2 == 0) {
 								$estilo = "SB";
 							} else {
 								$estilo = "SB2";
 							}
 							?>
-							<tr CLASS="<?php echo ($estilo); ?>">
-								<td><?php echo ($row_RsListaDetallesRequerimientos['DESCRIPCION_DETALLE']); ?></td>
-								<td><?php echo ($row_RsListaDetallesRequerimientos['REQUERIMIENTO_CODI']); ?></td>
-							</tr>
-							<?php
-						} while ($row_RsListaDetallesRequerimientos = mysqli_fetch_array($RsListaDetallesRequerimientos));
-						} else {
-							if ($desc_detalle != '') { ?>
-							<tr>
-								<td colspan="4">No se encuentran registros en la busqueda por detalle</td>
-							</tr>
-							<?php
-							}
-						}
-						?>
-
-
-				<?php } ?>
-				<tr>
-					<td colspan='3'>
-						<table border="0" align="left" class="datagrid">
-							<tr>
-								<td colspan="4">&nbsp;</td>
-							</tr>
-							<tr class="texto_gral">
-								<!-- <td>
-									<ul>
-										<?php echo ($pageNum_RsListaRequerimientos); ?> 
-										<?php if ($pageNum_RsListaRequerimientos > 0) { // Show if not first page ?>
-											<li>
-												<a href="javascript:f_abrir_link('<?php printf("%s?pageNum_RsListaRequerimientos=%d%s", $currentPage, 0, $queryString_RsListaRequerimientos); ?>')"
-													class="submenus">Primero</a>
-											</li>
-										<?php } // Show if not first page ?>
-										<?php if ($pageNum_RsListaRequerimientos > 0) { // Show if not first page ?>
-											<li>
-												<a href="javascript:f_abrir_link('<?php printf("%s?pageNum_RsListaRequerimientos=%d%s", $currentPage, max(0, $pageNum_RsListaRequerimientos - 1), $queryString_RsListaRequerimientos); ?>')"
-													class="submenus">Anterior</a>
-											</li>
-										<?php } // Show if not first page ?>
-										<?php if ($pageNum_RsListaRequerimientos < $totalPages_RsListaRequerimientos) { // Show if not last page ?>
-											<li>
-												<a href="javascript:f_abrir_link('<?php printf("%s?pageNum_RsListaRequerimientos=%d%s", $currentPage, min($totalPages_RsListaRequerimientos, $pageNum_RsListaRequerimientos + 1), $queryString_RsListaRequerimientos); ?>')"
-													class="submenus">Siguiente</a>
-											</li>
-										<?php } // Show if not last page ?>
-										<?php if ($pageNum_RsListaRequerimientos < $totalPages_RsListaRequerimientos) { // Show if not last page ?>
-											<li>
-												<a href="javascript:f_abrir_link('<?php printf("%s?pageNum_RsListaRequerimientos=%d%s", $currentPage, $totalPages_RsListaRequerimientos, $queryString_RsListaRequerimientos); ?>')"
-													class="submenus">&Uacute;ltimo</a>
-											</li>
-										<?php } // Show if not last page ?>
-									</ul>
-								</td> -->
-							</tr>
-						</table>
-				</tr>
-				<tr>
-					<td colspan="8">
-						<?php if ($totalRows_RsListaRequerimientos > 0) {
-							?>
-							Mostrando <b><?php echo ($startRow_RsListaRequerimientos + 1); ?></b> a
-							<b><?php echo ($paginaHasta); ?></b> de <b><?php echo ($totalRows_RsListaRequerimientos);
-							   ?></b> Registros
-							<?php
-						} else {
-							?>
-							Mostrando <b>0</b> a <b>0</b> de <b>0</b> Registros
-							<?php
-						}
-						?>
-					</td>
-				</tr>
-
-				<?php
-				if ($totalRows_RsListaRequerimientos > 0) {
-					?>
-					<tr class="SLAB trtitle" align="center">
-						<td></td>
-						<td>Codigo Requerimiento</td>
-						<?php if ($rolID != 4) { ?>
-							<td>Area</td>
-						<?php } ?>
-						<td>Estado</td>
-						<td>Fecha</td>
-						<td>Encuesta</td>
-						<td>Detalles</td>
-						<td>Descripcion</td>
-						<td>Alertas</td>
-
-					</tr>
-					<?php
-					$k = 0;
-					do {
-						$k++;
-						if ($k % 2 == 0) {
-							$estilo = "SB";
-						} else {
-							$estilo = "SB2";
-						}
-						?>
-						<tr CLASS="<?php echo ($estilo); ?>" height="30">
-							<td>
-								<?php
-								if (($row_RsListaRequerimientos['ESTADO'] > 2) && $rolID == 2) {
-									?>
-									<a href="R.php?codreq=<?php echo ($row_RsListaRequerimientos['CODIGO']); ?>" class="buttonazul"
-										target="_blank" ">Reporte</a>
-																																									<a href=" home.php?page=solicitud&codreq=<?php echo ($row_RsListaRequerimientos['CODIGO']); ?> " class=" buttonazul" target="_blank">Ver</a>
+							<tr CLASS="<?php echo ($estilo); ?>" height="30">
+								<td class="tdcontent">
 									<?php
-								} else {
+									if (($row_RsListaRequerimientos['ESTADO'] > 2) && $rolID == 2) {
+										?>
+										<a href="R.php?codreq=<?php echo ($row_RsListaRequerimientos['CODIGO']); ?>"
+											class="buttonazul" target="_blank" ">Reporte</a>
+																																																											<a href=" home.php?page=solicitud&codreq=<?php echo ($row_RsListaRequerimientos['CODIGO']); ?> " class=" buttonazul" target="_blank">Ver</a>
+										<?php
+									} else {
+										?>
+										<a href="home.php?page=solicitud&codreq=<?php echo ($row_RsListaRequerimientos['CODIGO']); ?>"
+											class="buttonazul" target="_blank">Ver</a>
+										<?php
+									}
 									?>
-									<a href="home.php?page=solicitud&codreq=<?php echo ($row_RsListaRequerimientos['CODIGO']); ?>"
-										class="buttonazul" target="_blank">Ver</a>
-									<?php
-								}
-								?>
-							</td>
-							<td>
-								<?php echo ($row_RsListaRequerimientos['CODIGO_REQUERIMIENTO']); ?>
-							</td>
-							<?php if ($rolID != 4) {
-								?>
-								<td align="center">
-									<?php echo ($row_RsListaRequerimientos['AREA_DES']); ?>
 								</td>
-							<?php }
-							?>
-							<td bgcolor="<?php echo ($row_RsListaRequerimientos['COLOR']); ?>">
-								<?php echo ($row_RsListaRequerimientos['ESTADO_DES']); ?>
-							</td>
-							<td>
-								<?php echo ($row_RsListaRequerimientos['FECHA']); ?>
-							</td>
-							<td> nada</td>
-							<td align="center">
+								<td class="tdcontent">
+									<?php echo ($row_RsListaRequerimientos['CODIGO_REQUERIMIENTO']); ?>
+								</td>
+								<?php if ($rolID != 4) {
+									?>
+									<td align="center">
+										<?php echo ($row_RsListaRequerimientos['AREA_DES']); ?>
+									</td>
+								<?php }
+								?>
+								<td  bgcolor="<?php echo ($row_RsListaRequerimientos['COLOR']); ?>">
+									<?php echo ($row_RsListaRequerimientos['ESTADO_DES']); ?>
+								</td>
+								<td class="tdcontent">
+									<?php echo ($row_RsListaRequerimientos['FECHA']); ?>
+								</td>
+								<td> </td>
+								<td align="center">
 
+									<?php
+									require_once ("scripts/funcionescombo.php");
+									$estados = dameTotalDetalles($row_RsListaRequerimientos['CODIGO']);
+									foreach ($estados as $indice => $registro) {
+										echo ($registro['TOTAL']);
+									}
+									?>
+								</td>
 								<?php
 								require_once ("scripts/funcionescombo.php");
-								$estados = dameTotalDetalles($row_RsListaRequerimientos['CODIGO']);
-								foreach ($estados as $indice => $registro) {
-									echo ($registro['TOTAL']);
-								}
+								$estados = dameTotalEstadosDetalles($row_RsListaRequerimientos['CODIGO']);
 								?>
-							</td>
-							<?php
-							require_once ("scripts/funcionescombo.php");
-							$estados = dameTotalEstadosDetalles($row_RsListaRequerimientos['CODIGO']);
-							?>
-							<td>
-								<?php echo ($row_RsListaRequerimientos['DESCRIPCION_DETALLE']); ?>
-							</td>
+								<td >
+									<?php echo ($row_RsListaRequerimientos['DESCRIPCION_DETALLE']); ?>
+								</td>
 
 
 
-							<!-- <td>
+								<!-- <td>
 						 <?php if ($row_RsListaRequerimientos['ENCUESTA'] > 0 && $row_RsListaRequerimientos['RESPUESTA_ENC'] == 0) {
 							 ?>
 							 <a target="_blank" href="encuesta/#/enc/<?php echo ($row_RsListaRequerimientos['ENCUESTA']); ?>">Ir a Encuesta</a>
@@ -776,27 +520,27 @@ if ($pageNum_RsListaRequerimientos == $totalPages_RsListaRequerimientos) {
 						 }
 						 ?>
 						</td>-->
-							<td>
-								<?php foreach ($estados as $indice => $registro) { ?>
-									<div style='background-color: <?php echo ($registro['COLOR']); ?>;'>
-										<?php echo ($registro['TOTAL']); ?>- <?php echo ($registro['ESTADO_DES']); ?>
-									</div>
+								<td>
+									<?php foreach ($estados as $indice => $registro) { ?>
+										<div style='background-color: <?php echo ($registro['COLOR']); ?>;'>
+											<?php echo ($registro['TOTAL']); ?>- <?php echo ($registro['ESTADO_DES']); ?>
+										</div>
 
-									<?php
-								}
-								?>
-							</td>
+										<?php
+									}
+									?>
+								</td>
+							</tr>
+							<?php
+						} while ($row_RsListaRequerimientos = mysqli_fetch_array($RsListaRequerimientos));
+					} else {
+						?>
+						<tr>
+							<td colspan="4">No existen registros</td>
 						</tr>
 						<?php
-					} while ($row_RsListaRequerimientos = mysqli_fetch_array($RsListaRequerimientos));
-				} else {
+					}
 					?>
-					<tr>
-						<td colspan="4">No existen registros</td>
-					</tr>
-					<?php
-				}
-				?>
 			</table>
 			<table border="0" align="left" class="datagrid">
 				<tr>
