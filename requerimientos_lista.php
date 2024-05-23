@@ -214,12 +214,14 @@ if ($todos != 1) {
 			break;
 		case 2:
 		case 3:
-			$orderClause = $nuevoorderDA == '1' ? " ORDER BY A, B ASC" : " ORDER BY A, B ASC";
-			$query_RsListaRequerimientos .= $orderClause;
+			$query_RsListaRequerimientos .= " ORDER BY R.REQUFESO DESC";
+			// $orderClause = $nuevoorderDA == '1' ? " ORDER BY A, B ASC" : " ORDER BY A, B ASC";
+			// $query_RsListaRequerimientos .= $orderClause;
 			break;
 		case 5:
-			$orderClause = $nuevoorderRE == '0' ? " ORDER BY A, B ASC" : " ORDER BY R.REQUESTA ASC";
-			$query_RsListaRequerimientos .= $orderClause;
+			// $orderClause = $nuevoorderRE == '0' ? " ORDER BY A, B ASC" : " ORDER BY R.REQUESTA ASC";
+			// $query_RsListaRequerimientos .= $orderClause;
+			$query_RsListaRequerimientos .= " ORDER BY R.REQUFESO DESC";
 			break;
 	}
 } else {
@@ -298,10 +300,10 @@ if ($pageNum_RsListaRequerimientos == $totalPages_RsListaRequerimientos) {
 <div id="pagina">
 	<form name="form1" id="form1" method="post" action="">
 		<div class="contenttable">
-			<div id="divfiltros" style=" border:solid 1px #ccc; width:100%; margin-bottom:10px; ">
-				<table width="100%">
-					<tr>
-						<td class="SLAB trtitle" colspan="7" align="center">Filtros de Busqueda</td>
+			<div id="divfiltros" style=" border:solid 1px #ccc; width:100%; margin-bottom:10px;border-radius: 20px;">
+				<table width="100%" >
+					<tr style="border-top-left-radius: 10px;border-top-right-radius: 10px;height:35px;">
+						<td class="SLAB trtitle" colspan="7" align="center" >Filtros de Busqueda</td>
 					</tr>
 					<tr
 						style="width:100%;display: flex;flex-direction: row;justify-content: flex-start;gap: 5px;align-items: center;flex-wrap: wrap; margin:10px;font-size: 15px;">
