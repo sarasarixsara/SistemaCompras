@@ -475,12 +475,12 @@ if ($pageNum_RsListaRequerimientos == $totalPages_RsListaRequerimientos) {
 								</td>
 								<?php if ($rolID != 4) {
 									?>
-									<td align="center">
+									<td class="tdcontent">
 										<?php echo ($row_RsListaRequerimientos['AREA_DES']); ?>
 									</td>
 								<?php }
 								?>
-								<td  bgcolor="<?php echo ($row_RsListaRequerimientos['COLOR']); ?>">
+								<td class="tdcontent" bgcolor="<?php echo ($row_RsListaRequerimientos['COLOR']); ?>">
 									<?php echo ($row_RsListaRequerimientos['ESTADO_DES']); ?>
 								</td>
 								<td class="tdcontent">
