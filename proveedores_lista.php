@@ -40,8 +40,8 @@ $startRow_RsListaProveedores = $pageNum_RsListaProveedores * $maxRows_RsListaPro
 
 // $codigo_requerimiento = '';
 
-if ($codigo_requerimiento !='') {
-	$query_RsListadoDeta_Requ ="SELECT
+if ($codigo_requerimiento != '') {
+	$query_RsListadoDeta_Requ = "SELECT
 										DERECONS AS CODIGO,
 										DEREDESC AS DESCRIPCION,
 										DERECANT AS CANTIDAD,
@@ -53,7 +53,7 @@ if ($codigo_requerimiento !='') {
     ";
 
 	// echo($query_RsListadoDeta_Requ);echo("<br>");
-	$RsListadoDeta_Requ = mysqli_query( $conexion,$query_RsListadoDeta_Requ);
+	$RsListadoDeta_Requ = mysqli_query($conexion, $query_RsListadoDeta_Requ);
 	if (!$RsListadoDeta_Requ) {
 		die(mysqli_error($conexion));
 	}
@@ -164,8 +164,7 @@ if ($pageNum_RsListaProveedores == $totalPages_RsListaProveedores) {
 
 <head>
 	<style type="text/css">
-		body {
-		}
+		body {}
 
 		#menu {
 			height: 50px;
@@ -280,8 +279,9 @@ if ($pageNum_RsListaProveedores == $totalPages_RsListaProveedores) {
 								foreach ($categoria_proveedor as $indice => $registro) {
 									?>
 									<option value="<?php echo ($registro['CLASCODI']) ?>" <?php if ($categoria_filtro == $registro['CLASCODI'])
-										 echo ("selected"); ?>>
-										<?php echo ($registro['CLASNOMB']); ?></option>
+										   echo ("selected"); ?>>
+										<?php echo ($registro['CLASNOMB']); ?>
+									</option>
 									<?php
 								}
 								?>
@@ -318,7 +318,7 @@ if ($pageNum_RsListaProveedores == $totalPages_RsListaProveedores) {
 								inconsistencias</button>
 							<button type="button" onclick="location.href='home.php?page=proveedores_inconsistencias';"
 								name="crearnuevo" class="button2"><i class="fa fa-envelope-o"></i> Correo</button>
-						<?php
+							<?php
 						}
 						?>
 					</td>
@@ -333,7 +333,7 @@ if ($pageNum_RsListaProveedores == $totalPages_RsListaProveedores) {
 							?>
 							Mostrando <b><?php echo ($startRow_RsListaProveedores + 1); ?></b> a
 							<b><?php echo ($paginaHasta); ?></b> de <b><?php echo ($totalRows_RsListaProveedores);
-							  ?></b> Registros
+							   ?></b> Registros
 							<?php
 						} else {
 							?>
@@ -384,8 +384,9 @@ if ($pageNum_RsListaProveedores == $totalPages_RsListaProveedores) {
 									</div>
 								</div>
 							</td>
-							<td> <a style="cursor:pointer" onclick="Fverprov('<?php echo ($row_RsListaProveedores['CODIGO']); ?>');">
-							<?php echo ($row_RsListaProveedores['NOMBRE']); ?></a> </td>
+							<td> <a style="cursor:pointer"
+									onclick="Fverprov('<?php echo ($row_RsListaProveedores['CODIGO']); ?>');">
+									<?php echo ($row_RsListaProveedores['NOMBRE']); ?></a> </td>
 							<td><?php echo ($row_RsListaProveedores['TELEFONO']); ?></td>
 							<td><?php echo ($row_RsListaProveedores['CORREO']); ?></td>
 							<td><?php echo ($row_RsListaProveedores['CONTACTO1']); ?></td>
@@ -397,7 +398,7 @@ if ($pageNum_RsListaProveedores == $totalPages_RsListaProveedores) {
 										<a
 											href="home.php?page=convenio&c=<?php echo ($row_RsListaProveedores['CODIGO']); ?>&convenio=<?php echo ($row_RsListaProveedores['CONVENIO']); ?>"><img
 												src="imagenes/interrogante.jpeg" width="16"></a>
-									<?php
+										<?php
 								} else {
 									?>
 										<a href="home.php?page=convenio&c=<?php echo ($row_RsListaProveedores['CODIGO']); ?>">Crear </a>
@@ -447,13 +448,16 @@ if ($pageNum_RsListaProveedores == $totalPages_RsListaProveedores) {
 					</td>
 				</tr>
 			</table>
+
 		</form>
+
 </body>
 
 </html>
 
 
 <script type="text/javascript">
+
 	function getDataServer(url, vars) {
 		var xml = null;
 		try {
