@@ -49,7 +49,8 @@
  * @version 1.0.004
  * @author Nicola Asuni - info@tecnick.com
  */
-class TCPDF_IMAGES {
+class TCPDF_IMAGES
+{
 
 	/**
 	 * Array of hinheritable SVG properties.
@@ -58,7 +59,7 @@ class TCPDF_IMAGES {
 	 */
 	public static $svginheritprop = array('clip-rule', 'color', 'color-interpolation', 'color-interpolation-filters', 'color-profile', 'color-rendering', 'cursor', 'direction', 'display', 'fill', 'fill-opacity', 'fill-rule', 'font', 'font-family', 'font-size', 'font-size-adjust', 'font-stretch', 'font-style', 'font-variant', 'font-weight', 'glyph-orientation-horizontal', 'glyph-orientation-vertical', 'image-rendering', 'kerning', 'letter-spacing', 'marker', 'marker-end', 'marker-mid', 'marker-start', 'pointer-events', 'shape-rendering', 'stroke', 'stroke-dasharray', 'stroke-dashoffset', 'stroke-linecap', 'stroke-linejoin', 'stroke-miterlimit', 'stroke-opacity', 'stroke-width', 'text-anchor', 'text-rendering', 'visibility', 'word-spacing', 'writing-mode');
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 	/**
 	 * Return the image type given the file name or array returned by getimagesize() function.
@@ -68,17 +69,18 @@ class TCPDF_IMAGES {
 	 * @since 4.8.017 (2009-11-27)
 	 * @public static
 	 */
-	public static function getImageFileType($imgfile, $iminfo=array()) {
+	public static function getImageFileType($imgfile, $iminfo = array())
+	{
 		$type = '';
-		if (isset($iminfo['mime']) AND !empty($iminfo['mime'])) {
+		if (isset($iminfo['mime']) and !empty($iminfo['mime'])) {
 			$mime = explode('/', $iminfo['mime']);
-			if ((count($mime) > 1) AND ($mime[0] == 'image') AND (!empty($mime[1]))) {
+			if ((count($mime) > 1) and ($mime[0] == 'image') and (!empty($mime[1]))) {
 				$type = strtolower(trim($mime[1]));
 			}
 		}
 		if (empty($type)) {
 			$fileinfo = pathinfo($imgfile);
-			if (isset($fileinfo['extension']) AND (!TCPDF_STATIC::empty_string($fileinfo['extension']))) {
+			if (isset($fileinfo['extension']) and (!TCPDF_STATIC::empty_string($fileinfo['extension']))) {
 				$type = strtolower(trim($fileinfo['extension']));
 			}
 		}
@@ -96,7 +98,8 @@ class TCPDF_IMAGES {
 	 * @since 4.9.016 (2010-04-20)
 	 * @public static
 	 */
-	public static function setGDImageTransparency($new_image, $image) {
+	public static function setGDImageTransparency($new_image, $image)
+	{
 		// transparency index
 		$tid = imagecolortransparent($image);
 		// default transparency color
@@ -119,7 +122,8 @@ class TCPDF_IMAGES {
 	 * @since 4.9.016 (2010-04-20)
 	 * @public static
 	 */
-	public static function _toPNG($image) {
+	public static function _toPNG($image)
+	{
 		// set temporary image file name
 		$tempname = TCPDF_STATIC::getObjFilename('img');
 		// turn off interlaced mode
@@ -143,7 +147,8 @@ class TCPDF_IMAGES {
 	 * return image JPEG image object.
 	 * @public static
 	 */
-	public static function _toJPEG($image, $quality) {
+	public static function _toJPEG($image, $quality)
+	{
 		$tempname = TCPDF_STATIC::getObjFilename('img');
 		imagejpeg($image, $tempname, $quality);
 		imagedestroy($image);
@@ -159,7 +164,8 @@ class TCPDF_IMAGES {
 	 * @return array structure containing the image data
 	 * @public static
 	 */
-	public static function _parsejpeg($file) {
+	public static function _parsejpeg($file)
+	{
 		$a = getimagesize($file);
 		if (empty($a)) {
 			//Missing or incorrect image file
@@ -218,7 +224,7 @@ class TCPDF_IMAGES {
 		if (count($icc) > 0) {
 			ksort($icc);
 			$icc = implode('', $icc);
-			if ((ord($icc[36]) != 0x61) OR (ord($icc[37]) != 0x63) OR (ord($icc[38]) != 0x73) OR (ord($icc[39]) != 0x70)) {
+			if ((ord($icc[36]) != 0x61) or (ord($icc[37]) != 0x63) or (ord($icc[38]) != 0x73) or (ord($icc[39]) != 0x70)) {
 				// invalid ICC profile
 				$icc = false;
 			}
@@ -234,14 +240,15 @@ class TCPDF_IMAGES {
 	 * @return array structure containing the image data
 	 * @public static
 	 */
-	public static function _parsepng($file) {
+	public static function _parsepng($file)
+	{
 		$f = @fopen($file, 'rb');
 		if ($f === false) {
 			// Can't open image file
 			return false;
 		}
 		//Check signature
-		if (fread($f, 8) != chr(137).'PNG'.chr(13).chr(10).chr(26).chr(10)) {
+		if (fread($f, 8) != chr(137) . 'PNG' . chr(13) . chr(10) . chr(26) . chr(10)) {
 			// Not a PNG file
 			return false;
 		}
@@ -283,7 +290,7 @@ class TCPDF_IMAGES {
 		}
 		fread($f, 4);
 		$channels = ($ct == 2 ? 3 : 1);
-		$parms = '/DecodeParms << /Predictor 15 /Colors '.$channels.' /BitsPerComponent '.$bpc.' /Columns '.$w.' >>';
+		$parms = '/DecodeParms << /Predictor 15 /Colors ' . $channels . ' /BitsPerComponent ' . $bpc . ' /Columns ' . $w . ' >>';
 		//Scan chunks looking for palette, transparency and image data
 		$pal = '';
 		$trns = '';
@@ -306,11 +313,12 @@ class TCPDF_IMAGES {
 				} else { // Indexed
 					if ($n > 0) {
 						$trns = array();
-						for ($i = 0; $i < $n; ++ $i) {
-							$trns[] = ord($t{$i});
+						for ($i = 0; $i < $n; ++$i) {
+							$trns[] = ord($t[$i]);
 						}
 					}
 				}
+
 				fread($f, 4);
 			} elseif ($type == 'IDAT') {
 				// read image data block
@@ -319,7 +327,7 @@ class TCPDF_IMAGES {
 			} elseif ($type == 'iCCP') {
 				// skip profile name
 				$len = 0;
-				while ((ord(fread($f, 1)) != 0) AND ($len < 80)) {
+				while ((ord(fread($f, 1)) != 0) and ($len < 80)) {
 					++$len;
 				}
 				// get compression method
@@ -339,7 +347,7 @@ class TCPDF_IMAGES {
 				TCPDF_STATIC::rfread($f, $n + 4);
 			}
 		} while ($n);
-		if (($colspace == 'Indexed') AND (empty($pal))) {
+		if (($colspace == 'Indexed') and (empty($pal))) {
 			// Missing palette
 			fclose($f);
 			return false;

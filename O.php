@@ -1,5 +1,6 @@
 <?php
-require_once('C:/inetpub/wwwroot/SistemaCompras/includes/tcpdf_min/tcpdf.php');
+// require_once('C:/inetpub/wwwroot/SistemaCompras/includes/tcpdf_min/tcpdf.php');
+require_once('includes/tcpdf_min/tcpdf.php');
 if (!isset($_SESSION)) {
   session_start();
 }

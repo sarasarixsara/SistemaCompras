@@ -45,7 +45,8 @@
  * @version 1.0.013
  * @author Nicola Asuni - info@tecnick.com
  */
-class TCPDF_FONTS {
+class TCPDF_FONTS
+{
 
 	/**
 	 * Static cache used for speed up uniord performances
@@ -69,7 +70,8 @@ class TCPDF_FONTS {
 	 * @since 5.9.123 (2010-09-30)
 	 * @public static
 	 */
-	public static function addTTFfont($fontfile, $fonttype='', $enc='', $flags=32, $outpath='', $platid=3, $encid=1, $addcbbox=false, $link=false) {
+	public static function addTTFfont($fontfile, $fonttype = '', $enc = '', $flags = 32, $outpath = '', $platid = 3, $encid = 1, $addcbbox = false, $link = false)
+	{
 		if (!file_exists($fontfile)) {
 			// Could not find file
 			return false;
@@ -83,7 +85,7 @@ class TCPDF_FONTS {
 		}
 		$font_name = strtolower($font_path_parts['filename']);
 		$font_name = preg_replace('/[^a-z0-9_]/', '', $font_name);
-		$search  = array('bold', 'oblique', 'italic', 'regular');
+		$search = array('bold', 'oblique', 'italic', 'regular');
 		$replace = array('b', 'i', 'i', '');
 		$font_name = str_replace($search, $replace, $font_name);
 		if (empty($font_name)) {
@@ -95,12 +97,12 @@ class TCPDF_FONTS {
 			$outpath = self::_getfontpath();
 		}
 		// check if this font already exist
-		if (@file_exists($outpath.$font_name.'.php')) {
+		if (@file_exists($outpath . $font_name . '.php')) {
 			// this font already exist (delete it from fonts folder to rebuild it)
 			return $font_name;
 		}
 		$fmetric['file'] = $font_name;
-		$fmetric['ctg'] = $font_name.'.ctg.z';
+		$fmetric['ctg'] = $font_name . '.ctg.z';
 		// get font data
 		$font = file_get_contents($fontfile);
 		$fmetric['originalsize'] = strlen($font);
@@ -129,7 +131,7 @@ class TCPDF_FONTS {
 			}
 			case 'Type1': {
 				$fmetric['type'] = 'Type1';
-				if (empty($enc) AND (($flags & 4) == 0)) {
+				if (empty($enc) and (($flags & 4) == 0)) {
 					$enc = 'cp1252';
 				}
 				break;
@@ -147,8 +149,8 @@ class TCPDF_FONTS {
 		// set encoding maps (if any)
 		$fmetric['enc'] = preg_replace('/[^A-Za-z0-9_\-]/', '', $enc);
 		$fmetric['diff'] = '';
-		if (($fmetric['type'] == 'TrueType') OR ($fmetric['type'] == 'Type1')) {
-			if (!empty($enc) AND ($enc != 'cp1252') AND isset(TCPDF_FONT_DATA::$encmap[$enc])) {
+		if (($fmetric['type'] == 'TrueType') or ($fmetric['type'] == 'Type1')) {
+			if (!empty($enc) and ($enc != 'cp1252') and isset(TCPDF_FONT_DATA::$encmap[$enc])) {
 				// build differences from reference encoding
 				$enc_ref = TCPDF_FONT_DATA::$encmap['cp1252'];
 				$enc_target = TCPDF_FONT_DATA::$encmap[$enc];
@@ -156,10 +158,10 @@ class TCPDF_FONTS {
 				for ($i = 32; $i <= 255; ++$i) {
 					if ($enc_target != $enc_ref[$i]) {
 						if ($i != ($last + 1)) {
-							$fmetric['diff'] .= $i.' ';
+							$fmetric['diff'] .= $i . ' ';
 						}
 						$last = $i;
-						$fmetric['diff'] .= '/'.$enc_target[$i].' ';
+						$fmetric['diff'] .= '/' . $enc_target[$i] . ' ';
 					}
 				}
 			}
@@ -186,12 +188,12 @@ class TCPDF_FONTS {
 			$data .= $encrypted;
 			// store compressed font
 			$fmetric['file'] .= '.z';
-			$fp = fopen($outpath.$fmetric['file'], 'wb');
+			$fp = fopen($outpath . $fmetric['file'], 'wb');
 			fwrite($fp, gzcompress($data));
 			fclose($fp);
 			// get font info
 			$fmetric['Flags'] = $flags;
-			preg_match ('#/FullName[\s]*\(([^\)]*)#', $font, $matches);
+			preg_match('#/FullName[\s]*\(([^\)]*)#', $font, $matches);
 			$fmetric['name'] = preg_replace('/[^a-zA-Z0-9_\-]/', '', $matches[1]);
 			preg_match('#/FontBBox[\s]*{([^}]*)#', $font, $matches);
 			$fmetric['bbox'] = trim($matches[1]);
@@ -274,7 +276,7 @@ class TCPDF_FONTS {
 			// get charstring data
 			$eplain = substr($eplain, (strpos($eplain, '/CharStrings') + 1));
 			preg_match_all('#/([A-Za-z0-9\.]*)[\s][0-9]+[\s]RD[\s](.*)[\s]ND#sU', $eplain, $matches, PREG_SET_ORDER);
-			if (!empty($enc) AND isset(TCPDF_FONT_DATA::$encmap[$enc])) {
+			if (!empty($enc) and isset(TCPDF_FONT_DATA::$encmap[$enc])) {
 				$enc_map = TCPDF_FONT_DATA::$encmap[$enc];
 			} else {
 				$enc_map = false;
@@ -313,22 +315,22 @@ class TCPDF_FONTS {
 				while ($i < $clen) {
 					if ($ccom[$i] < 32) {
 						$cdec[$ck] = $ccom[$i];
-						if (($ck > 0) AND ($cdec[$ck] == 13)) {
+						if (($ck > 0) and ($cdec[$ck] == 13)) {
 							// hsbw command: update width
 							$cwidths[$cid] = $cdec[($ck - 1)];
 						}
 						++$i;
-					} elseif (($ccom[$i] >= 32) AND ($ccom[$i] <= 246)) {
+					} elseif (($ccom[$i] >= 32) and ($ccom[$i] <= 246)) {
 						$cdec[$ck] = ($ccom[$i] - 139);
 						++$i;
-					} elseif (($ccom[$i] >= 247) AND ($ccom[$i] <= 250)) {
+					} elseif (($ccom[$i] >= 247) and ($ccom[$i] <= 250)) {
 						$cdec[$ck] = ((($ccom[$i] - 247) * 256) + $ccom[($i + 1)] + 108);
 						$i += 2;
-					} elseif (($ccom[$i] >= 251) AND ($ccom[$i] <= 254)) {
+					} elseif (($ccom[$i] >= 251) and ($ccom[$i] <= 254)) {
 						$cdec[$ck] = ((-($ccom[$i] - 251) * 256) - $ccom[($i + 1)] - 108);
 						$i += 2;
 					} elseif ($ccom[$i] == 255) {
-						$sval = chr($ccom[($i + 1)]).chr($ccom[($i + 2)]).chr($ccom[($i + 3)]).chr($ccom[($i + 4)]);
+						$sval = chr($ccom[($i + 1)]) . chr($ccom[($i + 2)]) . chr($ccom[($i + 3)]) . chr($ccom[($i + 4)]);
 						$vsval = unpack('li', $sval);
 						$cdec[$ck] = $vsval['i'];
 						$i += 5;
@@ -346,9 +348,9 @@ class TCPDF_FONTS {
 						$fmetric['MaxWidth'] = $cwidths[$cid];
 					}
 					$fmetric['AvgWidth'] += $cwidths[$cid];
-					$fmetric['cw'] .= ','.$cid.'=>'.$cwidths[$cid];
+					$fmetric['cw'] .= ',' . $cid . '=>' . $cwidths[$cid];
 				} else {
-					$fmetric['cw'] .= ','.$cid.'=>'.$fmetric['MissingWidth'];
+					$fmetric['cw'] .= ',' . $cid . '=>' . $fmetric['MissingWidth'];
 				}
 			}
 			$fmetric['AvgWidth'] = round($fmetric['AvgWidth'] / count($cwidths));
@@ -357,11 +359,11 @@ class TCPDF_FONTS {
 			if ($fmetric['type'] != 'cidfont0') {
 				if ($link) {
 					// creates a symbolic link to the existing font
-					symlink($fontfile, $outpath.$fmetric['file']);
+					symlink($fontfile, $outpath . $fmetric['file']);
 				} else {
 					// store compressed font
 					$fmetric['file'] .= '.z';
-					$fp = fopen($outpath.$fmetric['file'], 'wb');
+					$fp = fopen($outpath . $fmetric['file'], 'wb');
 					fwrite($fp, gzcompress($font));
 					fclose($fp);
 				}
@@ -414,7 +416,7 @@ class TCPDF_FONTS {
 			$offset += 2;
 			$yMax = round(TCPDF_STATIC::_getFWORD($font, $offset) * $urk);
 			$offset += 2;
-			$fmetric['bbox'] = ''.$xMin.' '.$yMin.' '.$xMax.' '.$yMax.'';
+			$fmetric['bbox'] = '' . $xMin . ' ' . $yMin . ' ' . $xMax . ' ' . $yMax . '';
 			$macStyle = TCPDF_STATIC::_getUSHORT($font, $offset);
 			$offset += 2;
 			// PDF font flags
@@ -551,7 +553,7 @@ class TCPDF_FONTS {
 			$ctg = array();
 			foreach ($encodingTables as $enctable) {
 				// get only specified Platform ID and Encoding ID
-				if (($enctable['platformID'] == $platid) AND ($enctable['encodingID'] == $encid)) {
+				if (($enctable['platformID'] == $platid) and ($enctable['encodingID'] == $encid)) {
 					$offset = $table['cmap']['offset'] + $enctable['offset'];
 					$format = TCPDF_STATIC::_getUSHORT($font, $offset);
 					$offset += 2;
@@ -704,14 +706,14 @@ class TCPDF_FONTS {
 								$offset += 4;
 								for ($k = $startCharCode; $k <= $endCharCode; ++$k) {
 									$is32idx = floor($c / 8);
-									if ((isset($is32[$is32idx])) AND (($is32[$is32idx] & (1 << (7 - ($c % 8)))) == 0)) {
+									if ((isset($is32[$is32idx])) and (($is32[$is32idx] & (1 << (7 - ($c % 8)))) == 0)) {
 										$c = $k;
 									} else {
 										// 32 bit format
 										// convert to decimal (http://www.unicode.org/faq//utf_bom.html#utf16-4)
 										//LEAD_OFFSET = (0xD800 - (0x10000 >> 10)) = 55232
 										//SURROGATE_OFFSET = (0x10000 - (0xD800 << 10) - 0xDC00) = -56613888
-										$c = ((55232 + ($k >> 10)) << 10) + (0xDC00 + ($k & 0x3FF)) -56613888;
+										$c = ((55232 + ($k >> 10)) << 10) + (0xDC00 + ($k & 0x3FF)) - 56613888;
 									}
 									$ctg[$c] = 0;
 									++$startGlyphID;
@@ -782,7 +784,7 @@ class TCPDF_FONTS {
 			// ceate widths array
 			$cw = array();
 			$offset = $table['hmtx']['offset'];
-			for ($i = 0 ; $i < $numberOfHMetrics; ++$i) {
+			for ($i = 0; $i < $numberOfHMetrics; ++$i) {
 				$cw[$i] = round(TCPDF_STATIC::_getUFWORD($font, $offset) * $urk);
 				$offset += 4; // skip lsb
 			}
@@ -796,114 +798,114 @@ class TCPDF_FONTS {
 			for ($cid = 0; $cid <= 65535; ++$cid) {
 				if (isset($ctg[$cid])) {
 					if (isset($cw[$ctg[$cid]])) {
-						$fmetric['cw'] .= ','.$cid.'=>'.$cw[$ctg[$cid]];
+						$fmetric['cw'] .= ',' . $cid . '=>' . $cw[$ctg[$cid]];
 					}
-					if ($addcbbox AND isset($indexToLoc[$ctg[$cid]])) {
+					if ($addcbbox and isset($indexToLoc[$ctg[$cid]])) {
 						$offset = ($table['glyf']['offset'] + $indexToLoc[$ctg[$cid]]);
 						$xMin = round(TCPDF_STATIC::_getFWORD($font, $offset + 2) * $urk);
 						$yMin = round(TCPDF_STATIC::_getFWORD($font, $offset + 4) * $urk);
 						$xMax = round(TCPDF_STATIC::_getFWORD($font, $offset + 6) * $urk);
 						$yMax = round(TCPDF_STATIC::_getFWORD($font, $offset + 8) * $urk);
-						$fmetric['cbbox'] .= ','.$cid.'=>array('.$xMin.','.$yMin.','.$xMax.','.$yMax.')';
+						$fmetric['cbbox'] .= ',' . $cid . '=>array(' . $xMin . ',' . $yMin . ',' . $xMax . ',' . $yMax . ')';
 					}
 				}
 			}
 		} // end of true type
-		if (($fmetric['type'] == 'TrueTypeUnicode') AND (count($ctg) == 256)) {
+		if (($fmetric['type'] == 'TrueTypeUnicode') and (count($ctg) == 256)) {
 			$fmetric['type'] = 'TrueType';
 		}
 		// ---------- create php font file ----------
-		$pfile = '<'.'?'.'php'."\n";
-		$pfile .= '// TCPDF FONT FILE DESCRIPTION'."\n";
-		$pfile .= '$type=\''.$fmetric['type'].'\';'."\n";
-		$pfile .= '$name=\''.$fmetric['name'].'\';'."\n";
-		$pfile .= '$up='.$fmetric['underlinePosition'].';'."\n";
-		$pfile .= '$ut='.$fmetric['underlineThickness'].';'."\n";
+		$pfile = '<' . '?' . 'php' . "\n";
+		$pfile .= '// TCPDF FONT FILE DESCRIPTION' . "\n";
+		$pfile .= '$type=\'' . $fmetric['type'] . '\';' . "\n";
+		$pfile .= '$name=\'' . $fmetric['name'] . '\';' . "\n";
+		$pfile .= '$up=' . $fmetric['underlinePosition'] . ';' . "\n";
+		$pfile .= '$ut=' . $fmetric['underlineThickness'] . ';' . "\n";
 		if ($fmetric['MissingWidth'] > 0) {
-			$pfile .= '$dw='.$fmetric['MissingWidth'].';'."\n";
+			$pfile .= '$dw=' . $fmetric['MissingWidth'] . ';' . "\n";
 		} else {
-			$pfile .= '$dw='.$fmetric['AvgWidth'].';'."\n";
+			$pfile .= '$dw=' . $fmetric['AvgWidth'] . ';' . "\n";
 		}
-		$pfile .= '$diff=\''.$fmetric['diff'].'\';'."\n";
+		$pfile .= '$diff=\'' . $fmetric['diff'] . '\';' . "\n";
 		if ($fmetric['type'] == 'Type1') {
 			// Type 1
-			$pfile .= '$enc=\''.$fmetric['enc'].'\';'."\n";
-			$pfile .= '$file=\''.$fmetric['file'].'\';'."\n";
-			$pfile .= '$size1='.$fmetric['size1'].';'."\n";
-			$pfile .= '$size2='.$fmetric['size2'].';'."\n";
+			$pfile .= '$enc=\'' . $fmetric['enc'] . '\';' . "\n";
+			$pfile .= '$file=\'' . $fmetric['file'] . '\';' . "\n";
+			$pfile .= '$size1=' . $fmetric['size1'] . ';' . "\n";
+			$pfile .= '$size2=' . $fmetric['size2'] . ';' . "\n";
 		} else {
-			$pfile .= '$originalsize='.$fmetric['originalsize'].';'."\n";
+			$pfile .= '$originalsize=' . $fmetric['originalsize'] . ';' . "\n";
 			if ($fmetric['type'] == 'cidfont0') {
 				// CID-0
 				switch ($fonttype) {
 					case 'CID0JP': {
-						$pfile .= '// Japanese'."\n";
-						$pfile .= '$enc=\'UniJIS-UTF16-H\';'."\n";
-						$pfile .= '$cidinfo=array(\'Registry\'=>\'Adobe\', \'Ordering\'=>\'Japan1\',\'Supplement\'=>5);'."\n";
-						$pfile .= 'include(dirname(__FILE__).\'/uni2cid_aj16.php\');'."\n";
+						$pfile .= '// Japanese' . "\n";
+						$pfile .= '$enc=\'UniJIS-UTF16-H\';' . "\n";
+						$pfile .= '$cidinfo=array(\'Registry\'=>\'Adobe\', \'Ordering\'=>\'Japan1\',\'Supplement\'=>5);' . "\n";
+						$pfile .= 'include(dirname(__FILE__).\'/uni2cid_aj16.php\');' . "\n";
 						break;
 					}
 					case 'CID0KR': {
-						$pfile .= '// Korean'."\n";
-						$pfile .= '$enc=\'UniKS-UTF16-H\';'."\n";
-						$pfile .= '$cidinfo=array(\'Registry\'=>\'Adobe\', \'Ordering\'=>\'Korea1\',\'Supplement\'=>0);'."\n";
-						$pfile .= 'include(dirname(__FILE__).\'/uni2cid_ak12.php\');'."\n";
+						$pfile .= '// Korean' . "\n";
+						$pfile .= '$enc=\'UniKS-UTF16-H\';' . "\n";
+						$pfile .= '$cidinfo=array(\'Registry\'=>\'Adobe\', \'Ordering\'=>\'Korea1\',\'Supplement\'=>0);' . "\n";
+						$pfile .= 'include(dirname(__FILE__).\'/uni2cid_ak12.php\');' . "\n";
 						break;
 					}
 					case 'CID0CS': {
-						$pfile .= '// Chinese Simplified'."\n";
-						$pfile .= '$enc=\'UniGB-UTF16-H\';'."\n";
-						$pfile .= '$cidinfo=array(\'Registry\'=>\'Adobe\', \'Ordering\'=>\'GB1\',\'Supplement\'=>2);'."\n";
-						$pfile .= 'include(dirname(__FILE__).\'/uni2cid_ag15.php\');'."\n";
+						$pfile .= '// Chinese Simplified' . "\n";
+						$pfile .= '$enc=\'UniGB-UTF16-H\';' . "\n";
+						$pfile .= '$cidinfo=array(\'Registry\'=>\'Adobe\', \'Ordering\'=>\'GB1\',\'Supplement\'=>2);' . "\n";
+						$pfile .= 'include(dirname(__FILE__).\'/uni2cid_ag15.php\');' . "\n";
 						break;
 					}
 					case 'CID0CT':
 					default: {
-						$pfile .= '// Chinese Traditional'."\n";
-						$pfile .= '$enc=\'UniCNS-UTF16-H\';'."\n";
-						$pfile .= '$cidinfo=array(\'Registry\'=>\'Adobe\', \'Ordering\'=>\'CNS1\',\'Supplement\'=>0);'."\n";
-						$pfile .= 'include(dirname(__FILE__).\'/uni2cid_aj16.php\');'."\n";
+						$pfile .= '// Chinese Traditional' . "\n";
+						$pfile .= '$enc=\'UniCNS-UTF16-H\';' . "\n";
+						$pfile .= '$cidinfo=array(\'Registry\'=>\'Adobe\', \'Ordering\'=>\'CNS1\',\'Supplement\'=>0);' . "\n";
+						$pfile .= 'include(dirname(__FILE__).\'/uni2cid_aj16.php\');' . "\n";
 						break;
 					}
 				}
 			} else {
 				// TrueType
-				$pfile .= '$enc=\''.$fmetric['enc'].'\';'."\n";
-				$pfile .= '$file=\''.$fmetric['file'].'\';'."\n";
-				$pfile .= '$ctg=\''.$fmetric['ctg'].'\';'."\n";
+				$pfile .= '$enc=\'' . $fmetric['enc'] . '\';' . "\n";
+				$pfile .= '$file=\'' . $fmetric['file'] . '\';' . "\n";
+				$pfile .= '$ctg=\'' . $fmetric['ctg'] . '\';' . "\n";
 				// create CIDToGIDMap
 				$cidtogidmap = str_pad('', 131072, "\x00"); // (256 * 256 * 2) = 131072
 				foreach ($ctg as $cid => $gid) {
 					$cidtogidmap = self::updateCIDtoGIDmap($cidtogidmap, $cid, $ctg[$cid]);
 				}
 				// store compressed CIDToGIDMap
-				$fp = fopen($outpath.$fmetric['ctg'], 'wb');
+				$fp = fopen($outpath . $fmetric['ctg'], 'wb');
 				fwrite($fp, gzcompress($cidtogidmap));
 				fclose($fp);
 			}
 		}
 		$pfile .= '$desc=array(';
-		$pfile .= '\'Flags\'=>'.$fmetric['Flags'].',';
-		$pfile .= '\'FontBBox\'=>\'['.$fmetric['bbox'].']\',';
-		$pfile .= '\'ItalicAngle\'=>'.$fmetric['italicAngle'].',';
-		$pfile .= '\'Ascent\'=>'.$fmetric['Ascent'].',';
-		$pfile .= '\'Descent\'=>'.$fmetric['Descent'].',';
-		$pfile .= '\'Leading\'=>'.$fmetric['Leading'].',';
-		$pfile .= '\'CapHeight\'=>'.$fmetric['CapHeight'].',';
-		$pfile .= '\'XHeight\'=>'.$fmetric['XHeight'].',';
-		$pfile .= '\'StemV\'=>'.$fmetric['StemV'].',';
-		$pfile .= '\'StemH\'=>'.$fmetric['StemH'].',';
-		$pfile .= '\'AvgWidth\'=>'.$fmetric['AvgWidth'].',';
-		$pfile .= '\'MaxWidth\'=>'.$fmetric['MaxWidth'].',';
-		$pfile .= '\'MissingWidth\'=>'.$fmetric['MissingWidth'].'';
-		$pfile .= ');'."\n";
+		$pfile .= '\'Flags\'=>' . $fmetric['Flags'] . ',';
+		$pfile .= '\'FontBBox\'=>\'[' . $fmetric['bbox'] . ']\',';
+		$pfile .= '\'ItalicAngle\'=>' . $fmetric['italicAngle'] . ',';
+		$pfile .= '\'Ascent\'=>' . $fmetric['Ascent'] . ',';
+		$pfile .= '\'Descent\'=>' . $fmetric['Descent'] . ',';
+		$pfile .= '\'Leading\'=>' . $fmetric['Leading'] . ',';
+		$pfile .= '\'CapHeight\'=>' . $fmetric['CapHeight'] . ',';
+		$pfile .= '\'XHeight\'=>' . $fmetric['XHeight'] . ',';
+		$pfile .= '\'StemV\'=>' . $fmetric['StemV'] . ',';
+		$pfile .= '\'StemH\'=>' . $fmetric['StemH'] . ',';
+		$pfile .= '\'AvgWidth\'=>' . $fmetric['AvgWidth'] . ',';
+		$pfile .= '\'MaxWidth\'=>' . $fmetric['MaxWidth'] . ',';
+		$pfile .= '\'MissingWidth\'=>' . $fmetric['MissingWidth'] . '';
+		$pfile .= ');' . "\n";
 		if (!empty($fmetric['cbbox'])) {
-			$pfile .= '$cbbox=array('.substr($fmetric['cbbox'], 1).');'."\n";
+			$pfile .= '$cbbox=array(' . substr($fmetric['cbbox'], 1) . ');' . "\n";
 		}
-		$pfile .= '$cw=array('.substr($fmetric['cw'], 1).');'."\n";
-		$pfile .= '// --- EOF ---'."\n";
+		$pfile .= '$cw=array(' . substr($fmetric['cw'], 1) . ');' . "\n";
+		$pfile .= '// --- EOF ---' . "\n";
 		// store file
-		$fp = fopen($outpath.$font_name.'.php', 'w');
+		$fp = fopen($outpath . $font_name . '.php', 'w');
 		fwrite($fp, $pfile);
 		fclose($fp);
 		// return TCPDF font name
@@ -919,7 +921,8 @@ class TCPDF_FONTS {
 	 * @since 5.2.000 (2010-06-02)
 	 * @public static
 	 */
-	public static function _getTTFtableChecksum($table, $length) {
+	public static function _getTTFtableChecksum($table, $length)
+	{
 		$sum = 0;
 		$tlen = ($length / 4);
 		$offset = 0;
@@ -941,7 +944,8 @@ class TCPDF_FONTS {
 	 * @since 5.2.000 (2010-06-02)
 	 * @public static
 	 */
-	public static function _getTrueTypeFontSubset($font, $subsetchars) {
+	public static function _getTrueTypeFontSubset($font, $subsetchars)
+	{
 		ksort($subsetchars);
 		$offset = 0; // offset position of the font data
 		if (TCPDF_STATIC::_getULONG($font, $offset) != 0x10000) {
@@ -1141,7 +1145,7 @@ class TCPDF_FONTS {
 								$subsetglyphs[$g] = true;
 							}
 						}
-					}	
+					}
 					break;
 				}
 				case 6: { // Format 6: Trimmed table mapping
@@ -1177,14 +1181,14 @@ class TCPDF_FONTS {
 						$offset += 4;
 						for ($k = $startCharCode; $k <= $endCharCode; ++$k) {
 							$is32idx = floor($c / 8);
-							if ((isset($is32[$is32idx])) AND (($is32[$is32idx] & (1 << (7 - ($c % 8)))) == 0)) {
+							if ((isset($is32[$is32idx])) and (($is32[$is32idx] & (1 << (7 - ($c % 8)))) == 0)) {
 								$c = $k;
 							} else {
 								// 32 bit format
 								// convert to decimal (http://www.unicode.org/faq//utf_bom.html#utf16-4)
 								//LEAD_OFFSET = (0xD800 - (0x10000 >> 10)) = 55232
 								//SURROGATE_OFFSET = (0x10000 - (0xD800 << 10) - 0xDC00) = -56613888
-								$c = ((55232 + ($k >> 10)) << 10) + (0xDC00 + ($k & 0x3FF)) -56613888;
+								$c = ((55232 + ($k >> 10)) << 10) + (0xDC00 + ($k & 0x3FF)) - 56613888;
 							}
 							if (isset($subsetchars[$c])) {
 								$subsetglyphs[$startGlyphID] = true;
@@ -1303,7 +1307,7 @@ class TCPDF_FONTS {
 		}
 		// array of table names to preserve (loca and glyf tables will be added later)
 		// the cmap table is not needed and shall not be present, since the mapping from character codes to glyph descriptions is provided separately
-		$table_names = array ('head', 'hhea', 'hmtx', 'maxp', 'cvt ', 'fpgm', 'prep'); // minimum required table names
+		$table_names = array('head', 'hhea', 'hmtx', 'maxp', 'cvt ', 'fpgm', 'prep'); // minimum required table names
 		// get the tables to preserve
 		$offset = 12;
 		foreach ($table as $tag => $val) {
@@ -1311,7 +1315,7 @@ class TCPDF_FONTS {
 				$table[$tag]['data'] = substr($font, $table[$tag]['offset'], $table[$tag]['length']);
 				if ($tag == 'head') {
 					// set the checkSumAdjustment to 0
-					$table[$tag]['data'] = substr($table[$tag]['data'], 0, 8)."\x0\x0\x0\x0".substr($table[$tag]['data'], 12);
+					$table[$tag]['data'] = substr($table[$tag]['data'], 0, 8) . "\x0\x0\x0\x0" . substr($table[$tag]['data'], 12);
 				}
 				$pad = 4 - ($table[$tag]['length'] % 4);
 				if ($pad != 4) {
@@ -1373,7 +1377,7 @@ class TCPDF_FONTS {
 		}
 		// set checkSumAdjustment on head table
 		$checkSumAdjustment = 0xB1B0AFBA - self::_getTTFtableChecksum($font, strlen($font));
-		$font = substr($font, 0, $table['head']['offset'] + 8).pack('N', $checkSumAdjustment).substr($font, $table['head']['offset'] + 12);
+		$font = substr($font, 0, $table['head']['offset'] + 8) . pack('N', $checkSumAdjustment) . substr($font, $table['head']['offset'] + 12);
 		return $font;
 	}
 
@@ -1386,7 +1390,8 @@ class TCPDF_FONTS {
 	 * @since 4.4.000 (2008-12-07)
 	 * @public static
 	 */
-	public static function _putfontwidths($font, $cidoffset=0) {
+	public static function _putfontwidths($font, $cidoffset = 0)
+	{
 		ksort($font['cw']);
 		$rangeid = 0;
 		$range = array();
@@ -1396,7 +1401,7 @@ class TCPDF_FONTS {
 		// for each character
 		foreach ($font['cw'] as $cid => $width) {
 			$cid -= $cidoffset;
-			if ($font['subset'] AND (!isset($font['subsetchars'][$cid]))) {
+			if ($font['subset'] and (!isset($font['subsetchars'][$cid]))) {
 				// ignore the unused characters (font subsetting)
 				continue;
 			}
@@ -1444,7 +1449,7 @@ class TCPDF_FONTS {
 		$prevint = false;
 		foreach ($range as $k => $ws) {
 			$cws = count($ws);
-			if (($k == $nextk) AND (!$prevint) AND ((!isset($ws['interval'])) OR ($cws < 4))) {
+			if (($k == $nextk) and (!$prevint) and ((!isset($ws['interval'])) or ($cws < 4))) {
 				if (isset($range[$k]['interval'])) {
 					unset($range[$k]['interval']);
 				}
@@ -1473,13 +1478,13 @@ class TCPDF_FONTS {
 		foreach ($range as $k => $ws) {
 			if (count(array_count_values($ws)) == 1) {
 				// interval mode is more compact
-				$w .= ' '.$k.' '.($k + count($ws) - 1).' '.$ws[0];
+				$w .= ' ' . $k . ' ' . ($k + count($ws) - 1) . ' ' . $ws[0];
 			} else {
 				// range mode
-				$w .= ' '.$k.' [ '.implode(' ', $ws).' ]';
+				$w .= ' ' . $k . ' [ ' . implode(' ', $ws) . ' ]';
 			}
 		}
-		return '/W ['.$w.' ]';
+		return '/W [' . $w . ' ]';
 	}
 
 	/**
@@ -1490,7 +1495,8 @@ class TCPDF_FONTS {
 	 * @since 2.3.000 (2008-03-05)
 	 * @public static
 	 */
-	public static function unichr($c, $unicode=true) {
+	public static function unichr($c, $unicode = true)
+	{
 		if (!$unicode) {
 			return chr($c);
 		} elseif ($c <= 0x7F) {
@@ -1498,13 +1504,13 @@ class TCPDF_FONTS {
 			return chr($c);
 		} elseif ($c <= 0x7FF) {
 			// two bytes
-			return chr(0xC0 | $c >> 6).chr(0x80 | $c & 0x3F);
+			return chr(0xC0 | $c >> 6) . chr(0x80 | $c & 0x3F);
 		} elseif ($c <= 0xFFFF) {
 			// three bytes
-			return chr(0xE0 | $c >> 12).chr(0x80 | $c >> 6 & 0x3F).chr(0x80 | $c & 0x3F);
+			return chr(0xE0 | $c >> 12) . chr(0x80 | $c >> 6 & 0x3F) . chr(0x80 | $c & 0x3F);
 		} elseif ($c <= 0x10FFFF) {
 			// four bytes
-			return chr(0xF0 | $c >> 18).chr(0x80 | $c >> 12 & 0x3F).chr(0x80 | $c >> 6 & 0x3F).chr(0x80 | $c & 0x3F);
+			return chr(0xF0 | $c >> 18) . chr(0x80 | $c >> 12 & 0x3F) . chr(0x80 | $c >> 6 & 0x3F) . chr(0x80 | $c & 0x3F);
 		} else {
 			return '';
 		}
@@ -1516,7 +1522,8 @@ class TCPDF_FONTS {
 	 * @return Returns the specified character.
 	 * @public static
 	 */
-	public static function unichrUnicode($c) {
+	public static function unichrUnicode($c)
+	{
 		return self::unichr($c, true);
 	}
 
@@ -1526,7 +1533,8 @@ class TCPDF_FONTS {
 	 * @return Returns the specified character.
 	 * @public static
 	 */
-	public static function unichrASCII($c) {
+	public static function unichrASCII($c)
+	{
 		return self::unichr($c, false);
 	}
 
@@ -1568,7 +1576,8 @@ class TCPDF_FONTS {
 	 * @since 2.1.000 (2008-01-08)
 	 * @public static
 	 */
-	public static function arrUTF8ToUTF16BE($unicode, $setbom=false) {
+	public static function arrUTF8ToUTF16BE($unicode, $setbom = false)
+	{
 		$outstr = ''; // string to be returned
 		if ($setbom) {
 			$outstr .= "\xFE\xFF"; // Byte Order Mark (BOM)
@@ -1602,7 +1611,8 @@ class TCPDF_FONTS {
 	 * @since 4.5.037 (2009-04-07)
 	 * @public static
 	 */
-	public static function UTF8ArrayToUniArray($ta, $isunicode=true) {
+	public static function UTF8ArrayToUniArray($ta, $isunicode = true)
+	{
 		if ($isunicode) {
 			return array_map(array('TCPDF_FONTS', 'unichrUnicode'), $ta);
 		}
@@ -1618,7 +1628,8 @@ class TCPDF_FONTS {
 	 * @return Return part of a string
 	 * @public static
 	 */
-	public static function UTF8ArrSubString($strarr, $start='', $end='', $unicode=true) {
+	public static function UTF8ArrSubString($strarr, $start = '', $end = '', $unicode = true)
+	{
 		if (strlen($start) == 0) {
 			$start = 0;
 		}
@@ -1641,7 +1652,8 @@ class TCPDF_FONTS {
 	 * @since 4.5.037 (2009-04-07)
 	 * @public static
 	 */
-	public static function UniArrSubString($uniarr, $start='', $end='') {
+	public static function UniArrSubString($uniarr, $start = '', $end = '')
+	{
 		if (strlen($start) == 0) {
 			$start = 0;
 		}
@@ -1649,7 +1661,7 @@ class TCPDF_FONTS {
 			$end = count($uniarr);
 		}
 		$string = '';
-		for ($i=$start; $i < $end; ++$i) {
+		for ($i = $start; $i < $end; ++$i) {
 			$string .= $uniarr[$i];
 		}
 		return $string;
@@ -1665,8 +1677,9 @@ class TCPDF_FONTS {
 	 * @since 5.9.123 (2011-09-29)
 	 * @public static
 	 */
-	public static function updateCIDtoGIDmap($map, $cid, $gid) {
-		if (($cid >= 0) AND ($cid <= 0xFFFF) AND ($gid >= 0)) {
+	public static function updateCIDtoGIDmap($map, $cid, $gid)
+	{
+		if (($cid >= 0) and ($cid <= 0xFFFF) and ($gid >= 0)) {
 			if ($gid > 0xFFFF) {
 				$gid -= 0x10000;
 			}
@@ -1681,8 +1694,9 @@ class TCPDF_FONTS {
 	 * @return string
 	 * @public static
 	 */
-	public static function _getfontpath() {
-		if (!defined('K_PATH_FONTS') AND is_dir($fdir = realpath(dirname(__FILE__).'/../fonts'))) {
+	public static function _getfontpath()
+	{
+		if (!defined('K_PATH_FONTS') and is_dir($fdir = realpath(dirname(__FILE__) . '/../fonts'))) {
 			if (substr($fdir, -1) != '/') {
 				$fdir .= '/';
 			}
@@ -1700,13 +1714,14 @@ class TCPDF_FONTS {
 	 * @since 6.0.025
 	 * @public static
 	 */
-	public static function getFontFullPath($file, $fontdir=false) {
+	public static function getFontFullPath($file, $fontdir = false)
+	{
 		$fontfile = '';
 		// search files on various directories
-		if (($fontdir !== false) AND @file_exists($fontdir.$file)) {
-			$fontfile = $fontdir.$file;
-		} elseif (@file_exists(self::_getfontpath().$file)) {
-			$fontfile = self::_getfontpath().$file;
+		if (($fontdir !== false) and @file_exists($fontdir . $file)) {
+			$fontfile = $fontdir . $file;
+		} elseif (@file_exists(self::_getfontpath() . $file)) {
+			$fontfile = self::_getfontpath() . $file;
 		} elseif (@file_exists($file)) {
 			$fontfile = $file;
 		}
@@ -1721,7 +1736,8 @@ class TCPDF_FONTS {
 	 * @since 4.8.023 (2010-01-15)
 	 * @public static
 	 */
-	public static function UTF8ArrToLatin1Arr($unicode) {
+	public static function UTF8ArrToLatin1Arr($unicode)
+	{
 		$outarr = array(); // array to be returned
 		foreach ($unicode as $char) {
 			if ($char < 256) {
@@ -1746,7 +1762,8 @@ class TCPDF_FONTS {
 	 * @since 4.8.023 (2010-01-15)
 	 * @public static
 	 */
-	public static function UTF8ArrToLatin1($unicode) {
+	public static function UTF8ArrToLatin1($unicode)
+	{
 		$outstr = ''; // string to be returned
 		foreach ($unicode as $char) {
 			if ($char < 256) {
@@ -1770,7 +1787,8 @@ class TCPDF_FONTS {
 	 * @return integer Unicode value
 	 * @public static
 	 */
-	public static function uniord($uch) {
+	public static function uniord($uch)
+	{
 		if (!isset(self::$cache_uniord[$uch])) {
 			self::$cache_uniord[$uch] = self::getUniord($uch);
 		}
@@ -1810,7 +1828,8 @@ class TCPDF_FONTS {
 	 * @author Nicola Asuni
 	 * @public static
 	 */
-	public static function getUniord($uch) {
+	public static function getUniord($uch)
+	{
 		if (function_exists('mb_convert_encoding')) {
 			list(, $char) = @unpack('N', mb_convert_encoding($uch, 'UCS-4BE', 'UTF-8'));
 			if ($char >= 0) {
@@ -1851,7 +1870,7 @@ class TCPDF_FONTS {
 					for ($j = 1; $j < $numbytes; ++$j) {
 						$char += ($bytes[$j] << (($numbytes - $j - 1) * 0x06));
 					}
-					if ((($char >= 0xD800) AND ($char <= 0xDFFF)) OR ($char >= 0x10FFFF)) {
+					if ((($char >= 0xD800) and ($char <= 0xDFFF)) or ($char >= 0x10FFFF)) {
 						// The definition of UTF-8 prohibits encoding character numbers between
 						// U+D800 and U+DFFF, which are reserved for use with the UTF-16
 						// encoding form (as surrogate pairs) and do not directly represent
@@ -1870,19 +1889,21 @@ class TCPDF_FONTS {
 	}
 
 	/**
-	 * Converts UTF-8 strings to codepoints array.<br>
-	 * Invalid byte sequences will be replaced with 0xFFFD (replacement character)<br>
-	 * @param $str (string) string to process.
-	 * @param $isunicode (boolean) True when the documetn is in Unicode mode, false otherwise.
-	 * @param $currentfont (array) Reference to current font array.
-	 * @return array containing codepoints (UTF-8 characters values)
-	 * @author Nicola Asuni
-	 * @public static
-	 */
-	public static function UTF8StringToArray($str, $isunicode=true, &$currentfont) {
+		* Converts UTF-8 strings to codepoints array.<br>
+		* Invalid byte sequences will be replaced with 0xFFFD (replacement character)<br>
+		* @param $str (string) string to process.
+		* @param $currentfont (array) Reference to current font array.
+		* @param $isunicode (boolean) True when the documetn is in Unicode mode, false otherwise.
+
+		* @return array containing codepoints (UTF-8 characters values)
+		* @author Nicola Asuni
+		* @public static
+		*/
+	public static function UTF8StringToArray($str, &$currentfont,$isunicode = true)
+	{
 		if ($isunicode) {
 			// requires PCRE unicode support turned on
-			$chars = TCPDF_STATIC::pregSplit('//','u', $str, -1, PREG_SPLIT_NO_EMPTY);
+			$chars = TCPDF_STATIC::pregSplit('//', 'u', $str, -1, PREG_SPLIT_NO_EMPTY);
 			$carr = array_map(array('TCPDF_FONTS', 'uniord'), $chars);
 		} else {
 			$chars = str_split($str);
@@ -1895,29 +1916,32 @@ class TCPDF_FONTS {
 	/**
 	 * Converts UTF-8 strings to Latin1 when using the standard 14 core fonts.<br>
 	 * @param $str (string) string to process.
-	 * @param $isunicode (boolean) True when the documetn is in Unicode mode, false otherwise.
 	 * @param $currentfont (array) Reference to current font array.
+	 * @param $isunicode (boolean) True when the documetn is in Unicode mode, false otherwise.
 	 * @return string
 	 * @since 3.2.000 (2008-06-23)
 	 * @public static
 	 */
-	public static function UTF8ToLatin1($str, $isunicode=true, &$currentfont) {
+	public static function UTF8ToLatin1($str,  &$currentfont,$isunicode = true)
+	{
 		$unicode = self::UTF8StringToArray($str, $isunicode, $currentfont); // array containing UTF-8 unicode values
 		return self::UTF8ArrToLatin1($unicode);
 	}
 
 	/**
-	 * Converts UTF-8 strings to UTF16-BE.<br>
-	 * @param $str (string) string to process.
-	 * @param $setbom (boolean) if true set the Byte Order Mark (BOM = 0xFEFF)
-	 * @param $isunicode (boolean) True when the documetn is in Unicode mode, false otherwise.
-	 * @param $currentfont (array) Reference to current font array.
-	 * @return string
-	 * @author Nicola Asuni
-	 * @since 1.53.0.TC005 (2005-01-05)
-	 * @public static
-	 */
-	public static function UTF8ToUTF16BE($str, $setbom=false, $isunicode=true, &$currentfont) {
+		* Converts UTF-8 strings to UTF16-BE.<br>
+		* @param $str (string) string to process.
+		* @param $setbom (boolean) if true set the Byte Order Mark (BOM = 0xFEFF)
+		* @param $currentfont (array) Reference to current font array.
+		* @param $isunicode (boolean) True when the documetn is in Unicode mode, false otherwise.
+
+		* @return string
+		* @author Nicola Asuni
+		* @since 1.53.0.TC005 (2005-01-05)
+		* @public static
+		*/
+	public static function UTF8ToUTF16BE($str, &$currentfont, $isunicode = true,$setbom = false)
+	{
 		if (!$isunicode) {
 			return $str; // string is not in unicode
 		}
@@ -1930,14 +1954,15 @@ class TCPDF_FONTS {
 	 * @param $str (string) string to manipulate.
 	 * @param $setbom (bool) if true set the Byte Order Mark (BOM = 0xFEFF)
 	 * @param $forcertl (bool) if true forces RTL text direction
-	 * @param $isunicode (boolean) True if the document is in Unicode mode, false otherwise.
 	 * @param $currentfont (array) Reference to current font array.
+	 * @param $isunicode (boolean) True if the document is in Unicode mode, false otherwise.
 	 * @return string
 	 * @author Nicola Asuni
 	 * @since 2.1.000 (2008-01-08)
 	 * @public static
 	 */
-	public static function utf8StrRev($str, $setbom=false, $forcertl=false, $isunicode=true, &$currentfont) {
+	public static function utf8StrRev($str, &$currentfont,$isunicode = true,$setbom = false,$forcertl = false)
+	{
 		return self::utf8StrArrRev(self::UTF8StringToArray($str, $isunicode, $currentfont), $str, $setbom, $forcertl, $isunicode, $currentfont);
 	}
 
@@ -1947,14 +1972,15 @@ class TCPDF_FONTS {
 	 * @param $str (string) string to manipulate (or empty value).
 	 * @param $setbom (bool) if true set the Byte Order Mark (BOM = 0xFEFF)
 	 * @param $forcertl (bool) if true forces RTL text direction
-	 * @param $isunicode (boolean) True if the document is in Unicode mode, false otherwise.
 	 * @param $currentfont (array) Reference to current font array.
+	 * @param $isunicode (boolean) True if the document is in Unicode mode, false otherwise.
 	 * @return string
 	 * @author Nicola Asuni
 	 * @since 4.9.000 (2010-03-27)
 	 * @public static
 	 */
-	public static function utf8StrArrRev($arr, $str='', $setbom=false, $forcertl=false, $isunicode=true, &$currentfont) {
+	public static function utf8StrArrRev($arr, &$currentfont,$isunicode = true,$setbom = false, $forcertl = false,$str = '')
+	{
 		return self::arrUTF8ToUTF16BE(self::utf8Bidi($arr, $str, $forcertl, $isunicode, $currentfont), $setbom);
 	}
 
@@ -1963,14 +1989,15 @@ class TCPDF_FONTS {
 	 * @param $ta (array) array of characters composing the string.
 	 * @param $str (string) string to process
 	 * @param $forcertl (bool) if 'R' forces RTL, if 'L' forces LTR
-	 * @param $isunicode (boolean) True if the document is in Unicode mode, false otherwise.
 	 * @param $currentfont (array) Reference to current font array.
+	 * @param $isunicode (boolean) True if the document is in Unicode mode, false otherwise.
 	 * @return array of unicode chars
 	 * @author Nicola Asuni
 	 * @since 2.4.000 (2008-03-06)
 	 * @public static
 	 */
-	public static function utf8Bidi($ta, $str='', $forcertl=false, $isunicode=true, &$currentfont) {
+	public static function utf8Bidi($ta,  &$currentfont,$isunicode = true,$str = '', $forcertl = false)
+	{
 		// paragraph embedding level
 		$pel = 0;
 		// max level
@@ -1986,7 +2013,7 @@ class TCPDF_FONTS {
 			$arabic = false;
 		}
 		// check if string contains RTL text
-		if (!($forcertl OR $arabic OR preg_match(TCPDF_FONT_DATA::$uni_RE_PATTERN_RTL, $str))) {
+		if (!($forcertl or $arabic or preg_match(TCPDF_FONT_DATA::$uni_RE_PATTERN_RTL, $str))) {
 			return $ta;
 		}
 
@@ -2000,12 +2027,12 @@ class TCPDF_FONTS {
 		} else {
 			// P2. In each paragraph, find the first character of type L, AL, or R.
 			// P3. If a character is found in P2 and it is of type AL or R, then set the paragraph embedding level to one; otherwise, set it to zero.
-			for ($i=0; $i < $numchars; ++$i) {
+			for ($i = 0; $i < $numchars; ++$i) {
 				$type = TCPDF_FONT_DATA::$uni_type[$ta[$i]];
 				if ($type == 'L') {
 					$pel = 0;
 					break;
-				} elseif (($type == 'AL') OR ($type == 'R')) {
+				} elseif (($type == 'AL') or ($type == 'R')) {
 					$pel = 1;
 					break;
 				}
@@ -2022,11 +2049,11 @@ class TCPDF_FONTS {
 		$eor = $sor;
 
 		// Array of characters data
-		$chardata = Array();
+		$chardata = array();
 
 		// X1. Begin by setting the current embedding level to the paragraph embedding level. Set the directional override status to neutral. Process each character iteratively, applying rules X2 through X9. Only embedding levels from 0 to 61 are valid in this phase.
 		// In the resolution of levels in rules I1 and I2, the maximum embedding level of 62 can be reached.
-		for ($i=0; $i < $numchars; ++$i) {
+		for ($i = 0; $i < $numchars; ++$i) {
 			if ($ta[$i] == TCPDF_FONT_DATA::$uni_RLE) {
 				// X2. With each RLE, compute the least greater odd embedding level.
 				//	a. If this new level would be valid, then this embedding code is valid. Remember (push) the current embedding level and override status. Reset the current level to this new level, and reset the override status to neutral.
@@ -2044,7 +2071,7 @@ class TCPDF_FONTS {
 				//	a. If this new level would be valid, then this embedding code is valid. Remember (push) the current embedding level and override status. Reset the current level to this new level, and reset the override status to neutral.
 				//	b. If the new level would not be valid, then this code is invalid. Do not change the current level or override status.
 				$next_level = $cel + 2 - ($cel % 2);
-				if ( $next_level < 62 ) {
+				if ($next_level < 62) {
 					$remember[] = array('num' => TCPDF_FONT_DATA::$uni_LRE, 'cel' => $cel, 'dos' => $dos);
 					$cel = $next_level;
 					$dos = 'N';
@@ -2068,7 +2095,7 @@ class TCPDF_FONTS {
 				//	a. If this new level would be valid, then this embedding code is valid. Remember (push) the current embedding level and override status. Reset the current level to this new level, and reset the override status to left-to-right.
 				//	b. If the new level would not be valid, then this code is invalid. Do not change the current level or override status.
 				$next_level = $cel + 2 - ($cel % 2);
-				if ( $next_level < 62 ) {
+				if ($next_level < 62) {
 					$remember[] = array('num' => TCPDF_FONT_DATA::$uni_LRO, 'cel' => $cel, 'dos' => $dos);
 					$cel = $next_level;
 					$dos = 'L';
@@ -2078,11 +2105,13 @@ class TCPDF_FONTS {
 			} elseif ($ta[$i] == TCPDF_FONT_DATA::$uni_PDF) {
 				// X7. With each PDF, determine the matching embedding or override code. If there was a valid matching code, restore (pop) the last remembered (pushed) embedding level and directional override.
 				if (count($remember)) {
-					$last = count($remember ) - 1;
-					if (($remember[$last]['num'] == TCPDF_FONT_DATA::$uni_RLE) OR
-						($remember[$last]['num'] == TCPDF_FONT_DATA::$uni_LRE) OR
-						($remember[$last]['num'] == TCPDF_FONT_DATA::$uni_RLO) OR
-						($remember[$last]['num'] == TCPDF_FONT_DATA::$uni_LRO)) {
+					$last = count($remember) - 1;
+					if (
+						($remember[$last]['num'] == TCPDF_FONT_DATA::$uni_RLE) or
+						($remember[$last]['num'] == TCPDF_FONT_DATA::$uni_LRE) or
+						($remember[$last]['num'] == TCPDF_FONT_DATA::$uni_RLO) or
+						($remember[$last]['num'] == TCPDF_FONT_DATA::$uni_LRO)
+					) {
 						$match = array_pop($remember);
 						$cel = $match['cel'];
 						$dos = $match['dos'];
@@ -2090,11 +2119,13 @@ class TCPDF_FONTS {
 						$eor = ($cel > $match['cel'] ? $cel : $match['cel']) % 2 ? 'R' : 'L';
 					}
 				}
-			} elseif (($ta[$i] != TCPDF_FONT_DATA::$uni_RLE) AND
-							 ($ta[$i] != TCPDF_FONT_DATA::$uni_LRE) AND
-							 ($ta[$i] != TCPDF_FONT_DATA::$uni_RLO) AND
-							 ($ta[$i] != TCPDF_FONT_DATA::$uni_LRO) AND
-							 ($ta[$i] != TCPDF_FONT_DATA::$uni_PDF)) {
+			} elseif (
+				($ta[$i] != TCPDF_FONT_DATA::$uni_RLE) and
+				($ta[$i] != TCPDF_FONT_DATA::$uni_LRE) and
+				($ta[$i] != TCPDF_FONT_DATA::$uni_RLO) and
+				($ta[$i] != TCPDF_FONT_DATA::$uni_LRO) and
+				($ta[$i] != TCPDF_FONT_DATA::$uni_PDF)
+			) {
 				// X6. For all types besides RLE, LRE, RLO, LRO, and PDF:
 				//	a. Set the level of the current character to the current embedding level.
 				//	b. Whenever the directional override status is not neutral, reset the current character type to the directional override status.
@@ -2124,12 +2155,12 @@ class TCPDF_FONTS {
 		// W1. Examine each nonspacing mark (NSM) in the level run, and change the type of the NSM to the type of the previous character. If the NSM is at the start of the level run, it will get the type of sor.
 		$prevlevel = -1; // track level changes
 		$levcount = 0; // counts consecutive chars at the same level
-		for ($i=0; $i < $numchars; ++$i) {
+		for ($i = 0; $i < $numchars; ++$i) {
 			if ($chardata[$i]['type'] == 'NSM') {
 				if ($levcount) {
 					$chardata[$i]['type'] = $chardata[$i]['sor'];
 				} elseif ($i > 0) {
-					$chardata[$i]['type'] = $chardata[($i-1)]['type'];
+					$chardata[$i]['type'] = $chardata[($i - 1)]['type'];
 				}
 			}
 			if ($chardata[$i]['level'] != $prevlevel) {
@@ -2143,12 +2174,12 @@ class TCPDF_FONTS {
 		// W2. Search backward from each instance of a European number until the first strong type (R, L, AL, or sor) is found. If an AL is found, change the type of the European number to Arabic number.
 		$prevlevel = -1;
 		$levcount = 0;
-		for ($i=0; $i < $numchars; ++$i) {
+		for ($i = 0; $i < $numchars; ++$i) {
 			if ($chardata[$i]['char'] == 'EN') {
-				for ($j=$levcount; $j >= 0; $j--) {
+				for ($j = $levcount; $j >= 0; $j--) {
 					if ($chardata[$j]['type'] == 'AL') {
 						$chardata[$i]['type'] = 'AN';
-					} elseif (($chardata[$j]['type'] == 'L') OR ($chardata[$j]['type'] == 'R')) {
+					} elseif (($chardata[$j]['type'] == 'L') or ($chardata[$j]['type'] == 'R')) {
 						break;
 					}
 				}
@@ -2162,7 +2193,7 @@ class TCPDF_FONTS {
 		}
 
 		// W3. Change all ALs to R.
-		for ($i=0; $i < $numchars; ++$i) {
+		for ($i = 0; $i < $numchars; ++$i) {
 			if ($chardata[$i]['type'] == 'AL') {
 				$chardata[$i]['type'] = 'R';
 			}
@@ -2171,13 +2202,13 @@ class TCPDF_FONTS {
 		// W4. A single European separator between two European numbers changes to a European number. A single common separator between two numbers of the same type changes to that type.
 		$prevlevel = -1;
 		$levcount = 0;
-		for ($i=0; $i < $numchars; ++$i) {
-			if (($levcount > 0) AND (($i+1) < $numchars) AND ($chardata[($i+1)]['level'] == $prevlevel)) {
-				if (($chardata[$i]['type'] == 'ES') AND ($chardata[($i-1)]['type'] == 'EN') AND ($chardata[($i+1)]['type'] == 'EN')) {
+		for ($i = 0; $i < $numchars; ++$i) {
+			if (($levcount > 0) and (($i + 1) < $numchars) and ($chardata[($i + 1)]['level'] == $prevlevel)) {
+				if (($chardata[$i]['type'] == 'ES') and ($chardata[($i - 1)]['type'] == 'EN') and ($chardata[($i + 1)]['type'] == 'EN')) {
 					$chardata[$i]['type'] = 'EN';
-				} elseif (($chardata[$i]['type'] == 'CS') AND ($chardata[($i-1)]['type'] == 'EN') AND ($chardata[($i+1)]['type'] == 'EN')) {
+				} elseif (($chardata[$i]['type'] == 'CS') and ($chardata[($i - 1)]['type'] == 'EN') and ($chardata[($i + 1)]['type'] == 'EN')) {
 					$chardata[$i]['type'] = 'EN';
-				} elseif (($chardata[$i]['type'] == 'CS') AND ($chardata[($i-1)]['type'] == 'AN') AND ($chardata[($i+1)]['type'] == 'AN')) {
+				} elseif (($chardata[$i]['type'] == 'CS') and ($chardata[($i - 1)]['type'] == 'AN') and ($chardata[($i + 1)]['type'] == 'AN')) {
 					$chardata[$i]['type'] = 'AN';
 				}
 			}
@@ -2192,13 +2223,13 @@ class TCPDF_FONTS {
 		// W5. A sequence of European terminators adjacent to European numbers changes to all European numbers.
 		$prevlevel = -1;
 		$levcount = 0;
-		for ($i=0; $i < $numchars; ++$i) {
+		for ($i = 0; $i < $numchars; ++$i) {
 			if ($chardata[$i]['type'] == 'ET') {
-				if (($levcount > 0) AND ($chardata[($i-1)]['type'] == 'EN')) {
+				if (($levcount > 0) and ($chardata[($i - 1)]['type'] == 'EN')) {
 					$chardata[$i]['type'] = 'EN';
 				} else {
-					$j = $i+1;
-					while (($j < $numchars) AND ($chardata[$j]['level'] == $prevlevel)) {
+					$j = $i + 1;
+					while (($j < $numchars) and ($chardata[$j]['level'] == $prevlevel)) {
 						if ($chardata[$j]['type'] == 'EN') {
 							$chardata[$i]['type'] = 'EN';
 							break;
@@ -2220,8 +2251,8 @@ class TCPDF_FONTS {
 		// W6. Otherwise, separators and terminators change to Other Neutral.
 		$prevlevel = -1;
 		$levcount = 0;
-		for ($i=0; $i < $numchars; ++$i) {
-			if (($chardata[$i]['type'] == 'ET') OR ($chardata[$i]['type'] == 'ES') OR ($chardata[$i]['type'] == 'CS')) {
+		for ($i = 0; $i < $numchars; ++$i) {
+			if (($chardata[$i]['type'] == 'ET') or ($chardata[$i]['type'] == 'ES') or ($chardata[$i]['type'] == 'CS')) {
 				$chardata[$i]['type'] = 'ON';
 			}
 			if ($chardata[$i]['level'] != $prevlevel) {
@@ -2235,9 +2266,9 @@ class TCPDF_FONTS {
 		//W7. Search backward from each instance of a European number until the first strong type (R, L, or sor) is found. If an L is found, then change the type of the European number to L.
 		$prevlevel = -1;
 		$levcount = 0;
-		for ($i=0; $i < $numchars; ++$i) {
+		for ($i = 0; $i < $numchars; ++$i) {
 			if ($chardata[$i]['char'] == 'EN') {
-				for ($j=$levcount; $j >= 0; $j--) {
+				for ($j = $levcount; $j >= 0; $j--) {
 					if ($chardata[$j]['type'] == 'L') {
 						$chardata[$i]['type'] = 'L';
 					} elseif ($chardata[$j]['type'] == 'R') {
@@ -2256,37 +2287,43 @@ class TCPDF_FONTS {
 		// N1. A sequence of neutrals takes the direction of the surrounding strong text if the text on both sides has the same direction. European and Arabic numbers act as if they were R in terms of their influence on neutrals. Start-of-level-run (sor) and end-of-level-run (eor) are used at level run boundaries.
 		$prevlevel = -1;
 		$levcount = 0;
-		for ($i=0; $i < $numchars; ++$i) {
-			if (($levcount > 0) AND (($i+1) < $numchars) AND ($chardata[($i+1)]['level'] == $prevlevel)) {
-				if (($chardata[$i]['type'] == 'N') AND ($chardata[($i-1)]['type'] == 'L') AND ($chardata[($i+1)]['type'] == 'L')) {
+		for ($i = 0; $i < $numchars; ++$i) {
+			if (($levcount > 0) and (($i + 1) < $numchars) and ($chardata[($i + 1)]['level'] == $prevlevel)) {
+				if (($chardata[$i]['type'] == 'N') and ($chardata[($i - 1)]['type'] == 'L') and ($chardata[($i + 1)]['type'] == 'L')) {
 					$chardata[$i]['type'] = 'L';
-				} elseif (($chardata[$i]['type'] == 'N') AND
-				 (($chardata[($i-1)]['type'] == 'R') OR ($chardata[($i-1)]['type'] == 'EN') OR ($chardata[($i-1)]['type'] == 'AN')) AND
-				 (($chardata[($i+1)]['type'] == 'R') OR ($chardata[($i+1)]['type'] == 'EN') OR ($chardata[($i+1)]['type'] == 'AN'))) {
+				} elseif (
+					($chardata[$i]['type'] == 'N') and
+					(($chardata[($i - 1)]['type'] == 'R') or ($chardata[($i - 1)]['type'] == 'EN') or ($chardata[($i - 1)]['type'] == 'AN')) and
+					(($chardata[($i + 1)]['type'] == 'R') or ($chardata[($i + 1)]['type'] == 'EN') or ($chardata[($i + 1)]['type'] == 'AN'))
+				) {
 					$chardata[$i]['type'] = 'R';
 				} elseif ($chardata[$i]['type'] == 'N') {
 					// N2. Any remaining neutrals take the embedding direction
 					$chardata[$i]['type'] = $chardata[$i]['sor'];
 				}
-			} elseif (($levcount == 0) AND (($i+1) < $numchars) AND ($chardata[($i+1)]['level'] == $prevlevel)) {
+			} elseif (($levcount == 0) and (($i + 1) < $numchars) and ($chardata[($i + 1)]['level'] == $prevlevel)) {
 				// first char
-				if (($chardata[$i]['type'] == 'N') AND ($chardata[$i]['sor'] == 'L') AND ($chardata[($i+1)]['type'] == 'L')) {
+				if (($chardata[$i]['type'] == 'N') and ($chardata[$i]['sor'] == 'L') and ($chardata[($i + 1)]['type'] == 'L')) {
 					$chardata[$i]['type'] = 'L';
-				} elseif (($chardata[$i]['type'] == 'N') AND
-				 (($chardata[$i]['sor'] == 'R') OR ($chardata[$i]['sor'] == 'EN') OR ($chardata[$i]['sor'] == 'AN')) AND
-				 (($chardata[($i+1)]['type'] == 'R') OR ($chardata[($i+1)]['type'] == 'EN') OR ($chardata[($i+1)]['type'] == 'AN'))) {
+				} elseif (
+					($chardata[$i]['type'] == 'N') and
+					(($chardata[$i]['sor'] == 'R') or ($chardata[$i]['sor'] == 'EN') or ($chardata[$i]['sor'] == 'AN')) and
+					(($chardata[($i + 1)]['type'] == 'R') or ($chardata[($i + 1)]['type'] == 'EN') or ($chardata[($i + 1)]['type'] == 'AN'))
+				) {
 					$chardata[$i]['type'] = 'R';
 				} elseif ($chardata[$i]['type'] == 'N') {
 					// N2. Any remaining neutrals take the embedding direction
 					$chardata[$i]['type'] = $chardata[$i]['sor'];
 				}
-			} elseif (($levcount > 0) AND ((($i+1) == $numchars) OR (($i+1) < $numchars) AND ($chardata[($i+1)]['level'] != $prevlevel))) {
+			} elseif (($levcount > 0) and ((($i + 1) == $numchars) or (($i + 1) < $numchars) and ($chardata[($i + 1)]['level'] != $prevlevel))) {
 				//last char
-				if (($chardata[$i]['type'] == 'N') AND ($chardata[($i-1)]['type'] == 'L') AND ($chardata[$i]['eor'] == 'L')) {
+				if (($chardata[$i]['type'] == 'N') and ($chardata[($i - 1)]['type'] == 'L') and ($chardata[$i]['eor'] == 'L')) {
 					$chardata[$i]['type'] = 'L';
-				} elseif (($chardata[$i]['type'] == 'N') AND
-				 (($chardata[($i-1)]['type'] == 'R') OR ($chardata[($i-1)]['type'] == 'EN') OR ($chardata[($i-1)]['type'] == 'AN')) AND
-				 (($chardata[$i]['eor'] == 'R') OR ($chardata[$i]['eor'] == 'EN') OR ($chardata[$i]['eor'] == 'AN'))) {
+				} elseif (
+					($chardata[$i]['type'] == 'N') and
+					(($chardata[($i - 1)]['type'] == 'R') or ($chardata[($i - 1)]['type'] == 'EN') or ($chardata[($i - 1)]['type'] == 'AN')) and
+					(($chardata[$i]['eor'] == 'R') or ($chardata[$i]['eor'] == 'EN') or ($chardata[$i]['eor'] == 'AN'))
+				) {
 					$chardata[$i]['type'] = 'R';
 				} elseif ($chardata[$i]['type'] == 'N') {
 					// N2. Any remaining neutrals take the embedding direction
@@ -2306,20 +2343,20 @@ class TCPDF_FONTS {
 
 		// I1. For all characters with an even (left-to-right) embedding direction, those of type R go up one level and those of type AN or EN go up two levels.
 		// I2. For all characters with an odd (right-to-left) embedding direction, those of type L, EN or AN go up one level.
-		for ($i=0; $i < $numchars; ++$i) {
+		for ($i = 0; $i < $numchars; ++$i) {
 			$odd = $chardata[$i]['level'] % 2;
 			if ($odd) {
-				if (($chardata[$i]['type'] == 'L') OR ($chardata[$i]['type'] == 'AN') OR ($chardata[$i]['type'] == 'EN')) {
+				if (($chardata[$i]['type'] == 'L') or ($chardata[$i]['type'] == 'AN') or ($chardata[$i]['type'] == 'EN')) {
 					$chardata[$i]['level'] += 1;
 				}
 			} else {
 				if ($chardata[$i]['type'] == 'R') {
 					$chardata[$i]['level'] += 1;
-				} elseif (($chardata[$i]['type'] == 'AN') OR ($chardata[$i]['type'] == 'EN')) {
+				} elseif (($chardata[$i]['type'] == 'AN') or ($chardata[$i]['type'] == 'EN')) {
 					$chardata[$i]['level'] += 2;
 				}
 			}
-			$maxlevel = max($chardata[$i]['level'],$maxlevel);
+			$maxlevel = max($chardata[$i]['level'], $maxlevel);
 		}
 
 		// L1. On each line, reset the embedding level of the following characters to the paragraph embedding level:
@@ -2327,14 +2364,16 @@ class TCPDF_FONTS {
 		//	2. Paragraph separators,
 		//	3. Any sequence of whitespace characters preceding a segment separator or paragraph separator, and
 		//	4. Any sequence of white space characters at the end of the line.
-		for ($i=0; $i < $numchars; ++$i) {
-			if (($chardata[$i]['type'] == 'B') OR ($chardata[$i]['type'] == 'S')) {
+		for ($i = 0; $i < $numchars; ++$i) {
+			if (($chardata[$i]['type'] == 'B') or ($chardata[$i]['type'] == 'S')) {
 				$chardata[$i]['level'] = $pel;
 			} elseif ($chardata[$i]['type'] == 'WS') {
-				$j = $i+1;
+				$j = $i + 1;
 				while ($j < $numchars) {
-					if ((($chardata[$j]['type'] == 'B') OR ($chardata[$j]['type'] == 'S')) OR
-						(($j == ($numchars-1)) AND ($chardata[$j]['type'] == 'WS'))) {
+					if (
+						(($chardata[$j]['type'] == 'B') or ($chardata[$j]['type'] == 'S')) or
+						(($j == ($numchars - 1)) and ($chardata[$j]['type'] == 'WS'))
+					) {
 						$chardata[$i]['level'] = $pel;
 						break;
 					} elseif ($chardata[$j]['type'] != 'WS') {
@@ -2348,14 +2387,14 @@ class TCPDF_FONTS {
 		// Arabic Shaping
 		// Cursively connected scripts, such as Arabic or Syriac, require the selection of positional character shapes that depend on adjacent characters. Shaping is logically applied after the Bidirectional Algorithm is used and is limited to characters within the same directional run.
 		if ($arabic) {
-			$endedletter = array(1569,1570,1571,1572,1573,1575,1577,1583,1584,1585,1586,1608,1688);
-			$alfletter = array(1570,1571,1573,1575);
+			$endedletter = array(1569, 1570, 1571, 1572, 1573, 1575, 1577, 1583, 1584, 1585, 1586, 1608, 1688);
+			$alfletter = array(1570, 1571, 1573, 1575);
 			$chardata2 = $chardata;
 			$laaletter = false;
 			$charAL = array();
 			$x = 0;
-			for ($i=0; $i < $numchars; ++$i) {
-				if ((TCPDF_FONT_DATA::$uni_type[$chardata[$i]['char']] == 'AL') OR ($chardata[$i]['char'] == 32) OR ($chardata[$i]['char'] == 8204)) {
+			for ($i = 0; $i < $numchars; ++$i) {
+				if ((TCPDF_FONT_DATA::$uni_type[$chardata[$i]['char']] == 'AL') or ($chardata[$i]['char'] == 32) or ($chardata[$i]['char'] == 8204)) {
 					$charAL[$x] = $chardata[$i];
 					$charAL[$x]['i'] = $i;
 					$chardata[$i]['x'] = $x;
@@ -2363,36 +2402,36 @@ class TCPDF_FONTS {
 				}
 			}
 			$numAL = $x;
-			for ($i=0; $i < $numchars; ++$i) {
+			for ($i = 0; $i < $numchars; ++$i) {
 				$thischar = $chardata[$i];
 				if ($i > 0) {
-					$prevchar = $chardata[($i-1)];
+					$prevchar = $chardata[($i - 1)];
 				} else {
 					$prevchar = false;
 				}
-				if (($i+1) < $numchars) {
-					$nextchar = $chardata[($i+1)];
+				if (($i + 1) < $numchars) {
+					$nextchar = $chardata[($i + 1)];
 				} else {
 					$nextchar = false;
 				}
 				if (TCPDF_FONT_DATA::$uni_type[$thischar['char']] == 'AL') {
 					$x = $thischar['x'];
 					if ($x > 0) {
-						$prevchar = $charAL[($x-1)];
+						$prevchar = $charAL[($x - 1)];
 					} else {
 						$prevchar = false;
 					}
-					if (($x+1) < $numAL) {
-						$nextchar = $charAL[($x+1)];
+					if (($x + 1) < $numAL) {
+						$nextchar = $charAL[($x + 1)];
 					} else {
 						$nextchar = false;
 					}
 					// if laa letter
-					if (($prevchar !== false) AND ($prevchar['char'] == 1604) AND (in_array($thischar['char'], $alfletter))) {
+					if (($prevchar !== false) and ($prevchar['char'] == 1604) and (in_array($thischar['char'], $alfletter))) {
 						$arabicarr = TCPDF_FONT_DATA::$uni_laa_array;
 						$laaletter = true;
 						if ($x > 1) {
-							$prevchar = $charAL[($x-2)];
+							$prevchar = $charAL[($x - 2)];
 						} else {
 							$prevchar = false;
 						}
@@ -2400,12 +2439,14 @@ class TCPDF_FONTS {
 						$arabicarr = TCPDF_FONT_DATA::$uni_arabicsubst;
 						$laaletter = false;
 					}
-					if (($prevchar !== false) AND ($nextchar !== false) AND
-						((TCPDF_FONT_DATA::$uni_type[$prevchar['char']] == 'AL') OR (TCPDF_FONT_DATA::$uni_type[$prevchar['char']] == 'NSM')) AND
-						((TCPDF_FONT_DATA::$uni_type[$nextchar['char']] == 'AL') OR (TCPDF_FONT_DATA::$uni_type[$nextchar['char']] == 'NSM')) AND
-						($prevchar['type'] == $thischar['type']) AND
-						($nextchar['type'] == $thischar['type']) AND
-						($nextchar['char'] != 1567)) {
+					if (
+						($prevchar !== false) and ($nextchar !== false) and
+						((TCPDF_FONT_DATA::$uni_type[$prevchar['char']] == 'AL') or (TCPDF_FONT_DATA::$uni_type[$prevchar['char']] == 'NSM')) and
+						((TCPDF_FONT_DATA::$uni_type[$nextchar['char']] == 'AL') or (TCPDF_FONT_DATA::$uni_type[$nextchar['char']] == 'NSM')) and
+						($prevchar['type'] == $thischar['type']) and
+						($nextchar['type'] == $thischar['type']) and
+						($nextchar['char'] != 1567)
+					) {
 						if (in_array($prevchar['char'], $endedletter)) {
 							if (isset($arabicarr[$thischar['char']][2])) {
 								// initial
@@ -2417,29 +2458,35 @@ class TCPDF_FONTS {
 								$chardata2[$i]['char'] = $arabicarr[$thischar['char']][3];
 							}
 						}
-					} elseif (($nextchar !== false) AND
-						((TCPDF_FONT_DATA::$uni_type[$nextchar['char']] == 'AL') OR (TCPDF_FONT_DATA::$uni_type[$nextchar['char']] == 'NSM')) AND
-						($nextchar['type'] == $thischar['type']) AND
-						($nextchar['char'] != 1567)) {
+					} elseif (
+						($nextchar !== false) and
+						((TCPDF_FONT_DATA::$uni_type[$nextchar['char']] == 'AL') or (TCPDF_FONT_DATA::$uni_type[$nextchar['char']] == 'NSM')) and
+						($nextchar['type'] == $thischar['type']) and
+						($nextchar['char'] != 1567)
+					) {
 						if (isset($arabicarr[$chardata[$i]['char']][2])) {
 							// initial
 							$chardata2[$i]['char'] = $arabicarr[$thischar['char']][2];
 						}
-					} elseif ((($prevchar !== false) AND
-						((TCPDF_FONT_DATA::$uni_type[$prevchar['char']] == 'AL') OR (TCPDF_FONT_DATA::$uni_type[$prevchar['char']] == 'NSM')) AND
-						($prevchar['type'] == $thischar['type'])) OR
-						(($nextchar !== false) AND ($nextchar['char'] == 1567))) {
+					} elseif (
+						(($prevchar !== false) and
+							((TCPDF_FONT_DATA::$uni_type[$prevchar['char']] == 'AL') or (TCPDF_FONT_DATA::$uni_type[$prevchar['char']] == 'NSM')) and
+							($prevchar['type'] == $thischar['type'])) or
+						(($nextchar !== false) and ($nextchar['char'] == 1567))
+					) {
 						// final
-						if (($i > 1) AND ($thischar['char'] == 1607) AND
-							($chardata[$i-1]['char'] == 1604) AND
-							($chardata[$i-2]['char'] == 1604)) {
+						if (
+							($i > 1) and ($thischar['char'] == 1607) and
+							($chardata[$i - 1]['char'] == 1604) and
+							($chardata[$i - 2]['char'] == 1604)
+						) {
 							//Allah Word
 							// mark characters to delete with false
-							$chardata2[$i-2]['char'] = false;
-							$chardata2[$i-1]['char'] = false;
+							$chardata2[$i - 2]['char'] = false;
+							$chardata2[$i - 1]['char'] = false;
 							$chardata2[$i]['char'] = 65010;
 						} else {
-							if (($prevchar !== false) AND in_array($prevchar['char'], $endedletter)) {
+							if (($prevchar !== false) and in_array($prevchar['char'], $endedletter)) {
 								if (isset($arabicarr[$thischar['char']][0])) {
 									// isolated
 									$chardata2[$i]['char'] = $arabicarr[$thischar['char']][0];
@@ -2458,7 +2505,7 @@ class TCPDF_FONTS {
 					// if laa letter
 					if ($laaletter) {
 						// mark characters to delete with false
-						$chardata2[($charAL[($x-1)]['i'])]['char'] = false;
+						$chardata2[($charAL[($x - 1)]['i'])]['char'] = false;
 					}
 				} // end if AL (Arabic Letter)
 			} // end for each char
@@ -2466,12 +2513,12 @@ class TCPDF_FONTS {
 			 * Combining characters that can occur with Arabic Shadda (0651 HEX, 1617 DEC) are replaced.
 			 * Putting the combining mark and shadda in the same glyph allows us to avoid the two marks overlapping each other in an illegible manner.
 			 */
-			for ($i = 0; $i < ($numchars-1); ++$i) {
-				if (($chardata2[$i]['char'] == 1617) AND (isset(TCPDF_FONT_DATA::$uni_diacritics[($chardata2[$i+1]['char'])]))) {
+			for ($i = 0; $i < ($numchars - 1); ++$i) {
+				if (($chardata2[$i]['char'] == 1617) and (isset(TCPDF_FONT_DATA::$uni_diacritics[($chardata2[$i + 1]['char'])]))) {
 					// check if the subtitution font is defined on current font
-					if (isset($currentfont['cw'][(TCPDF_FONT_DATA::$uni_diacritics[($chardata2[$i+1]['char'])])])) {
+					if (isset($currentfont['cw'][(TCPDF_FONT_DATA::$uni_diacritics[($chardata2[$i + 1]['char'])])])) {
 						$chardata2[$i]['char'] = false;
-						$chardata2[$i+1]['char'] = TCPDF_FONT_DATA::$uni_diacritics[($chardata2[$i+1]['char'])];
+						$chardata2[$i + 1]['char'] = TCPDF_FONT_DATA::$uni_diacritics[($chardata2[$i + 1]['char'])];
 					}
 				}
 			}
@@ -2490,11 +2537,11 @@ class TCPDF_FONTS {
 		}
 
 		// L2. From the highest level found in the text to the lowest odd level on each line, including intermediate levels not actually present in the text, reverse any contiguous sequence of characters that are at that level or higher.
-		for ($j=$maxlevel; $j > 0; $j--) {
-			$ordarray = Array();
-			$revarr = Array();
+		for ($j = $maxlevel; $j > 0; $j--) {
+			$ordarray = array();
+			$revarr = array();
 			$onlevel = false;
-			for ($i=0; $i < $numchars; ++$i) {
+			for ($i = 0; $i < $numchars; ++$i) {
 				if ($chardata[$i]['level'] >= $j) {
 					$onlevel = true;
 					if (isset(TCPDF_FONT_DATA::$uni_mirror[$chardata[$i]['char']])) {
@@ -2506,7 +2553,7 @@ class TCPDF_FONTS {
 					if ($onlevel) {
 						$revarr = array_reverse($revarr);
 						$ordarray = array_merge($ordarray, $revarr);
-						$revarr = Array();
+						$revarr = array();
 						$onlevel = false;
 					}
 					$ordarray[] = $chardata[$i];
@@ -2534,7 +2581,8 @@ class TCPDF_FONTS {
 	 * @return float value in points
 	 * @public static
 	 */
-	public static function getFontRefSize($size, $refsize=12) {
+	public static function getFontRefSize($size, $refsize = 12)
+	{
 		switch ($size) {
 			case 'xx-small': {
 				$size = ($refsize - 4);
