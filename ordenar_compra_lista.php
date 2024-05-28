@@ -328,10 +328,14 @@ function reiniciarBusqueda(){
 		
 		<?php if(($_SESSION['MM_RolID']==5 OR $_SESSION['MM_RolID']==3) && $row_RsListaRequerimientos['FIRMA']=='0'){ ?>
 		<?php require_once("scripts/funcionescombo.php");		
+													//aca
+													$valor_orden=0;
 													$estados = dameAutorizacionOrden($row_RsListaRequerimientos['CODIGO']);
+													echo($estados);
 													foreach($estados as $indice => $registro)
 													{
 														$valorOrden=number_format($registro['TOTAL']);
+														
 														$valor_orden=$valorOrden;													
 													}
 													$resultado = false;

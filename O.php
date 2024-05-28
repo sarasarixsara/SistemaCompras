@@ -1,4 +1,5 @@
 <?php
+//ini_set('display_errors', 0);
 // require_once('C:/inetpub/wwwroot/SistemaCompras/includes/tcpdf_min/tcpdf.php');
 require_once('includes/tcpdf_min/tcpdf.php');
 if (!isset($_SESSION)) {
@@ -97,8 +98,10 @@ if($row_RsOrdenVerificarAnulado['anulado'] == '1'){
 		$RsDetallesCompra = mysqli_query($conexion,$query_RsDetallesCompra) or die(mysqli_error($conexion));
 		$row_RsDetallesCompra = mysqli_fetch_assoc($RsDetallesCompra);
 		$totalRows_RsDetallesCompra = mysqli_num_rows($RsDetallesCompra);
-
+			if ($totalRows_RsDetallesCompra){			  	
 		$orden_anulada = $row_RsDetallesCompra['ANULADO'];
+			}
+	
 		
 $p ="123";
 if($totalRows_RsDetallesCompra>0){
@@ -111,7 +114,7 @@ class MYPDF extends TCPDF {
         $image_file = K_PATH_IMAGES.$this->header_logo;
         $this->Image($image_file, 15, 15, '34', '10', 'JPG', '', 'T', false, 300, '', false, false, 0, false, false, false);
         // Set font
-        $this->SetFont('helvetica', '', 8);
+         $this->SetFont('helvetica', '', 8);
 		$this->anulado = $GLOBALS['orden_anulada'] == '1' ? ' - ANULADO ': '';
         // Title
         //$this->Cell(0, 15, $this->header_title, 0, false, 'C', 0, '', 0, false, 'M', 'M');

@@ -2700,16 +2700,7 @@ function PasaEstadoDetalle (det,est){
  				<?php
 				if($estado == 1 && $totalRows_RsListadoDeta_Requ>0)
 				{
-				?><!--
- 					<tr bgcolor="#F4F3F1">
-						<td class="SLAB3">
-							Anexo:
-						</td>
-						<td>
-	 						<input type="file" name="archivo1" id="archivo1" />
-	 						<input class="button2" type="submit"  value="Subir Archivo" onclick="return subirarchivo();"/>
-						</td>
-					</tr>-->
+				?>
 				<?php
 				}
 				?>
