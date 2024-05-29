@@ -14,17 +14,20 @@ if ($codigo_proveedor != '') {
 							   DR.DEREPROV DETALLE_ID_PROVEEDOR,
 							   DR.DEREDESC DETALLE_DESC,
 							   DR.DERECOOC DETALLE_ORDEN,
-							   P.PROVNOMB PROVEEDOR_NOMBRE
+							   P.PROVNOMB PROVEEDOR_NOMBRE,
+							   DR.DERECOOC ID_ORDEN
 							   
 
 						FROM REQUERIMIENTOS R ,
 							 DETALLE_REQU  DR ,
-							 PROVEEDORES P
-							 
+							 PROVEEDORES P,
+							 ORDEN_COMPRA OC
 
+							
 						WHERE P.PROVCODI='" . $codigo_proveedor . "'
 						AND DR.DEREREQU=R.REQUCODI
-						AND DR.DEREPROV=P.PROVCODI      
+						AND DR.DEREPROV=P.PROVCODI  
+						AND DR.DERECOOC=OC.ORCOCONS 
 					";
 	$RsLista_prov = mysqli_query($conexion, $query_RsLista_prov) or die(mysqli_error($conexion));
 	$row_RsLista_prov = mysqli_fetch_array($RsLista_prov);
@@ -32,6 +35,9 @@ if ($codigo_proveedor != '') {
 
 
 }
+
+
+
 if ($codigo_proveedor != '') {
 	$query_RsPOA = " SELECT PO.POANOMB AS POA_NOM,
 							PD.PODENOMB AS SUBPOA_NOM
@@ -122,6 +128,8 @@ if ($codigo_proveedor != '') {
 		<td width="150">POA</td>
 		<td width="150">SUB POA</td>
 		<td>ORDEN</td>
+		<td>ID PROV</td>
+		<td>ID ORDEN</td>
 	</tr>
 	<?php
 	if ($totalRows_RsLista_prov > 0) {
@@ -139,8 +147,10 @@ if ($codigo_proveedor != '') {
 				<td class='text-justify'><?php echo ($row_RsLista_prov['DETALLE_DESC']); ?></td>
 				<td class='text-justify'><?php echo ($row_RsPOA['POA_NOM']); ?></td>
 				<td class='text-justify'><?php echo ($row_RsPOA['SUBPOA_NOM']); ?></td>
-				<td><?php echo ($row_RsLista_prov['DETALLE_ORDEN']); ?></td>
-
+				<td>
+					<a target="_blank" href="O.php?codprov=<?php echo($row_RsLista_prov['DETALLE_ID_PROVEEDOR']);?>&codcomp=<?php echo($row_RsLista_prov['ID_ORDEN']);?>&%=2&f=<?php echo($row_RsListaRequerimientos['FIRMA']);?>"><?php echo ($row_RsLista_prov['DETALLE_ORDEN']); ?></a></td>
+				<td class='text-justify'><?php echo ($row_RsLista_prov['DETALLE_ID_PROVEEDOR']); ?></td>
+				<td class='text-justify'><?php echo ($row_RsLista_prov['ID_ORDEN']); ?></td>
 			</tr>
 			<?php
 		} while ($row_RsLista_prov = mysqli_fetch_array($RsLista_prov));
