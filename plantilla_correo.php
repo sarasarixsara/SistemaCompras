@@ -146,7 +146,7 @@ require_once('conexion/db.php');
 
 // Configuracion de envio correo electronico	
 
-	require 'C:/inetpub/wwwroot/SistemaCompras/includes/PHPMailer/PHPMailerAutoload.php';
+	require 'C:/laragon/www/compras/includes/PHPMailer/PHPMailerAutoload.php';
 
 	$mail = new PHPMailer;
 

@@ -145,7 +145,7 @@ if ($codigo_proveedor != '') {
 			}
 			?>
 			<tr class="<?php echo ($estilo); ?>">
-				<td> <a href="/home.php?page=solicitud&codreq=<?php echo ($row_RsLista_prov['REQUERIMIENTO']); ?>"
+				<td> <a href="./home.php?page=solicitud&codreq=<?php echo ($row_RsLista_prov['REQUERIMIENTO']); ?>"
 						target="_back"><?php echo ($row_RsLista_prov['REQUERIMIENTO_CODIGO']); ?></a></td>
 				<td class='text-justify'><?php echo ($row_RsLista_prov['DETALLE_DESC']); ?></td>
 				<td class='text-justify'><?php echo ($row_RsPOA['POA_NOM']); ?></td>
