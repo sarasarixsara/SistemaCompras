@@ -498,6 +498,13 @@ $(document).ready(function(){
 	})	
 
 });
+
+$(document).ready(function(){
+    $("#markAllReceived").click(function(){
+        fentregaMultiple();
+    });
+});
+
 function todo(){
 	$("#chkall").attr("checked",true);
 	$(".multiplefilechk").each(function(index){
@@ -1475,7 +1482,7 @@ function messageAjax(msg,timer){
 
 
   function fentrega(id,Ncot){
-    if(confirm("seguro que desea marcar como recibido este detalle")){
+    
 		$("#loading_img_"+id).css("display","block");
 			$.ajax({
 	            type: "POST",
@@ -1484,7 +1491,7 @@ function messageAjax(msg,timer){
 				success : function(r){
 					if(r.length>0){
 						if(r[0].afectado !='' && r[0].afectado == '1'){
-						 //location.reload();
+						 location.reload();
 						 //return false;
 						   if(r[0].background!=''){
 							   $("#tdaprob_"+id).css("background", ""+r[0].background);
@@ -1498,9 +1505,25 @@ function messageAjax(msg,timer){
 				},
 				error   : callback_error
 	        });					
-	}
+	
 	  
   } 
+  function fentregaMultiple(){
+    let detallesSeleccionados = $(".multiplefilechk:checked");
+    if(detallesSeleccionados.length === 0){
+        alert("No hay detalles seleccionados.");
+        return;
+    }
+
+    if(confirm("¿Seguro que desea marcar como recibidos todos los detalles seleccionados?")){
+        detallesSeleccionados.each(function(){
+            let id = $(this).attr("value");
+            let Ncot = $(this).data("ncot");  // Asumiendo que el número de cotización está almacenado como data-attribute
+            fentrega(id, Ncot);
+        });
+    }
+}
+
 
 function CompletaSelect(campo,obj,campo2){
 	console.log(obj);
@@ -1977,6 +2000,8 @@ function PasaEstadoDetalle (det,est){
 					codigo: <span id="msgaddeventolistado" class="msgaddevento"><?php echo($codigo_evento);?></span>						
 					</div>
 						<div id="multiplesdetalles" style="display: none;margin-left: 10px;float: left;"><button type="button" class="btn btn-default">Cargar un archivo a multiples detalles</button></div>
+						<button id="markAllReceived" style="padding: 8px;margin-left:10px;"> <img src="imagenes/entregado.png" width="16"  title="Entregado" >Recibido</button>
+
 					</th>
 					<?php if($_SESSION['MM_RolID']== 2){
                         $colorbandera=0;
@@ -3133,33 +3158,33 @@ function SaveCodeEvento(){
 	        });
 	}	
 
-	  function fentrega(id,Ncot){
-    if(confirm("seguro que desea marcar como recibido este detalle")){
-		$("#loading_img_"+id).css("display","block");
-			$.ajax({
-	            type: "POST",
-	            url: "tipo_guardar.php?tipoGuardar=marcarentregado&ncot=="+Ncot+"&codigo_e="+id,
-	            dataType: 'json',
-				success : function(r){
-					if(r.length>0){
-						if(r[0].afectado !='' && r[0].afectado == '1'){
-						 //location.reload();
-						 //return false;
-						   if(r[0].background!=''){
-							   $("#tdaprob_"+id).css("background", ""+r[0].background);
-							}
-						  $("#trtr_"+id+" .imgacciones").each(function(index){
-							$(this).html('');
-						  });
-						  $("#loading_img_"+id).css("display","none");
-						}
-					}
-				},
-				error   : callback_error
-	        });					
-	}
+// 	  function fentrega(id,Ncot){
+//     if(confirm("seguro que desea marcar como recibido este detalle")){
+// 		$("#loading_img_"+id).css("display","block");
+// 			$.ajax({
+// 	            type: "POST",
+// 	            url: "tipo_guardar.php?tipoGuardar=marcarentregado&ncot=="+Ncot+"&codigo_e="+id,
+// 	            dataType: 'json',
+// 				success : function(r){
+// 					if(r.length>0){
+// 						if(r[0].afectado !='' && r[0].afectado == '1'){
+// 						 //location.reload();
+// 						 //return false;
+// 						   if(r[0].background!=''){
+// 							   $("#tdaprob_"+id).css("background", ""+r[0].background);
+// 							}
+// 						  $("#trtr_"+id+" .imgacciones").each(function(index){
+// 							$(this).html('');
+// 						  });
+// 						  $("#loading_img_"+id).css("display","none");
+// 						}
+// 					}
+// 				},
+// 				error   : callback_error
+// 	        });					
+// 	}
 	  
-  }
+//   }
 
 
  function FMD_ReiniciarDet(det){
