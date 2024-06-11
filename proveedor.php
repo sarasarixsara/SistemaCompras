@@ -6,60 +6,33 @@ if (isset($_GET['cod_prov']) && $_GET['cod_prov'] != '') {
 	$codigo_proveedor = $_GET['cod_prov'];
 }
 
-
-
 if ($codigo_proveedor != '') {
-	$query_RsLista_prov = "SELECT R.REQUCORE REQUERIMIENTO_CODIGO,
-							   R.REQUCODI REQUERIMIENTO,
-							   DR.DEREPROV DETALLE_ID_PROVEEDOR,
-							   DR.DEREDESC DETALLE_DESC,
-							   DR.DERECOOC DETALLE_ORDEN,
-							   P.PROVNOMB PROVEEDOR_NOMBRE,
-							   DR.DERECOOC ID_ORDEN,
-							   F.FIRMCONS ID_FIRMA,
-							   OC.ORCOFIRM ORDEN_FIRMA,
-							   DF.DEFADETA FACTURA
-							--    DF.DEFADETA FACTURA,
-							--    DR.DERECONS REQ_CONS
-							   
+	$query_RsLista_prov = "SELECT R.REQUCORE AS REQUERIMIENTO_CODIGO,
+							R.REQUCODI AS REQUERIMIENTO,
+							DR.DEREPROV AS DETALLE_ID_PROVEEDOR,
+							DR.DEREDESC AS DETALLE_DESC,
+							DR.DERECOOC AS DETALLE_ORDEN,
+							P.PROVNOMB AS PROVEEDOR_NOMBRE,
+							DR.DERECOOC AS ID_ORDEN,
+							F.FIRMCONS AS ID_FIRMA,
+							OC.ORCOFIRM AS ORDEN_FIRMA,
+							DF.DEFADETA AS FACTURA
 
-						FROM REQUERIMIENTOS R ,
-							 DETALLE_REQU  DR ,
-							 PROVEEDORES P,
-							 ORDEN_COMPRA OC,
-							 FIRMAS F,
-							 DETALLE_FACTURA DF
+						FROM REQUERIMIENTOS R
+						JOIN DETALLE_REQU DR ON DR.DEREREQU = R.REQUCODI
+						JOIN PROVEEDORES P ON DR.DEREPROV = P.PROVCODI
+						JOIN ORDEN_COMPRA OC ON DR.DERECOOC = OC.ORCOCONS
+						JOIN FIRMAS F ON OC.ORCOFIRM = F.FIRMCONS
+						LEFT JOIN DETALLE_FACTURA DF ON DR.DERECONS = DF.DEFADETA
 
-							
-						WHERE P.PROVCODI='" . $codigo_proveedor . "'
-						AND DR.DEREREQU=R.REQUCODI
-						AND DR.DEREPROV=P.PROVCODI  
-						AND DR.DERECOOC=OC.ORCOCONS 
-						AND OC.ORCOFIRM=F.FIRMCONS
-						AND DR.DERECONS = DF.DEFADETA
+						WHERE P.PROVCODI = '" . $codigo_proveedor . "';
+
 				
 					";
 	$RsLista_prov = mysqli_query($conexion, $query_RsLista_prov) or die(mysqli_error($conexion));
 	$row_RsLista_prov = mysqli_fetch_array($RsLista_prov);
 	$totalRows_RsLista_prov = mysqli_num_rows($RsLista_prov);
 
-}
-
-if ($codigo_proveedor != '') {
-	$query_RsFactura = " SELECT DF.DEFADETA AS FACTURA
-							
-					FROM REQUERIMIENTOS R,
-						DETALLE_REQU DR,
-						DETALLE_FACTURA DF,
-						PROVEEDORES P
-					WHERE P.PROVCODI = '" . $codigo_proveedor . "'
-					AND DR.DEREREQU = R.REQUCODI
-					AND DR.DEREPROV = P.PROVCODI
-					AND DR.DERECONS = DF.DEFADETA
-    ";
-	$RsFactura = mysqli_query($conexion, $query_RsFactura) or die(mysqli_error($conexion));
-	$row_RsFactura = mysqli_fetch_array($RsFactura);
-	$totalRows_RsFactura = mysqli_num_rows($RsFactura);
 }
 
 if ($codigo_proveedor != '') {
