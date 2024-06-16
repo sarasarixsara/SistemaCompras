@@ -129,7 +129,7 @@ if ($codigo_proveedor != '') {
 
 	</tr>
 	<?php
-	if ($totalRows_RsLista_prov > 0 ) {
+	if ($totalRows_RsLista_prov > 0) {
 		$j = 0;
 		do {
 			$j++;
@@ -145,7 +145,9 @@ if ($codigo_proveedor != '') {
 				<td class='text-justify'><?php echo ($row_RsPOA['POA_NOM']); ?></td>
 				<td class='text-justify'><?php echo ($row_RsPOA['SUBPOA_NOM']); ?></td>
 				<td>
-					<a target="_blank" href="O.php?codprov=<?php echo($row_RsLista_prov['DETALLE_ID_PROVEEDOR']);?>&codcomp=<?php echo($row_RsLista_prov['ID_ORDEN']);?>&%=2&f=<?php echo($row_RsLista_prov['ORDEN_FIRMA']);?>"><?php echo ($row_RsLista_prov['DETALLE_ORDEN']); ?></a></td>
+					<a target="_blank"
+						href="O.php?codprov=<?php echo ($row_RsLista_prov['DETALLE_ID_PROVEEDOR']); ?>&codcomp=<?php echo ($row_RsLista_prov['ID_ORDEN']); ?>&%=2&f=<?php echo ($row_RsLista_prov['ORDEN_FIRMA']); ?>"><?php echo ($row_RsLista_prov['DETALLE_ORDEN']); ?></a>
+				</td>
 				<td><?php echo ($row_RsLista_prov['FACTURA']); ?> </td>
 			</tr>
 			<?php
@@ -154,7 +156,7 @@ if ($codigo_proveedor != '') {
 	?>
 </table>
 <button type="button" onclick="tableToCSV()">
-	download CSV
+	Exportar CSV
 </button>
 
 </html>
@@ -175,9 +177,15 @@ if ($codigo_proveedor != '') {
 			let csvrow = [];
 			for (let j = 0; j < cols.length; j++) {
 
-				// Get the text data of each cell
-				// of a row and push it to csvrow
-				csvrow.push(cols[j].innerHTML);
+				// Check if the cell contains an <a> element
+				let aElement = cols[j].querySelector('a');
+				if (aElement) {
+					// Get the text content of the <a> element
+					csvrow.push(aElement.textContent.trim());
+				} else {
+					// Get the text content of the cell
+					csvrow.push(cols[j].textContent.trim());
+				}
 			}
 
 			// Combine each column value with comma
@@ -189,32 +197,27 @@ if ($codigo_proveedor != '') {
 
 		// Call this function to download csv file  
 		downloadCSVFile(csv_data);
-
 	}
+
 	function downloadCSVFile(csv_data) {
+		// Create a Blob object with the CSV data
+		let csvBlob = new Blob([csv_data], { type: 'text/csv' });
 
-		// Create CSV file object and feed
-		// our csv_data into it
-		CSVFile = new Blob([csv_data], {
-			type: "text/csv"
-		});
+		// Create a link element
+		let downloadLink = document.createElement('a');
 
-		// Create to temporary link to initiate
-		// download process
-		let temp_link = document.createElement('a');
+		// Set the download attribute with a filename
+		downloadLink.download = 'proveedor.csv';
 
-		// Download csv file
-		temp_link.download = "GfG.csv";
-		let url = window.URL.createObjectURL(CSVFile);
-		temp_link.href = url;
+		// Create a URL for the Blob and set it as the href attribute
+		downloadLink.href = window.URL.createObjectURL(csvBlob);
 
-		// This link should not be displayed
-		temp_link.style.display = "none";
-		document.body.appendChild(temp_link);
+		// Append the link to the document body and trigger a click to start the download
+		document.body.appendChild(downloadLink);
+		downloadLink.click();
 
-		// Automatically click the link to
-		// trigger download
-		temp_link.click();
-		document.body.removeChild(temp_link);
+		// Remove the link from the document
+		document.body.removeChild(downloadLink);
 	}
+
 </script>
