@@ -1,49 +1,6 @@
 <?php
 require_once ('conexion/db.php');
 
-$codigo_proveedor = "";
-if (isset($_GET['cod_prov']) && $_GET['cod_prov'] != '') {
-	$codigo_proveedor = $_GET['cod_prov'];
-}
-
-$codigo_filtro = '';
-if (isset($_POST['codigo_filtro']) && $_POST['codigo_filtro'] != '') {
-	$codigo_filtro = $_POST['codigo_filtro'];
-}
-
-
-if ($codigo_proveedor != '') {
-	$query_RsLista_prov = "SELECT R.REQUCORE AS REQUERIMIENTO_CODIGO,
-							R.REQUCODI AS REQUERIMIENTO,
-							DR.DEREPROV AS DETALLE_ID_PROVEEDOR,
-							DR.DEREDESC AS DETALLE_DESC,
-							DR.DERECOOC AS DETALLE_ORDEN,
-							P.PROVNOMB AS PROVEEDOR_NOMBRE,
-							DR.DERECOOC AS ID_ORDEN,
-							F.FIRMCONS AS ID_FIRMA,
-							OC.ORCOFIRM AS ORDEN_FIRMA,
-							DF.DEFADETA AS FACTURA,
-							DR.DERECANT AS CANTIDAD,
-							A.AREANOMB AS AREA,
-							A.AREAID AS AREA_ID
-
-						FROM REQUERIMIENTOS R
-						JOIN DETALLE_REQU DR ON DR.DEREREQU = R.REQUCODI
-						JOIN PROVEEDORES P ON DR.DEREPROV = P.PROVCODI
-						JOIN ORDEN_COMPRA OC ON DR.DERECOOC = OC.ORCOCONS
-						JOIN FIRMAS F ON OC.ORCOFIRM = F.FIRMCONS
-						JOIN AREA A ON R.REQUAREA = A.AREAID
-						LEFT JOIN DETALLE_FACTURA DF ON DR.DERECONS = DF.DEFADETA
-
-						WHERE P.PROVCODI = '" . $codigo_proveedor . "';
-
-				
-					";
-	$RsLista_prov = mysqli_query($conexion, $query_RsLista_prov) or die(mysqli_error($conexion));
-	$row_RsLista_prov = mysqli_fetch_array($RsLista_prov);
-	$totalRows_RsLista_prov = mysqli_num_rows($RsLista_prov);
-
-}
 //CONSULTA DE AREAS
 $query_RsArea = "SELECT A.AREAID CODIGO_AREA,
 						A.AREANOMB NOMBRE
@@ -78,33 +35,15 @@ $SUBPOA = mysqli_query($conexion, $query_SUBPOA) or die(mysqli_connect_error());
 $row_SUBPOA = mysqli_fetch_array($SUBPOA);
 $totalRows_SUBPOA = mysqli_num_rows($SUBPOA);
 
-//CONSULTA DE DETALLES
-// if ($desc_detalle != '') {
-// 	$query_RsListaDetallesRequerimientos = "SELECT DEREDESC AS DESCRIPCION_DETALLE, 
-//                                                    REQUCORE AS REQUERIMIENTO_CODI
-//                                             FROM   DETALLE_REQU D
-//                                             JOIN   REQUERIMIENTOS R ON D.DEREREQU = R.REQUCODI
-//                                             WHERE  D.DEREDESC LIKE '%$desc_detalle%'
-//                                             AND    R.REQUIDUS = '$userID'";
-// }
 
-if ($codigo_proveedor != '') {
-	$query_RsPOA = " SELECT PO.POANOMB AS POA_NOM,
-							PD.PODENOMB AS SUBPOA_NOM
-					FROM REQUERIMIENTOS R,
-						DETALLE_REQU DR,
-						PROVEEDORES P,
-						POA PO,
-						POADETA PD
-					WHERE P.PROVCODI = '" . $codigo_proveedor . "'
-					AND DR.DEREREQU = R.REQUCODI
-					AND DR.DEREPROV = P.PROVCODI
-					AND DR.DEREPOA = PO.POACODI
-					AND PD.PODECODI = DR.DEREPOA
-    ";
-	$RsPOA = mysqli_query($conexion, $query_RsPOA) or die(mysqli_error($conexion));
-	$row_RsPOA = mysqli_fetch_array($RsPOA);
-	$totalRows_RsPOA = mysqli_num_rows($RsPOA);
+$codigo_proveedor = "";
+if (isset($_GET['cod_prov']) && $_GET['cod_prov'] != '') {
+	$codigo_proveedor = $_GET['cod_prov'];
+}
+
+$codigo_filtro = '';
+if (isset($_POST['codigo_filtro']) && $_POST['codigo_filtro'] != '') {
+	$codigo_filtro = $_POST['codigo_filtro'];
 }
 
 $area_filtro = '';
@@ -128,14 +67,76 @@ if (isset($_POST['subpoa_filtro']) && $_POST['subpoa_filtro'] != '') {
 	$subpoa_filtro = $_POST['subpoa_filtro'];
 }
 
+if ($codigo_filtro=='' && $area_filtro=='' && $desc_detalle=='' && $poa_filtro=='' && $subpoa_filtro=='') {
+	$query_RsLista_prov = "SELECT R.REQUCORE AS REQUERIMIENTO_CODIGO,
+							R.REQUCODI AS REQUERIMIENTO,
+							DR.DEREPROV AS DETALLE_ID_PROVEEDOR,
+							DR.DEREDESC AS DETALLE_DESC,
+							DR.DERECOOC AS DETALLE_ORDEN,
+							P.PROVNOMB AS PROVEEDOR_NOMBRE,
+							DR.DERECOOC AS ID_ORDEN,
+							F.FIRMCONS AS ID_FIRMA,
+							OC.ORCOFIRM AS ORDEN_FIRMA,
+							DF.DEFADETA AS FACTURA,
+							DF.DEFADESC AS DET_FACTURA,
+							DF.DEFAID AS ID_FACTURA,
+							DR.DERECANT AS CANTIDAD,
+							A.AREANOMB AS AREA,
+							A.AREAID AS AREA_ID
+
+						FROM REQUERIMIENTOS R
+						JOIN DETALLE_REQU DR ON DR.DEREREQU = R.REQUCODI
+						JOIN PROVEEDORES P ON DR.DEREPROV = P.PROVCODI
+						JOIN ORDEN_COMPRA OC ON DR.DERECOOC = OC.ORCOCONS
+						JOIN FIRMAS F ON OC.ORCOFIRM = F.FIRMCONS
+						JOIN AREA A ON R.REQUAREA = A.AREAID
+						LEFT JOIN DETALLE_FACTURA DF ON DR.DERECONS = DF.DEFADETA
+
+						WHERE P.PROVCODI = '" . $codigo_proveedor . "';
+				
+					";
+	$RsLista_prov = mysqli_query($conexion, $query_RsLista_prov) or die(mysqli_error($conexion));
+	$row_RsLista_prov = mysqli_fetch_array($RsLista_prov);
+	$totalRows_RsLista_prov = mysqli_num_rows($RsLista_prov);
+
+}
+
+//CONSULTA DE DETALLES
+// if ($desc_detalle != '') {
+// 	$query_RsListaDetallesRequerimientos = "SELECT DEREDESC AS DESCRIPCION_DETALLE, 
+//                                                    REQUCORE AS REQUERIMIENTO_CODI
+//                                             FROM   DETALLE_REQU D
+//                                             JOIN   REQUERIMIENTOS R ON D.DEREREQU = R.REQUCODI
+//                                             WHERE  D.DEREDESC LIKE '%$desc_detalle%'
+//                                             AND    R.REQUIDUS = '$userID'";
+// }
+
+if ($codigo_filtro=='' && $area_filtro=='' && $desc_detalle=='' && $poa_filtro=='' && $subpoa_filtro=='') {
+	$query_RsPOA = " SELECT PO.POANOMB AS POA_NOM,
+							PD.PODENOMB AS SUBPOA_NOM
+					FROM REQUERIMIENTOS R,
+						DETALLE_REQU DR,
+						PROVEEDORES P,
+						POA PO,
+						POADETA PD
+					WHERE P.PROVCODI = '" . $codigo_proveedor . "'
+					AND DR.DEREREQU = R.REQUCODI
+					AND DR.DEREPROV = P.PROVCODI
+					AND DR.DEREPOA = PO.POACODI
+					AND PD.PODECODI = DR.DEREPOA
+    ";
+	$RsPOA = mysqli_query($conexion, $query_RsPOA) or die(mysqli_error($conexion));
+	$row_RsPOA = mysqli_fetch_array($RsPOA);
+	$totalRows_RsPOA = mysqli_num_rows($RsPOA);
+}
 
 
-if ($area_filtro = !'') {
-	$query_RsLista_prov .= " AND AREA_ID = '" . $area_filtro . "' ";
+// if ($area_filtro = !'') {
+// 	$query_RsLista_prov .= " AND AREA_ID = '" . $area_filtro . "' ";
 	// $RsLista_prov = mysqli_query($conexion, $query_RsLista_prov) or die(mysqli_error($conexion));
 	// $row_RsLista_prov = mysqli_fetch_array($RsLista_prov);
 	// $totalRows_RsLista_prov = mysqli_num_rows($RsLista_prov);
-}
+// }
 
 ?>
 
@@ -269,12 +270,11 @@ if ($area_filtro = !'') {
 		</select>
 		<input type="button" name="farea" id="farea" value="x" onclick="limpiarfiltros('area_filtro');">
 	</td>
-	<!-- <td align="center">
-		<input type="submit" name="butonfiltro" id="butonfiltro" class="button2" value="Buscar" onclick="Busqueda();">
-	</td> -->
+
 	<td>
 		<input type="submit" name="filtrar" value="Filtrar">
 	</td>
+
 </form>
 <div style="margin-bottom: 10px;font-weight: bold;font-size: 15px">
 	PROVEEDOR: <?php echo ($row_RsLista_prov['PROVEEDOR_NOMBRE']); ?>
@@ -288,7 +288,8 @@ if ($area_filtro = !'') {
 		<td width="150">SUB POA</td>
 		<td width="150">AREA</td>
 		<td>ORDEN</td>
-		<td>FACTURA</td>
+		<td width="50">FACTURA</td>
+		
 
 	</tr>
 	<?php
@@ -316,8 +317,9 @@ if ($area_filtro = !'') {
 					</td>
 					<td><?php if (($row_RsLista_prov['FACTURA'])) {
 						echo ($row_RsLista_prov['FACTURA']);
-					} else { ?> <input type="text" id="factura"> <?php }
+					} else { ?> <input type="number" data-id="<?php echo $row_RsLista_prov['ID_FACTURA']; ?>" id="factura" >  <?php }
 					; ?> </td>
+					
 				</tr>
 				<?php
 			} while ($row_RsLista_prov = mysqli_fetch_array($RsLista_prov));
@@ -337,6 +339,7 @@ if ($area_filtro = !'') {
 
 </html>
 <script>
+
 	const $btnExportar = document.querySelector("#btnExportar"),
 		$tabla = document.querySelector("#tabla");
 
@@ -355,7 +358,6 @@ if ($area_filtro = !'') {
 		document.getElementById('' + campo).value = "";
 	}
 
-	function Busqueda() {
-		
-	}
+
+
 </script>
