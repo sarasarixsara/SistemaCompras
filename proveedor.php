@@ -10,26 +10,7 @@ $codigo_filtro = '';
 if (isset($_POST['codigo_filtro']) && $_POST['codigo_filtro'] != '') {
 	$codigo_filtro = $_POST['codigo_filtro'];
 }
-$area_filtro = '';
-if (isset($_POST['area_filtro']) && $_POST['area_filtro'] != '') {
-	$area_filtro = $_POST['area_filtro'];
-}
-$desc_detalle = '';
-if (isset($_POST['desc_detalle']) && $_POST['desc_detalle'] != '') {
-	$desc_detalle = $_POST['desc_detalle'];
-}
-$poa_filtro = '';
-if (isset($_POST['poa_filtro']) && $_POST['poa_filtro'] != '') {
-	$poa_filtro = $_POST['poa_filtro'];
-}
-$subpoa_filtro = '';
-if (isset($_POST['subpoa_filtro']) && $_POST['subpoa_filtro'] != '') {
-	$subpoa_filtro = $_POST['subpoa_filtro'];
-}
-$area_filtro = '';
-if (isset($_POST['area_filtro']) && $_POST['area_filtro'] != '') {
-	$area_filtro = $_POST['area_filtro'];
-}
+
 
 if ($codigo_proveedor != '') {
 	$query_RsLista_prov = "SELECT R.REQUCORE AS REQUERIMIENTO_CODIGO,
@@ -43,7 +24,8 @@ if ($codigo_proveedor != '') {
 							OC.ORCOFIRM AS ORDEN_FIRMA,
 							DF.DEFADETA AS FACTURA,
 							DR.DERECANT AS CANTIDAD,
-							A.AREANOMB AS AREA
+							A.AREANOMB AS AREA,
+							A.AREAID AS AREA_ID
 
 						FROM REQUERIMIENTOS R
 						JOIN DETALLE_REQU DR ON DR.DEREREQU = R.REQUCODI
@@ -62,6 +44,49 @@ if ($codigo_proveedor != '') {
 	$totalRows_RsLista_prov = mysqli_num_rows($RsLista_prov);
 
 }
+//CONSULTA DE AREAS
+$query_RsArea = "SELECT A.AREAID CODIGO_AREA,
+						A.AREANOMB NOMBRE
+						
+						FROM AREA A 
+						WHERE 1
+						ORDER BY A.AREANOMB ASC";
+$RsArea = mysqli_query($conexion, $query_RsArea) or die(mysqli_connect_error());
+$row_RsArea = mysqli_fetch_array($RsArea);
+$totalRows_RsArea = mysqli_num_rows($RsArea);
+
+//CONSULTA DE POAS
+$query_filterPOA = "SELECT P.POACODI CODIGO_POA,
+					   P.POANOMB NOMBRE
+						
+						FROM POA P 
+						WHERE 1
+						ORDER BY P.POACODI ASC";
+$filterPOA = mysqli_query($conexion, $query_filterPOA) or die(mysqli_connect_error());
+$row_filterPOA = mysqli_fetch_array($filterPOA);
+$totalRows_filterPOA = mysqli_num_rows($filterPOA);
+
+
+//CONSULTA DE SUBPOAS
+$query_SUBPOA = "SELECT PD.PODECODI CODIGO_SUBPOA,
+						PD.PODENOMB NOMBRE
+						
+						FROM POADETA PD
+						WHERE 1
+						ORDER BY PD.PODECODI ASC";
+$SUBPOA = mysqli_query($conexion, $query_SUBPOA) or die(mysqli_connect_error());
+$row_SUBPOA = mysqli_fetch_array($SUBPOA);
+$totalRows_SUBPOA = mysqli_num_rows($SUBPOA);
+
+//CONSULTA DE DETALLES
+// if ($desc_detalle != '') {
+// 	$query_RsListaDetallesRequerimientos = "SELECT DEREDESC AS DESCRIPCION_DETALLE, 
+//                                                    REQUCORE AS REQUERIMIENTO_CODI
+//                                             FROM   DETALLE_REQU D
+//                                             JOIN   REQUERIMIENTOS R ON D.DEREREQU = R.REQUCODI
+//                                             WHERE  D.DEREDESC LIKE '%$desc_detalle%'
+//                                             AND    R.REQUIDUS = '$userID'";
+// }
 
 if ($codigo_proveedor != '') {
 	$query_RsPOA = " SELECT PO.POANOMB AS POA_NOM,
@@ -82,16 +107,36 @@ if ($codigo_proveedor != '') {
 	$totalRows_RsPOA = mysqli_num_rows($RsPOA);
 }
 
-if ($desc_detalle != '') {
-	$query_RsLista_prov = $query_RsLista_prov . " AND DR.DEREDESC LIKE '%" . $desc_detalle . "%' ";
+$area_filtro = '';
+$desc_detalle = '';
+$poa_filtro = '';
+$subpoa_filtro = '';
+
+if (isset($_POST['area_filtro']) && $_POST['area_filtro'] != '') {
+	$area_filtro = $_POST['area_filtro'];
 }
-if ($desc_detalle != '') {
-	$RsListaDetallesRequerimientos = mysqli_query($conexion, $query_RsListaDetallesRequerimientos) or die(mysqli_connect_error());
-	$row_RsListaDetallesRequerimientos = mysqli_fetch_array($RsListaDetallesRequerimientos);
-	$totalRows_RsListaDetallesRequerimientos = mysqli_num_rows($RsListaDetallesRequerimientos);
-} else {
-	$totalRows_RsListaDetallesRequerimientos = 0;
+
+if (isset($_POST['desc_detalle']) && $_POST['desc_detalle'] != '') {
+	$desc_detalle = $_POST['desc_detalle'];
 }
+
+if (isset($_POST['poa_filtro']) && $_POST['poa_filtro'] != '') {
+	$poa_filtro = $_POST['poa_filtro'];
+}
+
+if (isset($_POST['subpoa_filtro']) && $_POST['subpoa_filtro'] != '') {
+	$subpoa_filtro = $_POST['subpoa_filtro'];
+}
+
+
+
+if ($area_filtro = !'') {
+	$query_RsLista_prov .= " AND AREA_ID = '" . $area_filtro . "' ";
+	// $RsLista_prov = mysqli_query($conexion, $query_RsLista_prov) or die(mysqli_error($conexion));
+	// $row_RsLista_prov = mysqli_fetch_array($RsLista_prov);
+	// $totalRows_RsLista_prov = mysqli_num_rows($RsLista_prov);
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -106,9 +151,9 @@ if ($desc_detalle != '') {
 	<script src="https://unpkg.com/xlsx@0.16.9/dist/xlsx.full.min.js"></script>
 	<script src="https://unpkg.com/file-saverjs@latest/FileSaver.min.js"></script>
 	<script src="https://unpkg.com/tableexport@latest/dist/js/tableexport.min.js"></script>
-
+	<!-- 
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
-		integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+		integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous"> -->
 </head>
 <style type="text/css">
 	body {
@@ -160,15 +205,77 @@ if ($desc_detalle != '') {
 		border-radius: 13px;
 	}
 </style>
-<table>
-	<tr>
-		<td>Detalle</td>
-		<td><input type="text" name="desc_detalle" id="desc_detalle" size="10" </td>
-	</tr>
-	<td align="center">
-		<input type="submit" name="butonfiltro" id="butonfiltro" class="button2" value="Buscar" onclick="Busqueda();">
+<form name="form1" id="form1" method="post" action="">
+
+	<td class="">POA</td>
+	<td>
+		<select name="POA_filtro" id="POA_filtro">
+			<option value="">Seleccione...</option>
+			<?php
+			if ($totalRows_filterPOA > 0) {
+				do {
+					?>
+					<option value="<?php echo ($row_filterPOA['CODIGO_POA']); ?>" <?php if ($poa_filtro == $row_filterPOA['CODIGO_POA']) {
+						   echo ('selected');
+					   } ?>>
+						<?php echo ($row_filterPOA['NOMBRE']); ?>
+					</option>
+					<?php
+				} while ($row_filterPOA = mysqli_fetch_array($filterPOA));
+			}
+			?>
+		</select>
+		<input type="button" name="farea" id="farea" value="x" onclick="limpiarfiltros('POA_filtro');">
 	</td>
-</table>
+
+
+	<td class="">SUB POA</td>
+	<td>
+		<select name="SUBPOA_filtro" id="SUBPOA_filtro">
+			<option value="">Seleccione...</option>
+			<?php
+			if ($totalRows_SUBPOA > 0) {
+				do {
+					?>
+					<option value="<?php echo ($row_SUBPOA['CODIGO_SUBPOA']); ?>" <?php if ($subpoa_filtro == $row_SUBPOA['CODIGO_SUBPOA']) {
+						   echo ('selected');
+					   } ?>>
+						<?php echo ($row_SUBPOA['NOMBRE']); ?>
+					</option>
+					<?php
+				} while ($row_SUBPOA = mysqli_fetch_array($SUBPOA));
+			}
+			?>
+		</select>
+		<input type="button" name="farea" id="farea" value="x" onclick="limpiarfiltros('SUBPOA_filtro');">
+	</td>
+	<td class="">Area</td>
+	<td>
+		<select name="area_filtro" id="area_filtro">
+			<option value="">Seleccione...</option>
+			<?php
+			if ($totalRows_RsArea > 0) {
+				do {
+					?>
+					<option value="<?php echo ($row_RsArea['CODIGO_AREA']); ?>" <?php if ($area_filtro == $row_RsArea['CODIGO_AREA']) {
+						   echo ('selected');
+					   } ?>>
+						<?php echo ($row_RsArea['NOMBRE']); ?>
+					</option>
+					<?php
+				} while ($row_RsArea = mysqli_fetch_array($RsArea));
+			}
+			?>
+		</select>
+		<input type="button" name="farea" id="farea" value="x" onclick="limpiarfiltros('area_filtro');">
+	</td>
+	<!-- <td align="center">
+		<input type="submit" name="butonfiltro" id="butonfiltro" class="button2" value="Buscar" onclick="Busqueda();">
+	</td> -->
+	<td>
+		<input type="submit" name="filtrar" value="Filtrar">
+	</td>
+</form>
 <div style="margin-bottom: 10px;font-weight: bold;font-size: 15px">
 	PROVEEDOR: <?php echo ($row_RsLista_prov['PROVEEDOR_NOMBRE']); ?>
 </div>
@@ -185,35 +292,42 @@ if ($desc_detalle != '') {
 
 	</tr>
 	<?php
-	if ($totalRows_RsLista_prov > 0) {
-		$j = 0;
-		do {
-			$j++;
-			$estilo = "SB";
-			if ($j % 2 == 0) {
-				$estilo = "SB2";
-			}
-			?>
-			<tr class="<?php echo ($estilo); ?>">
-				<td> <a href="./home.php?page=solicitud&codreq=<?php echo ($row_RsLista_prov['REQUERIMIENTO']); ?>"
-						target="_back"><?php echo ($row_RsLista_prov['REQUERIMIENTO_CODIGO']); ?></a></td>
-				<td class='text-justify'><?php echo ($row_RsLista_prov['DETALLE_DESC']); ?></td>
-				<td class='text-justify'><?php echo ($row_RsLista_prov['CANTIDAD']); ?></td>
-				<td class='text-justify'><?php echo ($row_RsPOA['POA_NOM']); ?></td>
-				<td class='text-justify'><?php echo ($row_RsPOA['SUBPOA_NOM']); ?></td>
-				<td class='text-justify'><?php echo ($row_RsLista_prov['AREA']); ?></td>
-				<td>
-					<a target="_blank"
-						href="O.php?codprov=<?php echo ($row_RsLista_prov['DETALLE_ID_PROVEEDOR']); ?>&codcomp=<?php echo ($row_RsLista_prov['ID_ORDEN']); ?>&%=2&f=<?php echo ($row_RsLista_prov['ORDEN_FIRMA']); ?>"><?php echo ($row_RsLista_prov['DETALLE_ORDEN']); ?></a>
-				</td>
-				<td><?php if (($row_RsLista_prov['FACTURA'])) {
-					echo ($row_RsLista_prov['FACTURA']);
-				} else { ?> <input
-							type="text" id="factura"> <?php }
-				; ?> </td>
-			</tr>
-			<?php
-		} while ($row_RsLista_prov = mysqli_fetch_array($RsLista_prov));
+	if (isset($RsLista_prov) && $totalRows_RsLista_prov > 0) {
+		while ($row_RsLista_prov = mysqli_fetch_assoc($RsLista_prov)) {
+			$j = 0;
+			do {
+				$j++;
+				$estilo = "SB";
+				if ($j % 2 == 0) {
+					$estilo = "SB2";
+				}
+				?>
+				<tr class="<?php echo ($estilo); ?>">
+					<td> <a href="./home.php?page=solicitud&codreq=<?php echo ($row_RsLista_prov['REQUERIMIENTO']); ?>"
+							target="_back"><?php echo ($row_RsLista_prov['REQUERIMIENTO_CODIGO']); ?></a></td>
+					<td class='text-justify'><?php echo ($row_RsLista_prov['DETALLE_DESC']); ?></td>
+					<td class='text-justify'><?php echo ($row_RsLista_prov['CANTIDAD']); ?></td>
+					<td class='text-justify'><?php echo ($row_RsPOA['POA_NOM']); ?></td>
+					<td class='text-justify'><?php echo ($row_RsPOA['SUBPOA_NOM']); ?></td>
+					<td class='text-justify'><?php echo ($row_RsLista_prov['AREA']); ?></td>
+					<td>
+						<a target="_blank"
+							href="O.php?codprov=<?php echo ($row_RsLista_prov['DETALLE_ID_PROVEEDOR']); ?>&codcomp=<?php echo ($row_RsLista_prov['ID_ORDEN']); ?>&%=2&f=<?php echo ($row_RsLista_prov['ORDEN_FIRMA']); ?>"><?php echo ($row_RsLista_prov['DETALLE_ORDEN']); ?></a>
+					</td>
+					<td><?php if (($row_RsLista_prov['FACTURA'])) {
+						echo ($row_RsLista_prov['FACTURA']);
+					} else { ?> <input type="text" id="factura"> <?php }
+					; ?> </td>
+				</tr>
+				<?php
+			} while ($row_RsLista_prov = mysqli_fetch_array($RsLista_prov));
+		}
+	} else {
+		?>
+		<tr>
+			<td colspan="X">No se encontraron resultados.</td> <!-- Reemplaza 'X' con el número de columnas -->
+		</tr>
+		<?php
 	}
 	?>
 </table>
@@ -236,65 +350,12 @@ if ($desc_detalle != '') {
 		let preferenciasDocumento = datos.tabla.xlsx;
 		tableExport.export2file(preferenciasDocumento.data, preferenciasDocumento.mimeType, preferenciasDocumento.filename, preferenciasDocumento.fileExtension, preferenciasDocumento.merges, preferenciasDocumento.RTL, preferenciasDocumento.sheetname);
 	});
-	// function tableToCSV() {
 
-	// 	// Variable to store the final csv data
-	// 	let csv_data = [];
+	function limpiarfiltros(campo) {
+		document.getElementById('' + campo).value = "";
+	}
 
-	// 	// Get each row data
-	// 	let rows = document.getElementsByTagName('tr');
-	// 	for (let i = 0; i < rows.length; i++) {
-
-	// 		// Get each column data
-	// 		let cols = rows[i].querySelectorAll('td,th');
-
-	// 		// Stores each csv row data
-	// 		let csvrow = [];
-	// 		for (let j = 0; j < cols.length; j++) {
-
-	// 			// Check if the cell contains an <a> element
-	// 			let aElement = cols[j].querySelector('a');
-	// 			if (aElement) {
-	// 				// Get the text content of the <a> element
-	// 				csvrow.push(aElement.textContent.trim());
-	// 			} else {
-	// 				// Get the text content of the cell
-	// 				csvrow.push(cols[j].textContent.trim());
-	// 			}
-	// 		}
-
-	// 		// Combine each column value with comma
-	// 		csv_data.push(csvrow.join(","));
-	// 	}
-
-	// 	// Combine each row data with new line character
-	// 	csv_data = csv_data.join('\n');
-
-	// 	// Call this function to download csv file  
-	// 	downloadCSVFile(csv_data);
-	// }
-
-	// function downloadCSVFile(csv_data) {
-	// 	// Create a Blob object with the CSV data
-	// 	let csvBlob = new Blob([csv_data], { type: 'text/csv' });
-
-	// 	// Create a link element
-	// 	let downloadLink = document.createElement('a');
-
-	// 	// Set the download attribute with a filename
-	// 	downloadLink.download = 'proveedor.csv';
-
-	// 	// Create a URL for the Blob and set it as the href attribute
-	// 	downloadLink.href = window.URL.createObjectURL(csvBlob);
-
-	// 	// Append the link to the document body and trigger a click to start the download
-	// 	document.body.appendChild(downloadLink);
-	// 	downloadLink.click();
-
-	// 	// Remove the link from the document
-	// 	document.body.removeChild(downloadLink);
-	// }
 	function Busqueda() {
-		document.form1.action = "home.php?page=requerimientos_lista";
+		
 	}
 </script>
