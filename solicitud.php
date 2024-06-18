@@ -2147,7 +2147,7 @@ function PasaEstadoDetalle (det,est){
 									 <!--Fin --> 
                                          
 									 <!--Inicio Boton imagen eliminar un detalle -->
-										<div onclick="FMD_FdeleteDet('<?php echo($row_RsListadoDeta_Requ['CODIGO']); ?>');"><span><img src="imagenes/delete.jpg" title="Eliminar" width="16" ></span></div>
+										<!-- <div onclick="FMD_FdeleteDet('<?php echo($row_RsListadoDeta_Requ['CODIGO']); ?>');"><span><img src="imagenes/delete.jpg" title="Eliminar" width="16" ></span></div> -->
 						 			 <!--Fin -->
 						 			 
 						 			  <?php if($row_RsListadoDeta_Requ['APROBADO'] != '8'){ ?>
@@ -2249,7 +2249,7 @@ function PasaEstadoDetalle (det,est){
 									 <!--Fin -->
 									 <?php } ?> 
 									 <!--Inicio Boton imagen eliminar un detalle -->
-										<div onclick="FMD_FdeleteDet('<?php echo($row_RsListadoDeta_Requ['CODIGO']); ?>');"><span><img src="imagenes/delete.jpg" title="Eliminar" width="16" ></span></div>
+										<!-- <div onclick="FMD_FdeleteDet('<?php echo($row_RsListadoDeta_Requ['CODIGO']); ?>');"><span><img src="imagenes/delete.jpg" title="Eliminar" width="16" ></span></div> -->
 						 			 <!--Fin -->
 
 						 			  <?php if($row_RsListadoDeta_Requ['APROBADO'] != '8'){ ?>
