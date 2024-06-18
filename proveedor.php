@@ -47,16 +47,11 @@ if (isset($_POST['codigo_filtro']) && $_POST['codigo_filtro'] != '') {
 }
 
 $area_filtro = '';
-$desc_detalle = '';
 $poa_filtro = '';
 $subpoa_filtro = '';
 
 if (isset($_POST['area_filtro']) && $_POST['area_filtro'] != '') {
 	$area_filtro = $_POST['area_filtro'];
-}
-
-if (isset($_POST['desc_detalle']) && $_POST['desc_detalle'] != '') {
-	$desc_detalle = $_POST['desc_detalle'];
 }
 
 if (isset($_POST['poa_filtro']) && $_POST['poa_filtro'] != '') {
@@ -67,7 +62,7 @@ if (isset($_POST['subpoa_filtro']) && $_POST['subpoa_filtro'] != '') {
 	$subpoa_filtro = $_POST['subpoa_filtro'];
 }
 
-if ($codigo_filtro=='' && $area_filtro=='' && $desc_detalle=='' && $poa_filtro=='' && $subpoa_filtro=='') {
+ if ($codigo_filtro=='' && $area_filtro==''  && $poa_filtro=='' && $subpoa_filtro=='') {
 	$query_RsLista_prov = "SELECT R.REQUCORE AS REQUERIMIENTO_CODIGO,
 							R.REQUCODI AS REQUERIMIENTO,
 							DR.DEREPROV AS DETALLE_ID_PROVEEDOR,
@@ -98,8 +93,8 @@ if ($codigo_filtro=='' && $area_filtro=='' && $desc_detalle=='' && $poa_filtro==
 	$RsLista_prov = mysqli_query($conexion, $query_RsLista_prov) or die(mysqli_error($conexion));
 	$row_RsLista_prov = mysqli_fetch_array($RsLista_prov);
 	$totalRows_RsLista_prov = mysqli_num_rows($RsLista_prov);
-
 }
+
 
 //CONSULTA DE DETALLES
 // if ($desc_detalle != '') {
@@ -111,7 +106,7 @@ if ($codigo_filtro=='' && $area_filtro=='' && $desc_detalle=='' && $poa_filtro==
 //                                             AND    R.REQUIDUS = '$userID'";
 // }
 
-if ($codigo_filtro=='' && $area_filtro=='' && $desc_detalle=='' && $poa_filtro=='' && $subpoa_filtro=='') {
+ if ($codigo_filtro=='' && $area_filtro==''  && $poa_filtro=='' && $subpoa_filtro=='') {
 	$query_RsPOA = " SELECT PO.POANOMB AS POA_NOM,
 							PD.PODENOMB AS SUBPOA_NOM
 					FROM REQUERIMIENTOS R,
@@ -128,7 +123,7 @@ if ($codigo_filtro=='' && $area_filtro=='' && $desc_detalle=='' && $poa_filtro==
 	$RsPOA = mysqli_query($conexion, $query_RsPOA) or die(mysqli_error($conexion));
 	$row_RsPOA = mysqli_fetch_array($RsPOA);
 	$totalRows_RsPOA = mysqli_num_rows($RsPOA);
-}
+ }
 
 
 // if ($area_filtro = !'') {
@@ -293,8 +288,8 @@ if ($codigo_filtro=='' && $area_filtro=='' && $desc_detalle=='' && $poa_filtro==
 
 	</tr>
 	<?php
-	if (isset($RsLista_prov) && $totalRows_RsLista_prov > 0) {
-		while ($row_RsLista_prov = mysqli_fetch_assoc($RsLista_prov)) {
+	if ($totalRows_RsLista_prov > 0) {
+		
 			$j = 0;
 			do {
 				$j++;
@@ -324,7 +319,7 @@ if ($codigo_filtro=='' && $area_filtro=='' && $desc_detalle=='' && $poa_filtro==
 				<?php
 			} while ($row_RsLista_prov = mysqli_fetch_array($RsLista_prov));
 		}
-	} else {
+	 else {
 		?>
 		<tr>
 			<td colspan="X">No se encontraron resultados.</td> <!-- Reemplaza 'X' con el número de columnas -->
