@@ -394,13 +394,8 @@ include('menu.php');
 												
 
 		
-		</div>		<!--	<table style="clear:both; width:1000px; display:block;"  > -->
-	<?php /*		 <tr>
-			  <td colspan="6" class="SLAB2F">Bienvenido: <?php echo($_SESSION['MM_Usernombre']);?> al portal de compras<span style="color:#ffffff; background:#5CB85C; border-radius:10px; padding:3px 7px; cursor:pointer; margin-left:25px;">  <?php
- if($_SESSION['MM_RolID']==2){
-  ?><a title="aprobados">23</a> <?php } ?> </span></td>
-			 </tr>	
-*/?>			 
+		</div>	
+			 
 			 <tr>
 			  <td>&nbsp;<br></td>
 			 </tr>

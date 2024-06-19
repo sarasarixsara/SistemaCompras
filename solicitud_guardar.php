@@ -224,6 +224,7 @@ $MM_Area='3';
 }else{
 $MM_UserID=$_SESSION['MM_UserID'];
 $MM_Area=$_SESSION['MM_Area'];
+
 }
    $query_RsCrearRequerimiento="INSERT INTO REQUERIMIENTOS (
 	                                                         REQUCODI,
@@ -231,6 +232,7 @@ $MM_Area=$_SESSION['MM_Area'];
 															 REQUAREA,
 															 REQUFESO,
 															 REQUFLED
+															 
 															 )
 															 VALUES
 															 (
@@ -276,8 +278,8 @@ if ($tipoGuardar == 'ArchivoReq')
 	if (is_uploaded_file($_FILES['archivo1']['tmp_name']))
 	{
 		$upload_archivo_dir = $rutaArchivos;
-		$nombre_archivo = str_replace("Ñ", "N",$_FILES['archivo1']['name']);
-		$nombre_archivo = str_replace("ñ", "n",$nombre_archivo);
+		$nombre_archivo = str_replace("ï¿½", "N",$_FILES['archivo1']['name']);
+		$nombre_archivo = str_replace("ï¿½", "n",$nombre_archivo);
 		$ext=date("Ymd_His");
 		$nombre_archivo = $ext."-".$nombre_archivo;
 		$tipo_archivo = $_FILES['archivo1']['type'];
@@ -599,8 +601,8 @@ if ($tipoGuardar == 'AgregarImagenRespuesta')
 	if (is_uploaded_file($_FILES['archivoimg_'.$idrespuesta]['tmp_name']))
 	{
 		$upload_archivo_dir = $rutaArchivos;
-		$nombre_archivo = str_replace("Ñ", "N",$_FILES['archivoimg_'.$idrespuesta]['name']);
-		$nombre_archivo = str_replace("ñ", "n",$nombre_archivo);
+		$nombre_archivo = str_replace("ï¿½", "N",$_FILES['archivoimg_'.$idrespuesta]['name']);
+		$nombre_archivo = str_replace("ï¿½", "n",$nombre_archivo);
 		$ext=date("Ymd_His");
 		$nombre_archivo = $ext."-".$nombre_archivo;
 		$tipo_archivo = $_FILES['archivoimg_'.$idrespuesta]['type'];
