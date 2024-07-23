@@ -88,6 +88,19 @@
 		$row_RsArchivosLista = mysqli_fetch_array($RsArchivosLista);
 		$totalRows_RsArchivosLista = mysqli_num_rows($RsArchivosLista);
 
+		$query_RsEstadosDelete = "SELECT E.ESTANOMB AS ESTADO_NOMB
+						
+							FROM requerimientos R			
+							LEFT JOIN DETALLE_REQU D ON R.REQUCODI = D.DEREREQU
+							LEFT JOIN ESTADOS E ON R.REQUESTA = E.ESTACODI
+							wHERE D.DEREREQU = '" . $codigo_requerimiento . "'
+								
+							";
+
+		$RsEstadosDelete = mysqli_query($conexion, $query_RsEstadosDelete) or die(mysqli_error($conexion));
+		$row_RsEstadosDelete = mysqli_fetch_array($RsEstadosDelete);
+		$totalRows_RsEstadosDelete = mysqli_num_rows($RsEstadosDelete);
+
 		// consulta de detalle de requerimiento 
 		$query_RsListadoDeta_Requ = "SELECT
 									DERECONS CODIGO,
@@ -2145,11 +2158,11 @@ function PasaEstadoDetalle (det,est){
 									  <!--Inicio Boton imagen editar un detalle -->
 									 	<div onclick="FMD_FeditarDet('<?php echo($row_RsListadoDeta_Requ['CODIGO']); ?>');"><span><img src="imagenes/b_edit.png" title="editar"  width="16"></span></div>
 									 <!--Fin --> 
-                                         
+                                         <?php if ($row_RsEstadosDelete['ESTADO_NOMB'] == 'SOLICITANDO') { ?>
 									 <!--Inicio Boton imagen eliminar un detalle -->
-										<!-- <div onclick="FMD_FdeleteDet('<?php echo($row_RsListadoDeta_Requ['CODIGO']); ?>');"><span><img src="imagenes/delete.jpg" title="Eliminar" width="16" ></span></div> -->
+										 <div onclick="FMD_FdeleteDet('<?php echo($row_RsListadoDeta_Requ['CODIGO']); ?>');"><span><img src="imagenes/delete.jpg" title="Eliminar" width="16" ></span></div> 
 						 			 <!--Fin -->
-						 			 
+										<?php } ?>
 						 			  <?php if($row_RsListadoDeta_Requ['APROBADO'] != '8'){ ?>
 						 			  <!--Inicio Boton imagen recibido de usuario general -->
 							         <div id="recibeusug_<?php echo($row_RsListadoDeta_Requ['CODIGO']);?>" onclick="frecibo_usuariog('<?php echo($row_RsListadoDeta_Requ['CODIGO']);?>');"><img src="imagenes/ent_profe.jpg"  title="Recibir" width="16" >&nbsp;</div>
@@ -2248,10 +2261,11 @@ function PasaEstadoDetalle (det,est){
 									 	<div onclick="FMD_FeditarDet('<?php echo($row_RsListadoDeta_Requ['CODIGO']); ?>');"><span><img src="imagenes/b_edit.png" title="editar"  width="16"></span></div>
 									 <!--Fin -->
 									 <?php } ?> 
+									 <?php if ($row_RsEstadosDelete['ESTADO_NOMB'] == 'SOLICITANDO') { ?>
 									 <!--Inicio Boton imagen eliminar un detalle -->
-										<!-- <div onclick="FMD_FdeleteDet('<?php echo($row_RsListadoDeta_Requ['CODIGO']); ?>');"><span><img src="imagenes/delete.jpg" title="Eliminar" width="16" ></span></div> -->
+										 <div onclick="FMD_FdeleteDet('<?php echo($row_RsListadoDeta_Requ['CODIGO']); ?>');"><span><img src="imagenes/delete.jpg" title="Eliminar" width="16" ></span></div> 
 						 			 <!--Fin -->
-
+											<?php } ?>
 						 			  <?php if($row_RsListadoDeta_Requ['APROBADO'] != '8'){ ?>
 						 			  <!--Inicio Boton imagen recibido de usuario general -->
 							         <div id="recibeusug_<?php echo($row_RsListadoDeta_Requ['CODIGO']);?>" onclick="frecibo_usuariog('<?php echo($row_RsListadoDeta_Requ['CODIGO']);?>');"><img src="imagenes/ent_profe.jpg"  title="Recibir" width="16" >&nbsp;</div>
@@ -2274,9 +2288,10 @@ function PasaEstadoDetalle (det,est){
 									 	<div onclick="FMD_FeditarDet('<?php echo($row_RsListadoDeta_Requ['CODIGO']); ?>');"><span><img src="imagenes/b_edit.png" title="editar"  width="16"></span></div>
 									 <!--Fin --> 
 									 <!--Inicio Boton imagen eliminar un detalle -->
+									 <?php if ($row_RsEstadosDelete['ESTADO_NOMB'] == 'SOLICITANDO') { ?>
 										<div onclick="FMD_FdeleteDet('<?php echo($row_RsListadoDeta_Requ['CODIGO']); ?>');"><span><img src="imagenes/delete.jpg" title="Eliminar" width="16" ></span></div>
 						 			 <!--Fin -->
-						 			 
+						 			 <?php } ?>
 						 			  <?php if($row_RsListadoDeta_Requ['APROBADO'] != '8'){ ?>
 						 			  <!--Inicio Boton imagen recibido de usuario general -->
 							         <div id="recibeusug_<?php echo($row_RsListadoDeta_Requ['CODIGO']);?>" onclick="frecibo_usuariog('<?php echo($row_RsListadoDeta_Requ['CODIGO']);?>');"><img src="imagenes/ent_profe.jpg"  title="Recibir" width="16" >&nbsp;</div>
