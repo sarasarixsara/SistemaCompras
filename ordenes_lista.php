@@ -52,7 +52,7 @@ $startRow_RsListaRequerimientos = $pageNum_RsListaRequerimientos * $maxRows_RsLi
 			{ 
 			$query_RsListaRequerimientos = $query_RsListaRequerimientos." AND 1 ";
 			}	
-
+		
 // si el filtro proveedor esta lleno y nit esta vacio
 if($proveedor_filtro != '' && $nit_filtro == ''){			 
 		$query_RsListaRequerimientos = $query_RsListaRequerimientos."  AND `PROVNOMB` LIKE '%$proveedor_filtro%' ";
@@ -68,15 +68,17 @@ if($nit_filtro != '' && $proveedor_filtro == ''){
 		$query_RsListaRequerimientos = $query_RsListaRequerimientos."  `PROVREGI` LIKE '%$nit_filtro%' AND `PROVNOMB` LIKE '%$proveedor_filtro%' ";
 		}		
 	
-  $query_RsListaRequerimientos = $query_RsListaRequerimientos." GROUP BY O.coorcodi";	  
+  $query_RsListaRequerimientos = $query_RsListaRequerimientos." GROUP BY O.COORCODI";	  
   
   $query_RsListaRequerimientos = $query_RsListaRequerimientos." order by O.COORCODI DESC";	  
     
-	    //echo($query_RsListaRequerimientos);
+	   // echo($query_RsListaRequerimientos);
 	    $query_limit_RsListaRequerimientos = sprintf("%s LIMIT %d, %d", $query_RsListaRequerimientos, $startRow_RsListaRequerimientos, $maxRows_RsListaRequerimientos);
-		$RsListaRequerimientos = mysqli_query($conexion,$query_limit_RsListaRequerimientos) or die(mysqli_connect_error());
+		
+		$RsListaRequerimientos = mysqli_query($conexion,$query_limit_RsListaRequerimientos) or die(mysqli_error($conexion));
+		
 		$row_RsListaRequerimientos = mysqli_fetch_array($RsListaRequerimientos);
-    
+
 if (isset($_GET['totalRows_RsListaRequerimientos'])) {
   $totalRows_RsListaRequerimientos = $_GET['totalRows_RsListaRequerimientos'];
 } else {
@@ -114,6 +116,7 @@ else
 {
 	$paginaHasta = ($pageNum_RsListaRequerimientos+1)*$maxRows_RsListaRequerimientos;
 }	
+
 ?>
 
 <script type="text/javascript">

@@ -85,7 +85,7 @@ if ($codigo_requerimiento != '') {
 	$row_RsArchivosLista = mysqli_fetch_array($RsArchivosLista);
 	$totalRows_RsArchivosLista = mysqli_num_rows($RsArchivosLista);
 
-	$query_RsEstados = "SELECT E.ESTANOMB AS ESTADO_NOMB
+	$query_RsEstadosDelete = "SELECT E.ESTANOMB AS ESTADO_NOMB
 					
 						FROM requerimientos R			
 						LEFT JOIN DETALLE_REQU D ON R.REQUCODI = D.DEREREQU
@@ -94,9 +94,9 @@ if ($codigo_requerimiento != '') {
 							
 						";
 
-	$RsEstados = mysqli_query($conexion, $query_RsEstados) or die(mysqli_error($conexion));
-	$row_RsEstadosDelete = mysqli_fetch_array($RsEstados);
-	$totalRows_RsEstados = mysqli_num_rows($RsEstados);
+	$RsEstadosDelete = mysqli_query($conexion, $query_RsEstadosDelete) or die(mysqli_error($conexion));
+	$row_RsEstadosDelete = mysqli_fetch_array($RsEstadosDelete);
+	$totalRows_RsEstadosDelete = mysqli_num_rows($RsEstadosDelete);
 	// consulta de detalle de requerimiento 
 	$query_RsListadoDeta_Requ = "SELECT DR.DERECONS AS CODIGO,
 										DR.DEREMODA AS MODALIDAD,
