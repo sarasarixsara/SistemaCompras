@@ -3023,7 +3023,44 @@ if($tipoGuardar == 'ValidarDetalles'){
 
 //Seccion de condiciones de manipulacion de datos de detalle 
 
+function getDetallesMultiplesSeleccionados($conexion){
+	$arrayDetalles = [];
+		if (isset($_POST['detallesSeleccionados'])) {
+			$detalles = $_POST['detallesSeleccionados'];
+			$detail_ids = [];
+			foreach ($detalles as $detalle) {
+				if (isset($detalle['detail'])) {
+					$detail_ids[] = $detalle['detail'];
+				}
+			}
+			if (count($detail_ids) > 0) {
+				$detail_ids_string = implode(',', $detail_ids);			
+				
+				$arrayDetalles = explode(',', $detail_ids_string);
+			}
+
+		
+	}	
+	return $arrayDetalles;	
+}
+
 	//Marca el tipo de compra en cada detalle
+		if($tipoGuardar=='GuardarTipoCompraMultiple'){
+			$arrayDetalles	= [];
+			$response = array("filasAfectadas"=> 0 ,"detallesLista" => $arrayDetalles);			
+
+			$arrayDetalles = getDetallesMultiplesSeleccionados($conexion);
+			if(count($arrayDetalles) > 0){
+				$detail_ids_string = implode(',', $arrayDetalles);
+				$query_RsRequerimientosDetalle = " UPDATE detalle_requ SET DERETIPO = '".$_GET['tipocompra']."'
+				WHERE DERECONS in (". $detail_ids_string .") ";
+				$RsRequerimientosDetalle       = mysqli_query($conexion,$query_RsRequerimientosDetalle) or die(mysqli_error());				
+				$response = array("filasAfectadas"=>mysqli_affected_rows($conexion), "detallesLista"=>$arrayDetalles);
+			}
+			
+			echo json_encode($response);
+			
+		}
 		if($tipoGuardar=='GuardarTipoCompra'){
 			
 			$query_RsRequerimientosDetalle = " UPDATE detalle_requ SET DERETIPO = '".$_GET['tipocompra']."'
@@ -3038,16 +3075,29 @@ if($tipoGuardar == 'ValidarDetalles'){
 	//Marca la clasificacion de compra en cada detalle
 		if($tipoGuardar=='GuardarTipoClasCompra'){
 			$tipo=$_GET['tipoclascomp'];
+			$arrayDetalles	= [];
+			$response = array("filasAfectadas"=> 0 ,"detallesLista" => $arrayDetalles);			
+
+			$arrayDetalles = getDetallesMultiplesSeleccionados($conexion);
+			if(count($arrayDetalles) == 0){
+				if($_GET['codigo_detalle'] != 'multiple'){
+					$arrayDetalles = [$_GET['codigo_detalle']];
+				}
+
+			}
+			$detail_ids_string = implode(',', $arrayDetalles);
+			
 			switch ($tipo) {
 				case '1':
 					$estado='1';
 					break;
 				case '2':
 					$estado='32';
+					if(count($arrayDetalles) > 0){
 					$query_RsCompraDirecta = " UPDATE detalle_requ SET DERENCOT = '1'
-												WHERE DERECONS = '".$_GET['codigo_detalle']."'
-											  ";
+												WHERE DERECONS in (". $detail_ids_string .") ";
 					$RsCompraDirecta       = mysqli_query($conexion,$query_RsCompraDirecta) or die(mysqli_error());
+					}
 					break;
 				case '3':
 					$estado='22';
@@ -3057,17 +3107,19 @@ if($tipoGuardar == 'ValidarDetalles'){
 					break;
 				case '5':
 					$estado='24';
+					if(count($arrayDetalles) > 0){
 					$query_RsCompraDirecta = " UPDATE detalle_requ SET DEREVIAT = '1'
-												WHERE DERECONS = '".$_GET['codigo_detalle']."'
-											  ";
+												WHERE DERECONS in (". $detail_ids_string .") ";
 					$RsCompraDirecta       = mysqli_query($conexion,$query_RsCompraDirecta) or die(mysqli_error());
+					}
 					break;
 				case '6':
 					$estado='29';
+					if(count($arrayDetalles) > 0){
 					$query_RsCompraDirecta = " UPDATE detalle_requ SET DEREELEC = '1'
-												WHERE DERECONS = '".$_GET['codigo_detalle']."'
-											  ";
+												WHERE DERECONS  in (". $detail_ids_string .") ";
 					$RsCompraDirecta       = mysqli_query($conexion,$query_RsCompraDirecta) or die(mysqli_error());
+					}
 					break;
 				case '7':
 					$estado='23';
@@ -3079,15 +3131,17 @@ if($tipoGuardar == 'ValidarDetalles'){
 					$estado='0';
 					break;
 			}
+			if(count($arrayDetalles) > 0){
 			$query_RsRequerimientosDetalle = " UPDATE detalle_requ SET DERECLAS = '".$_GET['tipoclascomp']."',
 			                                                           DEREAPRO = '".$estado."'
-												WHERE DERECONS = '".$_GET['codigo_detalle']."'
-											  ";
+												WHERE DERECONS in (". $detail_ids_string .") ";
 			$RsRequerimientosDetalle       = mysqli_query($conexion,$query_RsRequerimientosDetalle) or die(mysqli_error());
+			$response = array("filasAfectadas"=>mysqli_affected_rows($conexion), "detallesLista"=>$arrayDetalles);
+			}
 
 			
 			//echo($query_RsRequerimientosDetalle);
-			echo(mysqli_affected_rows($conexion));
+			echo(json_encode($response));
 			}
 	//fin
 
@@ -3107,20 +3161,73 @@ if($tipoGuardar == 'ValidarDetalles'){
 	//fin
 
 	//Marca el Poa asignado para comprar el detalle
+		if($tipoGuardar=='GuardarPoaMultiple'){		
+			$arrayDetalles	= [];
+			$response = array("filasAfectadas"=> 0 ,"detallesLista" => $arrayDetalles);
+			if (isset($_POST['detallesSeleccionados'])) {
+				$detalles = $_POST['detallesSeleccionados'];
+				$detail_ids = [];
+				foreach ($detalles as $detalle) {
+					if (isset($detalle['detail'])) {
+						$detail_ids[] = $detalle['detail'];
+					}
+				}
+				if (count($detail_ids) > 0) {
+					$detail_ids_string = implode(',', $detail_ids);			
+					$query_RsPoa="UPDATE  detalle_requ 
+					SET DEREPOA   = '".$_GET['poa']."'												     
+				  WHERE DERECONS   in (". $detail_ids_string .") ";
+				  $arrayDetalles = explode(',', $detail_ids_string);
+					$RsPoa = mysqli_query($conexion,$query_RsPoa) or die(mysqli_error($conexion));						
+					$response = array("filasAfectadas"=>mysqli_affected_rows($conexion), "detallesLista"=>$arrayDetalles);
+				}
+
+			echo(json_encode($response));
+		}
+	}
+
 		if($tipoGuardar=='GuardarPoa'){		
 			    
-					$query_RsPoa="UPDATE  detalle_requ 
-												 SET DEREPOA   = '".$_GET['poa']."'												     
-											   WHERE DERECONS   = '".$_GET['codigo_detalle']."' 
-											";
-					$RsPoa = mysqli_query($conexion,$query_RsPoa) or die(mysqli_error($conexion));
-				 
-    
-			echo(mysqli_affected_rows($conexion));
-		}
+			$query_RsPoa="UPDATE  detalle_requ 
+										 SET DEREPOA   = '".$_GET['poa']."'												     
+									   WHERE DERECONS   = '".$_GET['codigo_detalle']."' 
+									";
+			$RsPoa = mysqli_query($conexion,$query_RsPoa) or die(mysqli_error($conexion));
+		 
+
+	echo(mysqli_affected_rows($conexion));
+}		
 	//fin	
+
+
 	
 	//Marca el Poa asignado para comprar el detalle 
+		if($tipoGuardar=='GuardarSubPoaMultiple'){
+
+			$arrayDetalles	= [];
+			$response = array("filasAfectadas"=> 0 ,"detallesLista" => $arrayDetalles);
+			if (isset($_POST['detallesSeleccionados'])) {
+				$detalles = $_POST['detallesSeleccionados'];
+				$detail_ids = [];
+				foreach ($detalles as $detalle) {
+					if (isset($detalle['detail'])) {
+						$detail_ids[] = $detalle['detail'];
+					}
+				}
+				if (count($detail_ids) > 0) {
+					$detail_ids_string = implode(',', $detail_ids);			
+					$query_RsPoa="UPDATE  detalle_requ 
+												 SET DERESUPO = '".$_GET['subpoa']."'												     
+											   WHERE DERECONS in (". $detail_ids_string .") ";
+				  $arrayDetalles = explode(',', $detail_ids_string);
+					$RsPoa = mysqli_query($conexion,$query_RsPoa) or die(mysqli_error($conexion));						
+					$response = array("filasAfectadas"=>mysqli_affected_rows($conexion), "detallesLista"=>$arrayDetalles);
+				}
+
+			echo(json_encode($response));
+		}
+
+			}
 		if($tipoGuardar=='GuardarSubPoa'){$query_RsPoa="UPDATE  detalle_requ 
 												 SET DERESUPO   = '".$_GET['subpoa']."'												     
 											   WHERE DERECONS   = '".$_GET['codigo_detalle']."' 

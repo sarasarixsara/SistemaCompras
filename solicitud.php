@@ -40,6 +40,14 @@
 	$arrayundmedida			= array();
 	$codigo_evento = '';
 
+	require_once("scripts/funcionescombo.php");		
+	$estados = damePoa();			
+	$estadosCentroCosto = dameCentroCosto();	
+	$estadosTipoOrdenCompra = dameTipoOrdenCompra();
+	$unidadesMedida = dameUnidadMedida();
+	$tiposCompra = dameTipoCompra();
+	$conveniosListaP = dameConvenio();
+
 
 //consultar estados para pasar requerimiento director administrativo 
     $query_RsEstadosDiradm = "SELECT E.ESTACODI CODIGO,
@@ -118,6 +126,7 @@
 									DERETISE TIPO,
 									DEREVIAT CAMPO_VIATICOS,
 									DEREELEC CAMPO_ELECTRONICA,
+									DERETIPO TIPO_COMPRA,
 									(SELECT TOCONOMB
 									  FROM tipoorden_compra TOC
 									 WHERE TOC.TOCOCODI = DERETIPO) TIPOORDENCOMPRA_DES,
@@ -433,7 +442,7 @@ $(document).ready(function(){
 	   id = id.split('_');
 	   tb_show('Anexos / Detalle', 'anexos_detalle.php?codigo_detalle='+id[1]+'&estado='+$('#estado').val()+'&amp;keepThis=true&amp;TB_iframe=true&amp;height=400&amp;width=750');
 	});
-	$("#multiplesdetalles").click(function(){
+	$("#btnmultiplesdetalles").click(function(){
 			detalles = multiple_detalle_seleccionados;
 			details = [];
 			for(i=0; i < detalles.length; i++){
@@ -477,6 +486,9 @@ $(document).ready(function(){
 		console.log(multiple_detalle_seleccionados);	
 		if(multiple_detalle_seleccionados.length > 0 ){
 			$("#multiplesdetalles").css("display","block");
+			setTimeout(() => {
+				resetChosenPoaCentroCosto();
+			}, 100);				
 		}else{
 			$("#multiplesdetalles").css("display","none");
 		}
@@ -504,6 +516,10 @@ $(document).ready(function(){
 		}
 		if(multiple_detalle_seleccionados.length > 0 ){
 			$("#multiplesdetalles").css("display","block");
+			setTimeout(() => {
+				console.log("ingresa")
+				resetChosenPoaCentroCosto();
+			}, 500);			
 		}else{
 			$("#multiplesdetalles").css("display","none");
 		}		
@@ -517,6 +533,18 @@ $(document).ready(function(){
         fentregaMultiple();
     });
 });
+
+function resetChosenPoaCentroCosto() {
+    $('#poadetalle_multiple').chosen('destroy');
+    $('#poadetalle_multiple').chosen();
+    $('#subpoadetalle_multiple').chosen('destroy');
+    $('#subpoadetalle_multiple').chosen();
+
+    $('#TipoCompra_multiple').chosen('destroy');
+    $('#TipoCompra_multiple').chosen();
+    $('#TipoClasCompra_multiple').chosen('destroy');
+    $('#TipoClasCompra_multiple').chosen();		
+}
 
 function todo(){
 	$("#chkall").attr("checked",true);
@@ -1902,9 +1930,9 @@ function PasaEstadoDetalle (det,est){
 					<td>
 						<select name="unidad_ns" id="unidad_ns" class="styled-select"  ><option value="">Seleccione...</option>
 							<?php
-													require_once("scripts/funcionescombo.php");		
-													$estados = dameUnidadMedida();
-													foreach($estados as $indice => $registro)
+													
+													
+													foreach($unidadesMedida as $indice => $registro)
 													{
 														?>
 														<option value="<?php echo($registro['CODIGO'])?>"><?php echo($registro['DESCRIPCION']);?></option>
@@ -1993,8 +2021,8 @@ function PasaEstadoDetalle (det,est){
 		<table class="bordered" id="tabladetalle"  style="clear:both; padding-bottom:20px; margin-top:30px; min-width:950px; width:100%">
 		 <thead>
 					 <tr>
-							<th colspan="3"><div id="footer"><span>Listado detalle</span> 
-							</div></th>
+							<th><div id="footer" CLASS="W-100"><span>Listado detalle</span> 
+							</div>
 					<th colspan="16">
 					 <div class="btn btn-xs btn-default" style="width:50px; float:left;" title="Seleccionar" >
 						<ul class="chkdetails">
@@ -2012,8 +2040,57 @@ function PasaEstadoDetalle (det,est){
 					<div id="containerinfoeventolista" style="background:#ffffff; margin-left:3px; float:right; padding:3px; border-radius:5px; <?php if($codigo_evento != ''){ echo('display:block');}else{ echo('display:none;');}?>">Tipo de Requerimiento Evento:<br>
 					codigo: <span id="msgaddeventolistado" class="msgaddevento"><?php echo($codigo_evento);?></span>						
 					</div>
-						<div id="multiplesdetalles" style="display: none;margin-left: 10px;float: left;"><button type="button" class="btn btn-default">Cargar un archivo a multiples detalles</button></div>
-						<button id="markAllReceived" style="padding: 8px;margin-left:10px;"> <img src="imagenes/entregado.png" width="16"  title="Entregado" >Recibido</button>
+						<div id="multiplesdetalles" style="display: none;margin-left: 10px;float: left;">
+							<button type="button" class="btn btn-default" id="btnmultiplesdetalles">Cargar un archivo a multiples detalles</button>
+
+							<?php  if ($_SESSION['MM_RolID'] == 2){
+								include_once("partials/solicitud/partialViewTipoClasificacion.php");
+							}
+							?>							
+                            <?php  
+                            if ($_SESSION['MM_RolID'] == 3)
+                            {?>
+                            <!-- inicio boton combo POA  -->
+	   						 	 <div id="divpoadeta_multiple">
+				  					<select 	name="poadetalle_multiple" 	
+				  								id="poadetalle_multiple" 
+				  								class="chzn-select" 
+				  								onchange="FMD_PoaMultiple('multiple',this.value)">				
+										<option value="">- POA -</option>
+											<?php
+												
+												foreach($estados as $indice => $registro){
+											?>
+											<option value="<?php echo($registro['POACODI'])?>"><?php echo($registro['POANOMB']);?></option>
+											<?php
+												}
+											?>
+									</select>
+							 <!-- fin -->
+							  <!-- inicio boton combo Centro de costo (subpoa)  -->		
+		  							<select name="subpoadetalle_multiple" 
+		  									id="subpoadetalle_multiple" 
+		  									class="chzn-select"
+		  									onchange="FMD_SubPoaMultiple('multiple',this.value)">		  													
+									<option value="">- CENTRO DE COSTO -</option>
+										<?php
+
+					                        foreach($estadosCentroCosto as $indice => $registro){
+										?>
+											<option value="<?php echo($registro['PODECODI'])?>"><?php echo($registro['PODENOMB']);?></option>
+										<?php
+											}
+										?>
+									</select>							  	
+									&nbsp;
+									
+		 					  	</div>							
+
+							<?php 
+							}
+							?>
+						</div>
+						<button id="markAllReceived" style="padding: 8px;margin-left:10px;"> <img src="imagenes/entregado.png" width="16"  title="Entregado" >Entregar</button>
 
 					</th>
 					<?php if($_SESSION['MM_RolID']== 2){
@@ -2354,38 +2431,37 @@ function PasaEstadoDetalle (det,est){
 						<td>
 							 <?php  if ($_SESSION['MM_RolID'] != 4){?>
 							 <?php  if ($_SESSION['MM_RolID'] == 2){?>
-						    <!-- inicio boton combo de tipo de orden de compra -->		
+						    <!-- inicio boton combo de tipo de orden de compra -->	
 								 <select name="TipoCompra_<?php echo($row_RsListadoDeta_Requ['CODIGO']); ?>" 
 									     id="TipoCompra_<?php echo($row_RsListadoDeta_Requ['CODIGO']); ?>" 
 										 class="chzn-select" 
 										 onchange="FMD_TipoCompra('<?php echo($row_RsListadoDeta_Requ['CODIGO']); ?>',this.value)">				
 										<option value="">-Tipo-</option>
 									         <?php
-													require_once("scripts/funcionescombo.php");		
-													$estados = dameTipoOrdenCompra();
-													foreach($estados as $indice => $registro)
+													
+													foreach($estadosTipoOrdenCompra as $indice => $registro)
 													{
 														?>
-														<option value="<?php echo($registro['CODIGO'])?>"><?php echo($registro['DESCRIPCION']);?></option>
+														<option value="<?php echo($registro['CODIGO'])?>" <?php if($row_RsListadoDeta_Requ['TIPO_COMPRA'] == $registro['CODIGO']) { echo "selected"; }?> ><?php echo($registro['DESCRIPCION']);?></option>
 														<?php
 													}
 											   ?>
 								</select>
 							<!-- fin -->
 						
-							<!-- inicio boton combo Classificacion de compra -->		
+							<!-- inicio boton combo Classificacion de compra -->	
 							    <select name="TipoClasCompra_<?php echo($row_RsListadoDeta_Requ['CODIGO']); ?>" 
 									     id="TipoClasCompra_<?php echo($row_RsListadoDeta_Requ['CODIGO']); ?>" 
 										 class="chzn-select" 
 										 onchange="FMD_TipoClasCompra('<?php echo($row_RsListadoDeta_Requ['CODIGO']); ?>',this.value)">				
 										<option value="">-Clasificaci&oacute;n-</option>
 									         <?php
-													require_once("scripts/funcionescombo.php");		
-													$estados = dameTipoCompra();
-													foreach($estados as $indice => $registro)
+													
+													
+													foreach($tiposCompra as $indice => $registro)
 													{
 														?>
-														<option value="<?php echo($registro['CODIGO'])?>"><?php echo($registro['DESCRIPCION']);?></option>
+														<option value="<?php echo($registro['CODIGO'])?>"  <?php if($registro['CODIGO'] == $row_RsListadoDeta_Requ['CODIGO']){ echo "selected"; }?> ><?php echo($registro['DESCRIPCION']);?></option>
 														<?php
 													}
 											   ?>
@@ -2394,10 +2470,9 @@ function PasaEstadoDetalle (det,est){
 							<!-- inicio boton combo Convenio de compra -->
 								<select name="Convdetalle_<?php echo($row_RsListadoDeta_Requ['CODIGO']); ?>" id="Convdetalle_<?php echo($row_RsListadoDeta_Requ['CODIGO']); ?>" class="chzn-select" onchange="ShowProductosConvenio('<?php echo($row_RsListadoDeta_Requ['CODIGO']); ?>', this.value)">				
 									<option value="">- SELECCIONAR LISTADO PROD -</option>
-										<?php
-											require_once("scripts/funcionescombo.php");		
-											$estados = dameConvenio();
-											foreach($estados as $indice => $registro)
+										<?php	
+											
+											foreach($conveniosListaP as $indice => $registro)
 											{
 										?>
 												<option value="<?php echo($registro['ID'])?>"><?php echo($registro['PROVEEDOR_DES']);?></option>
@@ -2423,11 +2498,9 @@ function PasaEstadoDetalle (det,est){
 				  								onchange="FMD_Poa('<?php echo($row_RsListadoDeta_Requ['CODIGO']); ?>',this.value)">				
 										<option value="">- POA -</option>
 											<?php
-												require_once("scripts/funcionescombo.php");		
-												$estados = damePoa();
 												foreach($estados as $indice => $registro){
 											?>
-											<option value="<?php echo($registro['POACODI'])?>"><?php echo($registro['POANOMB']);?></option>
+											<option value="<?php echo($registro['POACODI'])?>" <?php if($row_RsListadoDeta_Requ['POA_DETALLE']== $registro['POACODI']) { echo"selected";}?>><?php echo($registro['POANOMB']);?></option>
 											<?php
 												}
 											?>
@@ -2440,11 +2513,9 @@ function PasaEstadoDetalle (det,est){
 		  									onchange="FMD_SubPoa('<?php echo($row_RsListadoDeta_Requ['CODIGO']); ?>',this.value)">		  													
 									<option value="">- CENTRO DE COSTO -</option>
 										<?php
-											require_once("scripts/funcionescombo.php");		
-											$estados = dameCentroCosto();
-					                        foreach($estados as $indice => $registro){
+					                        foreach($estadosCentroCosto as $indice => $registro){
 										?>
-											<option value="<?php echo($registro['PODECODI'])?>"><?php echo($registro['PODENOMB']);?></option>
+											<option value="<?php echo($registro['PODECODI'])?>" <?php if($row_RsListadoDeta_Requ['SUBPOA_DETALLE'] == $registro['PODECODI']) { echo"selected";}?>><?php echo($registro['PODENOMB']);?></option>
 										<?php
 											}
 										?>
@@ -2885,6 +2956,27 @@ function SaveCodeEvento(){
 }
 //Funciones de manipulacion datos de Detalles
      
+	function FMD_TipoCompraMultiple(cd,par)
+	{
+		$.ajax({
+				 type: "POST",
+				 url: "tipo_guardar.php?tipoGuardar=GuardarTipoCompraMultiple&tipocompra="+par+"&codigo_detalle="+cd,
+				 dataType: 'json',
+				 data: {
+					detallesSeleccionados: multiple_detalle_seleccionados
+				},				 
+				 success : function(t)
+				 {
+					if(t.detallesLista.length > 0){
+						asignarValoresToChosen(t.detallesLista, par, 'TipoCompra_')
+					}
+				 	alert('Su Actividad Se Ejecuto Exitosamente');
+				 					
+				 },	
+					error   : callback_error,
+				});
+
+	}
 	function FMD_TipoCompra(cd,par)
 	{
 		$.ajax({
@@ -2901,6 +2993,39 @@ function SaveCodeEvento(){
 
 	}
 
+	function FMD_TipoClasCompraMultiple(cd,par)
+	{
+		//Parametro es de Convenios
+		if(par=='3'){		   
+			alert('Recuerde marcar el Listado de producto y el producto asociado');
+		}
+
+		//Parametro es de menor Cuantia
+		if(par=='2'){		   
+			alert('Recuerde las compras de menor cuantia deben ser inferiores a 1 SMLV Durante el mes Contabilizado ');
+		}
+
+		$.ajax({
+				 type: "POST",
+				 url: "tipo_guardar.php?tipoGuardar=GuardarTipoClasCompra&tipoclascomp="+par+"&codigo_detalle="+cd,
+				 dataType: 'json',
+				 data: {
+					detallesSeleccionados: multiple_detalle_seleccionados
+				},					 
+				 success : function(t)
+				 {  
+					if(t.detallesLista.length > 0){
+						asignarValoresToChosen(t.detallesLista, par, 'TipoClasCompra_')
+					}
+				 	alert('Su Actividad Se Ejecuto Exitosamente');
+				 					
+				 },	
+					error   : callback_error,
+				});
+
+
+
+	}
 	function FMD_TipoClasCompra(cd,par)
 	{
 		//Parametro es de Convenios
@@ -2950,8 +3075,51 @@ function SaveCodeEvento(){
 						error   : callback_error
 					});
 	}
+	function resetChosenById(id){
+		$('#'+id).chosen('destroy');
+		$('#'+id).chosen();
+	}
 
 
+	function asignarValoresToChosen(detalles, poaCodigo, partialId){
+		<?php 
+		/*
+		 @detalles param Array
+		 @poaCodigo param Number
+		 @partialId String example TipoClasCompra_
+		*/
+		?>
+		detalles.forEach(function(item) {
+			document.getElementById(partialId+item).value= poaCodigo; 
+			resetChosenById(partialId+item);
+		});
+	}
+
+
+
+
+	function FMD_PoaMultiple(cd,par){
+
+		console.log("multiple_detalle_seleccionados ",multiple_detalle_seleccionados)
+		$.ajax({
+				 type: "POST",
+				 url: "tipo_guardar.php?tipoGuardar=GuardarPoaMultiple&poa="+par+"&codigo_detalle="+cd,
+				 dataType: 'json',
+				 data: {
+					detallesSeleccionados: multiple_detalle_seleccionados
+				},
+				 success : function(t)
+				 {  
+					if(t.detallesLista.length > 0){
+						asignarValoresToChosen(t.detallesLista, par, 'poadetalle_')
+					}
+				 	alert('Su Actividad Se Ejecuto Exitosamente');
+				 					
+				 },	
+					error   : callback_error,
+				});
+	}
+		
 	function FMD_Poa(cd,par){
 
 		$.ajax({
@@ -2967,6 +3135,26 @@ function SaveCodeEvento(){
 				});
 	}	
 
+	function FMD_SubPoaMultiple(cd,par){
+
+		$.ajax({
+				 type: "POST",
+				 url: "tipo_guardar.php?tipoGuardar=GuardarSubPoaMultiple&subpoa="+par+"&codigo_detalle="+cd,
+				 dataType: 'json',
+				 data: {
+					detallesSeleccionados: multiple_detalle_seleccionados
+				},
+				 success : function(t)
+				 {  
+					if(t.detallesLista.length > 0){
+						asignarValoresToChosen(t.detallesLista, par, 'subpoadetalle_')
+					}					
+				 	alert('Su Actividad Se Ejecuto Exitosamente');
+				 					
+				 },	
+					error   : callback_error,
+				});
+	}
 	function FMD_SubPoa(cd,par){
 
 		$.ajax({

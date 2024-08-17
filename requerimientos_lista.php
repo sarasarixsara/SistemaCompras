@@ -42,6 +42,43 @@ if (isset($_POST['desc_detalle']) && $_POST['desc_detalle'] != '') {
 	$desc_detalle = $_POST['desc_detalle'];
 }
 
+function printDescripcionDetalle($texto) {
+    // Separar los registros usando "||"
+    $registros = explode('||', $texto);
+
+    // Inicializar la variable de salida HTML
+    $html = '';
+
+    // Recorrer cada registro
+    foreach ($registros as $registro) {
+        // Eliminar espacios en blanco al principio y final de cada registro
+        $registro = trim($registro);
+
+        // Separar cada parte del registro usando "$$"
+        $partes = explode('$$', $registro);
+
+        // Asegurarse de que haya al menos 3 partes para procesar
+        if (count($partes) >= 3) {
+            $descripcion = trim($partes[0]);
+            $detalle = trim($partes[1]);
+            $color = trim($partes[2]);
+
+            // Generar el HTML para este registro
+            $html .= '<div class="col-md-12">';
+            $html .= $descripcion . ' - <span style="font-size:9px; background:' . $color . '">' . $detalle . '</span>';
+            $html .= '</div>';
+        }
+    }
+
+    // Devolver el HTML generado
+    return $html;
+}
+
+// Ejemplo de uso
+
+
+
+
 
 //DEFINIR VARIABLE DE PAGINADOR
 $tamanoPagina = 15;
@@ -86,28 +123,31 @@ if ($desc_detalle != '') {
                                             AND    R.REQUIDUS = '$userID'";
 }
 
-$query_RsListaRequerimientos = "SELECT R.REQUCODI CODIGO,
-									R.REQUCORE CODIGO_REQUERIMIENTO,
-									R.REQUIDUS USUARIO,
-									R.REQUAREA AREA,
-									date_format(R.REQUFEEN, '%d/%m/%Y') FECHA,
-									date_format(R.REQUFEFI, '%d/%m/%Y') FECHA_FINALIZADO,
-									R.REQUESTA ESTADO,
-									E.ESTANOMB ESTADO_DES,
-									E.ESTACOLO COLOR,
-									(SELECT SUBSTRING(REQUCORE, 3, 4)) A,
-									(SELECT SUBSTRING(REQUCORE, 8, 4) * 2) B,
-									(SELECT A.AREANOMB 
-										FROM AREA A
-										WHERE A.AREAID = R.REQUAREA LIMIT 1) AREA_DES,
-									R.REQUENCU ENCUESTA,
-									(SELECT ENPEESTA FROM encuesta_pers WHERE ENPEREQU = R.REQUCODI LIMIT 1) RESPUESTA_ENC,
-									D.DEREDESC AS DESCRIPCION_DETALLE
-								FROM REQUERIMIENTOS R
-									LEFT JOIN ESTADOS E ON R.REQUESTA = E.ESTACODI
-									LEFT JOIN DETALLE_REQU D ON R.REQUCODI = D.DEREREQU
-
-								WHERE 1";
+$query_RsListaRequerimientos = "SELECT DISTINCT
+    R.REQUCODI CODIGO,
+    R.REQUCORE CODIGO_REQUERIMIENTO,
+    R.REQUIDUS USUARIO,
+    R.REQUAREA AREA,
+    DATE_FORMAT(R.REQUFEEN, '%d/%m/%Y') FECHA,
+    DATE_FORMAT(R.REQUFEFI, '%d/%m/%Y') FECHA_FINALIZADO,
+    R.REQUESTA ESTADO,
+    E.ESTANOMB ESTADO_DES,
+    E.ESTACOLO COLOR,
+    (SELECT SUBSTRING(REQUCORE, 3, 4)) A,
+    (SELECT SUBSTRING(REQUCORE, 8, 4) * 2) B,
+    (SELECT A.AREANOMB 
+     FROM AREA A
+     WHERE A.AREAID = R.REQUAREA LIMIT 1) AREA_DES,
+    R.REQUENCU ENCUESTA,
+    (SELECT ENPEESTA FROM encuesta_pers WHERE ENPEREQU = R.REQUCODI LIMIT 1) RESPUESTA_ENC,
+    (SELECT GROUP_CONCAT(CONCAT(D.DEREDESC, ' $$ ', ED.ESDENOMB, ' $$ ', ED.ESDECOLO) SEPARATOR ' || ')
+     FROM DETALLE_REQU D
+     LEFT JOIN ESTADO_DETALLE ED ON D.DEREAPRO = ED.ESDECODI
+     WHERE R.REQUCODI = D.DEREREQU) AS DESCRIPCION_DETALLE
+FROM REQUERIMIENTOS R
+LEFT JOIN ESTADOS E ON R.REQUESTA = E.ESTACODI
+WHERE 1 
+ ";
 
 
 if ($todos != 1) {
@@ -142,14 +182,14 @@ if ($todos != 1) {
 			} elseif ($rolID == 5 && $fdetallesfirmar == '') {
 				$nuevoorderRE = 1;
 				$query_RsListaRequerimientos .= " AND R.REQUCODI IN (
-                SELECT DISTINCT D2.DEREREQU FROM DETALLE_REQU D2 WHERE D2.DEREAPRO IN (17, 25)
+                SELECT DISTINCT D2.DEREREQU FROM DETALLE_REQU D2 WHERE R.REQUCODI = D2.DEREREQU and D2.DEREAPRO IN (17, 25)
             )";
 			}
 		}
 
 		if ($rolID == 5 && $fdetallesfirmar == '1') {
 			$query_RsListaRequerimientos .= " AND R.REQUCODI IN (
-            SELECT DISTINCT D2.DEREREQU FROM DETALLE_REQU D2 WHERE D2.DEREAPRO IN (17, 25)
+            SELECT DISTINCT D2.DEREREQU FROM DETALLE_REQU D2 WHERE R.REQUCODI = D2.DEREREQU and D2.DEREAPRO IN (17, 25)
         )";
 		}
 	}
@@ -441,8 +481,7 @@ if ($pageNum_RsListaRequerimientos == $totalPages_RsListaRequerimientos) {
 							<td>Fecha</td>
 							<td>Encuesta</td>
 							<td>Detalles</td>
-							<td width="300">Descripcion</td>
-							<td width="200">Alertas</td>
+							<td width="350">Descripcion</td>
 
 						</tr>
 						<?php
@@ -499,12 +538,12 @@ if ($pageNum_RsListaRequerimientos == $totalPages_RsListaRequerimientos) {
 									}
 									?>
 								</td>
-								<?php
-								require_once ("scripts/funcionescombo.php");
-								$estados = dameTotalEstadosDetalles($row_RsListaRequerimientos['CODIGO']);
-								?>
+								
 								<td >
-									<?php echo ($row_RsListaRequerimientos['DESCRIPCION_DETALLE']); ?>
+									<?php 
+								echo printDescripcionDetalle($row_RsListaRequerimientos['DESCRIPCION_DETALLE']);
+									?>
+									
 								</td>
 
 
@@ -522,16 +561,7 @@ if ($pageNum_RsListaRequerimientos == $totalPages_RsListaRequerimientos) {
 						 }
 						 ?>
 						</td>-->
-								<td>
-									<?php foreach ($estados as $indice => $registro) { ?>
-										<div style='background-color: <?php echo ($registro['COLOR']); ?>;'>
-											<?php echo ($registro['TOTAL']); ?>- <?php echo ($registro['ESTADO_DES']); ?>
-										</div>
-
-										<?php
-									}
-									?>
-								</td>
+								
 							</tr>
 							<?php
 						} while ($row_RsListaRequerimientos = mysqli_fetch_array($RsListaRequerimientos));
