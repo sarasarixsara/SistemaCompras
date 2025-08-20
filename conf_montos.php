@@ -1,6 +1,6 @@
 <?php
-//actualizado 2023
-$salario_actual="1160000";
+//actualizado 2025
+$salario_actual="1423500";
 
 $valor_orden2=str_replace(',','',$valor_orden); 
 
